@@ -9,6 +9,7 @@ import { Loader2, Package, ShoppingBag, ArrowRight } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthContext';
+import { getSocket } from '@/lib/socket';
 
 const Orders = () => {
   const navigate = useNavigate();
@@ -32,6 +33,38 @@ const Orders = () => {
 
     fetchOrders();
   }, [isAuthenticated, currentPage, statusFilter, navigate]);
+
+  // Real-time order status updates via Socket.io
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const socket = getSocket();
+    if (!socket) return;
+
+    const handleOrderStatusUpdate = (data: any) => {
+      // Update the order in the local state
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === data.orderId
+            ? { ...order, status: data.status, ...data.order }
+            : order
+        )
+      );
+    };
+
+    const handleOrderCreated = (data: any) => {
+      // Refresh orders list to include new order
+      fetchOrders();
+    };
+
+    socket.on('order:status-updated', handleOrderStatusUpdate);
+    socket.on('order:created', handleOrderCreated);
+
+    return () => {
+      socket.off('order:status-updated', handleOrderStatusUpdate);
+      socket.off('order:created', handleOrderCreated);
+    };
+  }, [isAuthenticated]);
 
   const fetchOrders = async () => {
     setLoading(true);

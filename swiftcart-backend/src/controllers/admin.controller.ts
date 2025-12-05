@@ -152,6 +152,10 @@ export const updateOrderStatus = async (
       newStatus: status,
     });
 
+    // Emit real-time update via Socket.io
+    const { emitOrderStatusUpdate } = await import('../services/socketEvents');
+    emitOrderStatusUpdate(order);
+
     res.status(200).json({
       success: true,
       status: 200,

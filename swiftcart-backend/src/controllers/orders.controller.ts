@@ -107,6 +107,10 @@ export const createOrder = async (
       totalAmount,
     });
 
+    // Emit real-time order created event via Socket.io
+    const { emitOrderCreated } = await import('../services/socketEvents');
+    emitOrderCreated(order);
+
     res.status(201).json({
       success: true,
       status: 201,
@@ -279,6 +283,10 @@ export const cancelOrder = async (
       orderId: order._id,
       userId,
     });
+
+    // Emit real-time update via Socket.io
+    const { emitOrderStatusUpdate } = await import('../services/socketEvents');
+    emitOrderStatusUpdate(order);
 
     res.status(200).json({
       success: true,

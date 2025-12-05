@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { NotificationProvider } from "@/context/NotificationContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
@@ -47,7 +48,8 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
-      <CartProvider>
+        <NotificationProvider>
+          <CartProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
@@ -80,7 +82,8 @@ const App = () => (
             <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
           </Routes>
         </BrowserRouter>
-      </CartProvider>
+          </CartProvider>
+        </NotificationProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

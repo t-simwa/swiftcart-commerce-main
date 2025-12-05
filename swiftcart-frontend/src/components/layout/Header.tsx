@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -131,6 +132,9 @@ export function Header() {
                 <span className="text-background/70 text-xxs">Returns</span>
                 <span className="font-medium text-background">& Orders</span>
               </Link>
+
+              {/* Notifications */}
+              {isAuthenticated && <NotificationCenter />}
 
               {/* Wishlist - Mobile & Desktop */}
               <Button variant="ghost" size="icon" className="text-background hover:bg-background/10 relative">

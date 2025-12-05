@@ -180,6 +180,10 @@ class PaymentService {
             orderId: order._id,
             transactionId: transaction._id,
           });
+
+          // Emit real-time update via Socket.io
+          const { emitOrderStatusUpdate } = await import('./socketEvents');
+          emitOrderStatusUpdate(order);
         }
       } else {
         // Payment failed

@@ -1,10 +1,19 @@
+import { createServer } from 'http';
 import app from './app';
 import { connectDatabase } from './config/database';
 import { connectRedis, disconnectRedis } from './config/redis';
 import { env } from './config/env';
 import logger from './utils/logger';
+import { initializeSocket, setSocketInstance } from './config/socket';
 
 const PORT = env.PORT;
+
+// Create HTTP server
+const httpServer = createServer(app);
+
+// Initialize Socket.io
+const io = initializeSocket(httpServer);
+setSocketInstance(io);
 
 // Connect to database and Redis, then start server
 const startServer = async () => {
@@ -15,8 +24,8 @@ const startServer = async () => {
     // Connect to Redis (non-blocking - app continues if Redis fails)
     await connectRedis();
     
-    // Start server
-    app.listen(PORT, () => {
+    // Start server with Socket.io
+    httpServer.listen(PORT, () => {
       logger.info('🚀 Server started successfully', {
         port: PORT,
         environment: env.NODE_ENV,
@@ -26,6 +35,7 @@ const startServer = async () => {
       console.log(`📡 Environment: ${env.NODE_ENV}`);
       console.log(`🌐 API: http://localhost:${PORT}/api/${env.API_VERSION}`);
       console.log(`💚 Health: http://localhost:${PORT}/api/health`);
+      console.log(`🔌 Socket.io: WebSocket server ready`);
     });
   } catch (error: any) {
     logger.error('Failed to start server', { error: error.message, stack: error.stack });
@@ -58,6 +68,16 @@ const gracefulShutdown = async (signal: string) => {
   console.log(`\n🛑 Received ${signal}, shutting down gracefully...`);
   
   try {
+    // Close Socket.io connections
+    io.close(() => {
+      logger.info('Socket.io server closed');
+    });
+    
+    // Close HTTP server
+    httpServer.close(() => {
+      logger.info('HTTP server closed');
+    });
+    
     await disconnectRedis();
     process.exit(0);
   } catch (error: any) {

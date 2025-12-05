@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { adminApi } from '@/lib/adminApi';
+import { getSocket } from '@/lib/socket';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -76,6 +77,29 @@ export default function AdminOrders() {
   const handleStatusUpdate = (orderId: string, newStatus: string) => {
     updateStatusMutation.mutate({ orderId, status: newStatus });
   };
+
+  // Real-time order updates via Socket.io
+  useEffect(() => {
+    const socket = getSocket();
+    if (!socket) return;
+
+    const handleOrderUpdate = () => {
+      // Invalidate and refetch orders when real-time update received
+      queryClient.invalidateQueries({ queryKey: ['admin-orders'] });
+    };
+
+    const handleNewOrder = () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-orders'] });
+    };
+
+    socket.on('order:admin-update', handleOrderUpdate);
+    socket.on('order:new', handleNewOrder);
+
+    return () => {
+      socket.off('order:admin-update', handleOrderUpdate);
+      socket.off('order:new', handleNewOrder);
+    };
+  }, [queryClient]);
 
   const orders = data?.data?.orders || [];
   const pagination = data?.data?.pagination;

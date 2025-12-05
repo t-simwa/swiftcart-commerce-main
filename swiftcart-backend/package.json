@@ -34,7 +34,8 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-facebook": "^3.0.0",
-    "express-session": "^1.18.1"
+    "express-session": "^1.18.1",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
@@ -48,6 +49,7 @@
     "@types/passport-google-oauth20": "^2.0.14",
     "@types/passport-facebook": "^3.0.4",
     "@types/express-session": "^1.17.10",
+    "@types/socket.io": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^6.17.0",
     "@typescript-eslint/parser": "^6.17.0",
     "eslint": "^8.56.0",
