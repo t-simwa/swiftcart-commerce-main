@@ -44,4 +44,5 @@ coverage/
 # Documentation files (except README.md)
 *.md
 !README.md
+# Note: All other .md files should be moved to root docs/ folder
 

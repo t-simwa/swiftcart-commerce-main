@@ -51,6 +51,10 @@ swiftcart-backend/node_modules/
 # Root level
 node_modules/
 
-# Documentation files (except README.md)
+# Documentation files (except README.md and docs folder)
+# Ignore all .md files in root
 /*.md
 !/README.md
+# Allow docs folder and all its contents to be tracked
+!docs/
+!docs/**
