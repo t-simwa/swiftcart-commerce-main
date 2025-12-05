@@ -220,7 +220,7 @@ export function Header() {
                 <Button 
                   type="submit" 
                   size="icon" 
-                  className="h-10 w-12 rounded-l-none rounded-r-md bg-[#febd69] hover:bg-[#f3a847] text-foreground border-0"
+                  className="h-10 w-12 rounded-l-none rounded-r-md bg-[#dc2626] hover:bg-[#b91c1c] text-foreground border-0"
                 >
                   <Search className="h-4 w-4" />
                 </Button>
@@ -385,7 +385,7 @@ export function Header() {
               >
                 <div className="relative">
                   <ShoppingCart className="h-8 w-8" />
-                  <span className="absolute -top-1 left-4 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#f08804] text-[11px] font-bold text-white px-1">
+                  <span className="absolute -top-1 left-4 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#b91c1c] text-[11px] font-bold text-white px-1">
                     {totalItems > 99 ? "99+" : totalItems}
                   </span>
                 </div>
@@ -603,7 +603,7 @@ export function Header() {
             <Button 
               type="submit" 
               size="icon" 
-              className="h-9 w-9 rounded-l-none rounded-r-md bg-[#febd69] hover:bg-[#f3a847] text-foreground shrink-0"
+              className="h-9 w-9 rounded-l-none rounded-r-md bg-[#dc2626] hover:bg-[#b91c1c] text-foreground shrink-0"
             >
               <Search className="h-4 w-4" />
             </Button>

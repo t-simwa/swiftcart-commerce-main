@@ -33,7 +33,7 @@ const getNotificationColor = (type: Notification['type']) => {
     case 'order':
       return 'bg-blue-500';
     case 'inventory':
-      return 'bg-orange-500';
+      return 'bg-red-500';
     case 'admin':
       return 'bg-purple-500';
     case 'promotion':
