@@ -233,7 +233,10 @@ export function Header() {
             </Link>
             <Link
               to="/deals"
-              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-background/30 rounded transition-all whitespace-nowrap text-primary font-medium"
+              className={cn(
+                "px-2 py-1 hover:outline hover:outline-1 hover:outline-background/30 rounded transition-all whitespace-nowrap",
+                isActive("/deals") && "outline outline-1 outline-background/30 text-primary font-medium"
+              )}
             >
               Today's Deals
             </Link>

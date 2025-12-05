@@ -174,6 +174,44 @@ class ApiClient {
       `/v1/payment/order/${orderId}/status`
     );
   }
+
+  // Deals
+  async getDeals(params?: {
+    page?: number;
+    limit?: number;
+    category?: string;
+    brands?: string;
+    minDiscount?: number;
+    maxDiscount?: number;
+    minPrice?: number;
+    maxPrice?: number;
+    dealType?: string;
+    premiumExclusive?: boolean;
+    sort?: string;
+  }): Promise<ApiResponse<PaginatedResponse<any>>> {
+    const queryParams = new URLSearchParams();
+    
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          queryParams.append(key, value.toString());
+        }
+      });
+    }
+
+    const queryString = queryParams.toString();
+    return this.request<PaginatedResponse<any>>(
+      `/v1/deals${queryString ? `?${queryString}` : ''}`
+    );
+  }
+
+  async getHeroDeals(): Promise<ApiResponse<{ products: any[] }>> {
+    return this.request<{ products: any[] }>('/v1/deals/hero');
+  }
+
+  async getCategoryOffers(): Promise<ApiResponse<{ offers: any[] }>> {
+    return this.request<{ offers: any[] }>('/v1/deals/category-offers');
+  }
 }
 
 export const apiClient = new ApiClient(API_BASE_URL);

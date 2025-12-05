@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 13% 13%;
 
-    /* Amazon-inspired primary orange */
+    /* SwiftCart primary orange */
     --primary: 30 100% 50%;
     --primary-foreground: 0 0% 100%;
 
@@ -173,7 +173,7 @@
     @apply w-full max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Amazon-style header */
+  /* SwiftCart header */
   .header-nav {
     background: var(--gradient-header);
   }
@@ -201,7 +201,7 @@
     box-shadow: var(--shadow-card-hover);
   }
 
-  /* Price styling - Amazon style */
+  /* Price styling - SwiftCart style */
   .price-current {
     @apply text-xl font-bold;
     color: hsl(var(--price));
@@ -253,12 +253,12 @@
     color: hsl(var(--destructive));
   }
 
-  .badge-prime {
+  .badge-premium {
     @apply inline-flex items-center gap-1 text-xs font-bold;
     color: hsl(199, 89%, 48%);
   }
 
-  /* Amazon-style star rating */
+  /* SwiftCart star rating */
   .star-rating {
     @apply inline-flex items-center gap-0.5;
   }

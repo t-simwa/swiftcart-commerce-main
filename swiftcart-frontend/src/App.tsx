@@ -22,6 +22,7 @@ import AuthCallback from "./pages/AuthCallback";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import Orders from "./pages/Orders";
+import Deals from "./pages/Deals";
 import NotFound from "./pages/NotFound";
 // Admin pages
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -48,12 +49,12 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <BrowserRouter>
-        <AuthProvider>
+      <AuthProvider>
           <NotificationProvider>
-            <CartProvider>
-              <Toaster />
-              <Sonner />
-              <Routes>
+      <CartProvider>
+        <Toaster />
+        <Sonner />
+          <Routes>
             {/* Admin Routes - No Header/Footer */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<ProtectedRoute requireRole="admin"><AdminDashboard /></ProtectedRoute>} />
@@ -67,6 +68,7 @@ const App = () => (
             <Route path="/" element={<PublicLayout><Index /></PublicLayout>} />
             <Route path="/products" element={<PublicLayout><Products /></PublicLayout>} />
             <Route path="/products/:slug" element={<PublicLayout><ProductDetail /></PublicLayout>} />
+            <Route path="/deals" element={<PublicLayout><Deals /></PublicLayout>} />
             {/* Auth Routes */}
             <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
             <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
@@ -80,10 +82,10 @@ const App = () => (
             <Route path="/orders/:orderId/confirmation" element={<PublicLayout><ProtectedRoute><OrderConfirmation /></ProtectedRoute></PublicLayout>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
-              </Routes>
-            </CartProvider>
+          </Routes>
+      </CartProvider>
           </NotificationProvider>
-        </AuthProvider>
+      </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

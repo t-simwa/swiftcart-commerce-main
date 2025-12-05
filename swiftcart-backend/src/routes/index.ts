@@ -4,6 +4,7 @@ import authRoutes from './auth.routes';
 import orderRoutes from './orders.routes';
 import paymentRoutes from './payment.routes';
 import adminRoutes from './admin.routes';
+import dealsRoutes from './deals.routes';
 import { env } from '../config/env';
 
 const router = Router();
@@ -26,6 +27,7 @@ router.use(`/${apiVersion}/auth`, authRoutes);
 router.use(`/${apiVersion}/orders`, orderRoutes);
 router.use(`/${apiVersion}/payment`, paymentRoutes);
 router.use(`/${apiVersion}/admin`, adminRoutes);
+router.use(`/${apiVersion}/deals`, dealsRoutes);
 
 // Placeholder routes for future implementation
 // router.use(`/${apiVersion}/cart`, cartRoutes);
