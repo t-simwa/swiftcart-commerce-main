@@ -47,9 +47,9 @@ export function CartDrawer() {
               </div>
             ) : (
               <ul className="space-y-4">
-                {state.items.map((item) => (
+                {state.items.map((item, index) => (
                   <li
-                    key={item.product.id}
+                    key={item.product.id || `cart-item-${index}`}
                     className="flex gap-4 rounded-lg border border-border p-3 animate-fade-in"
                   >
                     <img

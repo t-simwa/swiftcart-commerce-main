@@ -47,13 +47,13 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => (
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <AuthProvider>
-        <NotificationProvider>
-          <CartProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
+      <BrowserRouter>
+        <AuthProvider>
+          <NotificationProvider>
+            <CartProvider>
+              <Toaster />
+              <Sonner />
+              <Routes>
             {/* Admin Routes - No Header/Footer */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<ProtectedRoute requireRole="admin"><AdminDashboard /></ProtectedRoute>} />
@@ -80,11 +80,11 @@ const App = () => (
             <Route path="/orders/:orderId/confirmation" element={<PublicLayout><ProtectedRoute><OrderConfirmation /></ProtectedRoute></PublicLayout>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
-          </Routes>
-        </BrowserRouter>
-          </CartProvider>
-        </NotificationProvider>
-      </AuthProvider>
+              </Routes>
+            </CartProvider>
+          </NotificationProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );

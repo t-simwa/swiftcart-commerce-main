@@ -45,7 +45,7 @@ export function Header() {
                 <span className="text-base font-black text-primary-foreground">S</span>
               </div>
               <span className="text-lg font-bold tracking-tight text-background">
-                Shop<span className="text-primary">Hub</span>
+                Swift<span className="text-primary">Cart</span>
               </span>
             </Link>
 
@@ -271,7 +271,7 @@ export function Header() {
           <div className="relative flex">
             <Input
               type="search"
-              placeholder="Search ShopHub"
+              placeholder="Search SwiftCart"
               className="w-full h-9 pl-3 pr-10 rounded-md border-0 bg-background text-foreground placeholder:text-muted-foreground text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

@@ -41,7 +41,7 @@ export function TrustSection() {
         {/* Section Header */}
         <div className="text-center mb-10">
           <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">
-            Why Shop with ShopHub?
+            Why Shop with SwiftCart?
           </h2>
           <p className="text-muted-foreground text-sm max-w-md mx-auto">
             Kenya's most trusted e-commerce platform with over 500+ happy customers

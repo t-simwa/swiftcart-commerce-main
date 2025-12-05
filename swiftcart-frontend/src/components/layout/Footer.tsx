@@ -27,7 +27,7 @@ export function Footer() {
               <ul className="space-y-2.5 text-sm">
                 <li>
                   <Link to="/about" className="text-background/75 hover:text-background hover:underline transition-colors">
-                    About ShopHub
+                    About SwiftCart
                   </Link>
                 </li>
                 <li>
@@ -54,7 +54,7 @@ export function Footer() {
               <ul className="space-y-2.5 text-sm">
                 <li>
                   <Link to="/sell" className="text-background/75 hover:text-background hover:underline transition-colors">
-                    Sell on ShopHub
+                    Sell on SwiftCart
                   </Link>
                 </li>
                 <li>
@@ -69,7 +69,7 @@ export function Footer() {
                 </li>
                 <li>
                   <Link to="/fulfillment" className="text-background/75 hover:text-background hover:underline transition-colors">
-                    Fulfillment by ShopHub
+                    Fulfillment by SwiftCart
                   </Link>
                 </li>
               </ul>
@@ -91,7 +91,7 @@ export function Footer() {
                 </li>
                 <li>
                   <Link to="/gift-cards" className="text-background/75 hover:text-background hover:underline transition-colors">
-                    ShopHub Gift Cards
+                    SwiftCart Gift Cards
                   </Link>
                 </li>
                 <li>
@@ -146,7 +146,7 @@ export function Footer() {
                 <span className="text-sm font-black text-primary-foreground">S</span>
               </div>
               <span className="text-base font-bold text-background">
-                Shop<span className="text-primary">Hub</span>
+                Swift<span className="text-primary">Cart</span>
               </span>
             </Link>
             <div className="flex items-center gap-4 text-xs text-background/70">
@@ -171,7 +171,7 @@ export function Footer() {
             <Link to="/cookies" className="hover:text-background hover:underline transition-colors">
               Cookie Preferences
             </Link>
-            <span className="text-background/50">© 2024 ShopHub Kenya</span>
+            <span className="text-background/50">© 2024 SwiftCart Kenya</span>
           </div>
         </div>
       </div>

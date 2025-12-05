@@ -30,9 +30,19 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   const [isConnected, setIsConnected] = useState(false);
   const { isAuthenticated, tokens } = useAuth();
 
+  const addNotification = useCallback((notification: Notification) => {
+    setNotifications((prev) => [notification, ...prev].slice(0, 100)); // Keep last 100 notifications
+  }, []);
+
   // Initialize socket connection when authenticated
   useEffect(() => {
-    if (isAuthenticated && tokens?.accessToken) {
+    if (!isAuthenticated || !tokens?.accessToken) {
+      disconnectSocket();
+      setIsConnected(false);
+      return;
+    }
+
+    try {
       const socket = initializeSocket(tokens.accessToken);
 
       socket.on('connect', () => {
@@ -43,6 +53,12 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       socket.on('disconnect', () => {
         setIsConnected(false);
         console.log('❌ Socket.io disconnected');
+      });
+
+      socket.on('connect_error', (error) => {
+        setIsConnected(false);
+        console.error('Socket connection error:', error);
+        // Don't crash the app if socket fails to connect
       });
 
       // Order events
@@ -195,6 +211,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       return () => {
         socket.off('connect');
         socket.off('disconnect');
+        socket.off('connect_error');
         socket.off('order:created');
         socket.off('order:status-updated');
         socket.off('inventory:updated');
@@ -205,22 +222,23 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         socket.off('inventory:low-stock');
         socket.off('inventory:out-of-stock');
       };
-    } else {
-      disconnectSocket();
+    } catch (error) {
+      console.error('Failed to initialize socket:', error);
       setIsConnected(false);
+      // Don't crash the app if socket initialization fails
     }
-  }, [isAuthenticated, tokens?.accessToken]);
+  }, [isAuthenticated, tokens?.accessToken, addNotification]);
 
   // Update socket auth when token changes
   useEffect(() => {
     if (isAuthenticated && tokens?.accessToken) {
-      updateSocketAuth(tokens.accessToken);
+      try {
+        updateSocketAuth(tokens.accessToken);
+      } catch (error) {
+        console.error('Failed to update socket auth:', error);
+      }
     }
   }, [isAuthenticated, tokens?.accessToken]);
-
-  const addNotification = useCallback((notification: Notification) => {
-    setNotifications((prev) => [notification, ...prev].slice(0, 100)); // Keep last 100 notifications
-  }, []);
 
   const markAsRead = useCallback((id: string) => {
     setNotifications((prev) =>
