@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Search, ShoppingCart, User, Menu, X, Heart, MapPin, ChevronDown, LogOut } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, X, Heart, MapPin, ChevronDown, LogOut, Globe, Package, CreditCard, HelpCircle, Gift, Star, Settings, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/context/CartContext";
@@ -14,11 +14,67 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { categories } from "@/data/products";
+
+// Search departments/categories
+const searchDepartments = [
+  { value: "all", label: "All Departments" },
+  { value: "electronics", label: "Electronics" },
+  { value: "fashion", label: "Fashion" },
+  { value: "home-living", label: "Home & Living" },
+  { value: "sports", label: "Sports & Outdoors" },
+  { value: "beauty", label: "Beauty & Personal Care" },
+  { value: "books", label: "Books" },
+  { value: "toys", label: "Toys & Games" },
+  { value: "automotive", label: "Automotive" },
+  { value: "health", label: "Health & Household" },
+];
+
+// Languages
+const languages = [
+  { code: "en", name: "English", flag: "🇺🇸" },
+  { code: "sw", name: "Swahili", flag: "🇰🇪" },
+  { code: "fr", name: "Français", flag: "🇫🇷" },
+  { code: "es", name: "Español", flag: "🇪🇸" },
+];
+
+// Countries/Regions
+const countries = [
+  { code: "KE", name: "Kenya" },
+  { code: "US", name: "United States" },
+  { code: "GB", name: "United Kingdom" },
+  { code: "CA", name: "Canada" },
+  { code: "AU", name: "Australia" },
+];
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLocationDialogOpen, setIsLocationDialogOpen] = useState(false);
+  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("all");
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const [selectedCountry, setSelectedCountry] = useState("KE");
+  const [deliveryLocation, setDeliveryLocation] = useState("Nairobi");
   const { totalItems, toggleCart } = useCart();
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
@@ -27,8 +83,18 @@ export function Header() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+      const params = new URLSearchParams();
+      params.set("search", searchQuery);
+      if (selectedDepartment !== "all") {
+        params.set("category", selectedDepartment);
+      }
+      navigate(`/products?${params.toString()}`);
     }
+  };
+
+  const handleLocationSave = () => {
+    setIsLocationDialogOpen(false);
+    // In a real app, this would save to user preferences/localStorage
   };
 
   const isActive = (path: string) => location.pathname === path;
@@ -36,116 +102,301 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full">
       {/* Main Header */}
-      <div className="bg-foreground text-background">
+      <div className="bg-[#131921] text-white">
         <div className="container-wide">
           <div className="flex h-14 md:h-16 items-center gap-3 md:gap-6">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-1.5 shrink-0 group">
+            <Link to="/" className="flex items-center gap-1.5 shrink-0 group px-2 py-1 -m-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all">
               <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
                 <span className="text-base font-black text-primary-foreground">S</span>
               </div>
-              <span className="text-lg font-bold tracking-tight text-background">
+              <span className="text-lg font-bold tracking-tight text-white">
                 Swift<span className="text-primary">Cart</span>
               </span>
             </Link>
 
             {/* Delivery Location - Desktop */}
-            <button className="hidden lg:flex items-center gap-1 text-xs hover:outline hover:outline-1 hover:outline-background/30 rounded p-1.5 -m-1.5 transition-all">
-              <MapPin className="h-4 w-4 text-background/70" />
-              <div className="text-left">
-                <p className="text-background/70 text-xxs">Deliver to</p>
-                <p className="font-medium text-background">Nairobi</p>
-              </div>
-            </button>
+            <Dialog open={isLocationDialogOpen} onOpenChange={setIsLocationDialogOpen}>
+              <DialogTrigger asChild>
+                <button className="hidden lg:flex items-center gap-1 text-xs hover:outline hover:outline-1 hover:outline-white/30 rounded p-1.5 -m-1.5 transition-all">
+                  <MapPin className="h-4 w-4 text-white/70" />
+                  <div className="text-left">
+                    <p className="text-white/70 text-[10px] leading-tight">Deliver to</p>
+                    <p className="font-medium text-white text-xs leading-tight">{deliveryLocation}</p>
+                  </div>
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[500px]">
+                <DialogHeader>
+                  <DialogTitle>Choose your location</DialogTitle>
+                  <DialogDescription>
+                    Delivery options and delivery speeds may vary for different locations
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  {isAuthenticated && (
+                    <div className="p-3 bg-secondary rounded-lg">
+                      <p className="text-sm text-muted-foreground mb-2">Sign in to see your addresses</p>
+                      <Button variant="outline" size="sm" onClick={() => navigate('/login')}>
+                        Sign in
+                      </Button>
+                    </div>
+                  )}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Select Country/Region</label>
+                    <Select value={selectedCountry} onValueChange={setSelectedCountry}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map((country) => (
+                          <SelectItem key={country.code} value={country.code}>
+                            {country.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Enter City/Location</label>
+                    <Input
+                      placeholder="e.g., Nairobi"
+                      value={deliveryLocation}
+                      onChange={(e) => setDeliveryLocation(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setIsLocationDialogOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleLocationSave}>Done</Button>
+                </div>
+              </DialogContent>
+            </Dialog>
 
-            {/* Search Bar */}
-            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-2xl">
-              <div className="relative w-full flex">
+            {/* Search Bar with Department Dropdown */}
+            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-4xl">
+              <div className="relative w-full flex items-stretch">
+                {/* Department Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      type="button"
+                      className="h-10 px-2 rounded-l-md rounded-r-none border-r border-border bg-gray-100 hover:bg-gray-200 text-foreground text-xs font-normal flex items-center gap-1 min-w-[60px]"
+                    >
+                      <span className="hidden lg:inline text-xs">
+                        {searchDepartments.find(d => d.value === selectedDepartment)?.label.split(' ')[0] || "All"}
+                      </span>
+                      <span className="lg:hidden text-xs">All</span>
+                      <ChevronDown className="h-3 w-3 opacity-70" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-56 max-h-[400px] overflow-y-auto">
+                    {searchDepartments.map((dept) => (
+                      <DropdownMenuItem
+                        key={dept.value}
+                        onClick={() => setSelectedDepartment(dept.value)}
+                        className={selectedDepartment === dept.value ? "bg-accent" : ""}
+                      >
+                        {dept.label}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                {/* Search Input */}
                 <div className="flex-1 relative">
                   <Input
                     type="search"
-                    placeholder="Search products, brands, and categories..."
-                    className="w-full h-10 pl-4 pr-12 rounded-l-md rounded-r-none border-0 bg-background text-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary"
+                    placeholder="Search SwiftCart"
+                    className="w-full h-10 pl-3 pr-10 rounded-none border-0 bg-background text-foreground placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
+                
+                {/* Search Button */}
                 <Button 
                   type="submit" 
                   size="icon" 
-                  className="h-10 w-12 rounded-l-none rounded-r-md bg-primary hover:bg-primary/90 text-primary-foreground"
+                  className="h-10 w-12 rounded-l-none rounded-r-md bg-[#febd69] hover:bg-[#f3a847] text-foreground border-0"
                 >
-                  <Search className="h-5 w-5" />
+                  <Search className="h-4 w-4" />
                 </Button>
               </div>
             </form>
 
             {/* Right Actions */}
             <div className="flex items-center gap-1 md:gap-2 ml-auto">
+              {/* Language Selector */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="hidden lg:flex items-center gap-1.5 text-xs hover:outline hover:outline-1 hover:outline-white/30 rounded p-1.5 -m-1.5 transition-all">
+                    <img 
+                      src="https://flagcdn.com/w20/us.png" 
+                      alt="United States" 
+                      className="h-4 w-5 object-cover border border-white/20"
+                    />
+                    <span className="font-medium text-white text-xs">EN</span>
+                    <ChevronDown className="h-3 w-3 text-white/70" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>Choose Language</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {languages.map((lang) => (
+                    <DropdownMenuItem
+                      key={lang.code}
+                      onClick={() => setSelectedLanguage(lang.code)}
+                      className={selectedLanguage === lang.code ? "bg-accent" : ""}
+                    >
+                      <span className="mr-2 text-lg">{lang.flag}</span>
+                      {lang.name}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               {/* Account */}
               {isAuthenticated && user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-              <button className="hidden md:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-background/30 rounded p-1.5 -m-1.5 transition-all">
-                      <span className="text-background/70 text-xxs">
+                    <button className="hidden md:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-white/30 rounded p-1.5 -m-1.5 transition-all">
+                      <span className="text-white/70 text-[10px] leading-tight">
                         Hello, {user.firstName || user.email.split('@')[0]}
                       </span>
-                      <span className="font-medium text-background flex items-center gap-0.5">
-                        Account <ChevronDown className="h-3 w-3" />
+                      <span className="font-medium text-white text-xs leading-tight flex items-center gap-0.5">
+                        Account & Lists <ChevronDown className="h-3 w-3 text-white/70" />
                       </span>
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuContent align="end" className="w-[350px] p-0">
+                    <div className="p-4 border-b bg-primary/5">
+                      <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground mb-2">
+                        Sign in
+                      </Button>
+                      <p className="text-xs text-muted-foreground text-center">
+                        New customer?{" "}
+                        <Link to="/register" className="text-primary hover:underline">
+                          Start here.
+                        </Link>
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 p-4">
+                      <div>
+                        <DropdownMenuLabel className="px-0 py-2 text-sm font-bold">Your Lists</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => navigate('/account?tab=lists')} className="px-0">
+                          Create a List
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/account?tab=registry')} className="px-0">
+                          Find a List or Registry
+                        </DropdownMenuItem>
+                      </div>
+                      <div>
+                        <DropdownMenuLabel className="px-0 py-2 text-sm font-bold">Your Account</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => navigate('/account')} className="px-0">
+                          Account
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/orders')} className="px-0">
+                          Orders
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/account?tab=recommendations')} className="px-0">
+                          Recommendations
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/account?tab=browsing-history')} className="px-0">
+                          Browsing History
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/account?tab=wishlist')} className="px-0">
+                          Watchlist
+                        </DropdownMenuItem>
+                      </div>
+                    </div>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/account')}>
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/orders')}>
-                      Orders
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={logout} className="text-destructive">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
-                    </DropdownMenuItem>
+                    <div className="p-2">
+                      <DropdownMenuItem onClick={logout} className="text-destructive">
+                        Sign Out
+                      </DropdownMenuItem>
+                    </div>
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Link
-                  to="/login"
-                  className="hidden md:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-background/30 rounded p-1.5 -m-1.5 transition-all"
-                >
-                <span className="text-background/70 text-xxs">Hello, Sign in</span>
-                <span className="font-medium text-background flex items-center gap-0.5">
-                  Account <ChevronDown className="h-3 w-3" />
-                </span>
-                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="hidden md:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-white/30 rounded p-1.5 -m-1.5 transition-all">
+                      <span className="text-white/70 text-[10px] leading-tight">Hello, sign in</span>
+                      <span className="font-medium text-white text-xs leading-tight flex items-center gap-0.5">
+                        Account & Lists <ChevronDown className="h-3 w-3 text-white/70" />
+                      </span>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-[350px] p-0">
+                    <div className="p-4 border-b bg-primary/5">
+                      <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground mb-2" onClick={() => navigate('/login')}>
+                        Sign in
+                      </Button>
+                      <p className="text-xs text-muted-foreground text-center">
+                        New customer?{" "}
+                        <Link to="/register" className="text-primary hover:underline">
+                          Start here.
+                        </Link>
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 p-4">
+                      <div>
+                        <DropdownMenuLabel className="px-0 py-2 text-sm font-bold">Your Lists</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => navigate('/account?tab=lists')} className="px-0">
+                          Create a List
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/account?tab=registry')} className="px-0">
+                          Find a List or Registry
+                        </DropdownMenuItem>
+                      </div>
+                      <div>
+                        <DropdownMenuLabel className="px-0 py-2 text-sm font-bold">Your Account</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => navigate('/orders')} className="px-0">
+                          Orders
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/account?tab=wishlist')} className="px-0">
+                          Watchlist
+                        </DropdownMenuItem>
+                      </div>
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               )}
 
-              {/* Orders */}
+              {/* Returns & Orders */}
               <Link 
                 to="/orders" 
-                className="hidden lg:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-background/30 rounded p-1.5 -m-1.5 transition-all"
+                className="hidden lg:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-white/30 rounded p-1.5 -m-1.5 transition-all"
               >
-                <span className="text-background/70 text-xxs">Returns</span>
-                <span className="font-medium text-background">& Orders</span>
+                <span className="text-white/70 text-[10px] leading-tight">Returns</span>
+                <span className="font-medium text-white text-xs leading-tight">& Orders</span>
               </Link>
 
               {/* Notifications */}
               {isAuthenticated && <NotificationCenter />}
 
-              {/* Wishlist - Mobile & Desktop */}
-              <Button variant="ghost" size="icon" className="text-background hover:bg-background/10 relative">
-                <Heart className="h-5 w-5" />
-              </Button>
+              {/* Cart */}
+              <Link
+                to="/cart"
+                className="flex items-end gap-1 text-white hover:outline hover:outline-1 hover:outline-white/30 rounded p-1.5 -m-1.5 transition-all"
+              >
+                <div className="relative">
+                  <ShoppingCart className="h-8 w-8" />
+                  <span className="absolute -top-1 left-4 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#f08804] text-[11px] font-bold text-white px-1">
+                    {totalItems > 99 ? "99+" : totalItems}
+                  </span>
+                </div>
+                <span className="hidden sm:block text-xs font-bold text-white mb-0.5">Cart</span>
+              </Link>
 
               {/* Account - Mobile */}
               {isAuthenticated && user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="md:hidden text-background hover:bg-background/10">
+                    <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10">
                       <User className="h-5 w-5" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -168,34 +419,17 @@ export function Header() {
                 </DropdownMenu>
               ) : (
                 <Link to="/login">
-              <Button variant="ghost" size="icon" className="md:hidden text-background hover:bg-background/10">
-                <User className="h-5 w-5" />
-              </Button>
+                  <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10">
+                    <User className="h-5 w-5" />
+                  </Button>
                 </Link>
               )}
-
-              {/* Cart */}
-              <Button
-                variant="ghost"
-                className="relative text-background hover:bg-background/10 flex items-end gap-0.5 px-2"
-                onClick={toggleCart}
-              >
-                <div className="relative">
-                  <ShoppingCart className="h-7 w-7" />
-                  {totalItems > 0 && (
-                    <span className="absolute -top-1 left-1/2 -translate-x-1/2 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground animate-scale-in px-1">
-                      {totalItems > 99 ? "99+" : totalItems}
-                    </span>
-                  )}
-                </div>
-                <span className="hidden sm:block text-xs font-medium text-background mb-0.5">Cart</span>
-              </Button>
 
               {/* Mobile Menu Toggle */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden text-background hover:bg-background/10"
+                className="md:hidden text-white hover:bg-white/10"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -206,18 +440,87 @@ export function Header() {
       </div>
 
       {/* Secondary Navigation - Desktop */}
-      <div className="hidden md:block bg-secondary-foreground/95 text-background border-b border-background/10">
+      <div className="hidden md:block bg-[#232f3e] text-white border-b border-[#131921] relative">
         <div className="container-wide">
-          <nav className="flex items-center gap-1 h-10 text-sm overflow-x-auto">
-            <button className="flex items-center gap-1 font-medium px-2 py-1 hover:outline hover:outline-1 hover:outline-background/30 rounded transition-all whitespace-nowrap">
-              <Menu className="h-4 w-4" />
-              All
-            </button>
+          <nav className="flex items-center gap-1 h-9 text-sm overflow-x-auto">
+            {/* All Categories Mega Menu */}
+            <DropdownMenu open={isMegaMenuOpen} onOpenChange={setIsMegaMenuOpen}>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-1 font-medium px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white">
+                  <Menu className="h-4 w-4" />
+                  All
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="start" 
+                className="w-[600px] p-4 max-h-[600px] overflow-y-auto"
+                onCloseAutoFocus={(e) => e.preventDefault()}
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <DropdownMenuLabel className="mb-2">Shop by Category</DropdownMenuLabel>
+                    {categories.map((category) => (
+                      <DropdownMenuItem
+                        key={category.id}
+                        onClick={() => {
+                          navigate(`/products?category=${category.slug}`);
+                          setIsMegaMenuOpen(false);
+                        }}
+                        className="flex items-center gap-2 p-2"
+                      >
+                        <img src={category.image} alt={category.name} className="w-8 h-8 rounded object-cover" />
+                        <div>
+                          <div className="font-medium">{category.name}</div>
+                          <div className="text-xs text-muted-foreground">{category.productCount}+ items</div>
+                        </div>
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+                  <div>
+                    <DropdownMenuLabel className="mb-2">Programs & Features</DropdownMenuLabel>
+                    <DropdownMenuItem onClick={() => { navigate('/deals'); setIsMegaMenuOpen(false); }}>
+                      <Star className="mr-2 h-4 w-4" />
+                      Today's Deals
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => { navigate('/products?featured=true'); setIsMegaMenuOpen(false); }}>
+                      <Gift className="mr-2 h-4 w-4" />
+                      Gift Cards
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => { navigate('/help'); setIsMegaMenuOpen(false); }}>
+                      <HelpCircle className="mr-2 h-4 w-4" />
+                      Customer Service
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel className="mt-2">Help & Settings</DropdownMenuLabel>
+                    <DropdownMenuItem onClick={() => { navigate('/help'); setIsMegaMenuOpen(false); }}>
+                      <FileText className="mr-2 h-4 w-4" />
+                      Help Center
+                    </DropdownMenuItem>
+                    {isAuthenticated && (
+                      <DropdownMenuItem onClick={() => { navigate('/account'); setIsMegaMenuOpen(false); }}>
+                        <Settings className="mr-2 h-4 w-4" />
+                        Account Settings
+                      </DropdownMenuItem>
+                    )}
+                  </div>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Link
+              to="/deals"
+              className={cn(
+                "px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white",
+                isActive("/deals") && "outline outline-1 outline-white/30 font-medium"
+              )}
+            >
+              Today's Deals
+            </Link>
             <Link
               to="/products"
               className={cn(
-                "px-2 py-1 hover:outline hover:outline-1 hover:outline-background/30 rounded transition-all whitespace-nowrap",
-                isActive("/products") && "outline outline-1 outline-background/30"
+                "px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white",
+                isActive("/products") && "outline outline-1 outline-white/30"
               )}
             >
               All Products
@@ -225,42 +528,39 @@ export function Header() {
             <Link
               to="/categories"
               className={cn(
-                "px-2 py-1 hover:outline hover:outline-1 hover:outline-background/30 rounded transition-all whitespace-nowrap",
-                isActive("/categories") && "outline outline-1 outline-background/30"
+                "px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white",
+                isActive("/categories") && "outline outline-1 outline-white/30"
               )}
             >
               Categories
             </Link>
             <Link
-              to="/deals"
-              className={cn(
-                "px-2 py-1 hover:outline hover:outline-1 hover:outline-background/30 rounded transition-all whitespace-nowrap",
-                isActive("/deals") && "outline outline-1 outline-background/30 text-primary font-medium"
-              )}
-            >
-              Today's Deals
-            </Link>
-            <Link
               to="/products?category=electronics"
-              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-background/30 rounded transition-all whitespace-nowrap"
+              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white"
             >
               Electronics
             </Link>
             <Link
               to="/products?category=fashion"
-              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-background/30 rounded transition-all whitespace-nowrap"
+              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white"
             >
               Fashion
             </Link>
             <Link
-              to="/products?category=home"
-              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-background/30 rounded transition-all whitespace-nowrap"
+              to="/products?category=home-living"
+              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white"
             >
               Home & Kitchen
             </Link>
             <Link
+              to="/products?category=sports"
+              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white"
+            >
+              Sports & Outdoors
+            </Link>
+            <Link
               to="/help"
-              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-background/30 rounded transition-all whitespace-nowrap ml-auto"
+              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap ml-auto text-white"
             >
               Customer Service
             </Link>
@@ -269,21 +569,41 @@ export function Header() {
       </div>
 
       {/* Mobile Search */}
-      <div className="md:hidden bg-foreground pb-2 px-3">
+      <div className="md:hidden bg-[#131921] pb-2 px-3">
         <form onSubmit={handleSearch}>
-          <div className="relative flex">
+          <div className="relative flex gap-1">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="h-9 px-2 rounded-l-md rounded-r-none border-r border-border bg-gray-100 hover:bg-gray-200 text-foreground text-xs shrink-0 flex items-center"
+                >
+                  <Menu className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56 max-h-[300px] overflow-y-auto">
+                {searchDepartments.map((dept) => (
+                  <DropdownMenuItem
+                    key={dept.value}
+                    onClick={() => setSelectedDepartment(dept.value)}
+                    className={selectedDepartment === dept.value ? "bg-accent" : ""}
+                  >
+                    {dept.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Input
               type="search"
               placeholder="Search SwiftCart"
-              className="w-full h-9 pl-3 pr-10 rounded-md border-0 bg-background text-foreground placeholder:text-muted-foreground text-sm"
+              className="flex-1 h-9 pl-3 pr-10 rounded-none border-0 bg-background text-foreground placeholder:text-muted-foreground text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <Button 
               type="submit" 
               size="icon" 
-              variant="ghost"
-              className="absolute right-0 top-0 h-9 w-9 text-primary"
+              className="h-9 w-9 rounded-l-none rounded-r-md bg-[#febd69] hover:bg-[#f3a847] text-foreground shrink-0"
             >
               <Search className="h-4 w-4" />
             </Button>
