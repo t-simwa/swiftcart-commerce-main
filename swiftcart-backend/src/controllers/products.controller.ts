@@ -1,16 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import { Product } from '../models/Product';
 import { createError } from '../middleware/errorHandler';
+import logger from '../utils/logger';
 
 interface QueryParams {
-  page?: string;
-  limit?: string;
+  page?: number;
+  limit?: number;
   category?: string;
   search?: string;
-  sort?: string;
-  minPrice?: string;
-  maxPrice?: string;
-  featured?: string;
+  sort?: 'newest' | 'price-asc' | 'price-desc' | 'popular';
+  minPrice?: number;
+  maxPrice?: number;
+  featured?: boolean;
 }
 
 /**
@@ -24,9 +25,10 @@ export const getProducts = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    // Query parameters are already validated and transformed by middleware
     const {
-      page = '1',
-      limit = '20',
+      page = 1,
+      limit = 20,
       category,
       search,
       sort = 'newest',
@@ -35,9 +37,9 @@ export const getProducts = async (
       featured,
     } = req.query;
 
-    const pageNum = parseInt(page, 10);
-    const limitNum = parseInt(limit, 10);
-    const skip = (pageNum - 1) * limitNum;
+    logger.info('Fetching products', { page, limit, category, search, sort });
+
+    const skip = (page - 1) * limit;
 
     // Build query
     const query: any = {};
@@ -50,17 +52,17 @@ export const getProducts = async (
       query.$text = { $search: search };
     }
 
-    if (minPrice || maxPrice) {
+    if (minPrice !== undefined || maxPrice !== undefined) {
       query.price = {};
-      if (minPrice) {
-        query.price.$gte = parseFloat(minPrice);
+      if (minPrice !== undefined) {
+        query.price.$gte = minPrice;
       }
-      if (maxPrice) {
-        query.price.$lte = parseFloat(maxPrice);
+      if (maxPrice !== undefined) {
+        query.price.$lte = maxPrice;
       }
     }
 
-    if (featured === 'true') {
+    if (featured === true) {
       query.featured = true;
     }
 
@@ -88,12 +90,14 @@ export const getProducts = async (
       Product.find(query)
         .sort(sortOption)
         .skip(skip)
-        .limit(limitNum)
+        .limit(limit)
         .lean(),
       Product.countDocuments(query),
     ]);
 
-    const totalPages = Math.ceil(total / limitNum);
+    const totalPages = Math.ceil(total / limit);
+
+    logger.info('Products fetched successfully', { count: products.length, total });
 
     res.status(200).json({
       success: true,
@@ -101,16 +105,17 @@ export const getProducts = async (
       data: {
         products,
         pagination: {
-          page: pageNum,
-          limit: limitNum,
+          page,
+          limit,
           total,
           totalPages,
-          hasNext: pageNum < totalPages,
-          hasPrev: pageNum > 1,
+          hasNext: page < totalPages,
+          hasPrev: page > 1,
         },
       },
     });
   } catch (error: any) {
+    logger.error('Error fetching products', { error: error.message, stack: error.stack });
     next(createError(error.message, 500, 'SERVER_ERROR'));
   }
 };
@@ -126,13 +131,19 @@ export const getProductBySlug = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    // Slug parameter is already validated by middleware
     const { slug } = req.params;
+
+    logger.info('Fetching product by slug', { slug });
 
     const product = await Product.findOne({ slug }).lean();
 
     if (!product) {
+      logger.warn('Product not found', { slug });
       return next(createError('Product not found', 404, 'RESOURCE_NOT_FOUND'));
     }
+
+    logger.info('Product fetched successfully', { slug, productId: product._id });
 
     res.status(200).json({
       success: true,
@@ -142,6 +153,7 @@ export const getProductBySlug = async (
       },
     });
   } catch (error: any) {
+    logger.error('Error fetching product by slug', { error: error.message, stack: error.stack });
     next(createError(error.message, 500, 'SERVER_ERROR'));
   }
 };

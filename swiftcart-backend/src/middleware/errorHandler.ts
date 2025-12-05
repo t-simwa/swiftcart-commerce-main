@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { env } from '../config/env';
+import logger from '../utils/logger';
 
 export interface ApiError extends Error {
   statusCode?: number;
@@ -41,13 +42,15 @@ export const errorHandler = (
   }
 
   // Log error
-  console.error('Error:', {
+  logger.error('API Error', {
     statusCode,
     code,
     message: err.message,
     stack: err.stack,
     path: req.path,
     method: req.method,
+    url: req.originalUrl,
+    ip: req.ip,
   });
 
   res.status(statusCode).json(errorResponse);

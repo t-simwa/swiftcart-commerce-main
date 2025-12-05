@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { connectDatabase } from '../config/database';
 import { Product } from '../models/Product';
 import { Inventory } from '../models/Inventory';
+import logger from '../utils/logger';
 
 const productsData = [
   {
@@ -134,6 +135,7 @@ const productsData = [
 
 const seedProducts = async () => {
   try {
+    logger.info('🌱 Starting database seed...');
     console.log('🌱 Starting database seed...');
 
     // Connect to database
@@ -142,24 +144,29 @@ const seedProducts = async () => {
     // Drop problematic index if it exists
     try {
       await Product.collection.dropIndex('variants.sku_1');
+      logger.info('Dropped old variants.sku index');
       console.log('🗑️  Dropped old variants.sku index');
     } catch (error: any) {
       // Index doesn't exist or already dropped - that's fine
       if (error.code !== 27 && error.codeName !== 'IndexNotFound') {
+        logger.warn('Could not drop index', { error: error.message });
         console.log('⚠️  Could not drop index (may not exist):', error.message);
       }
     }
 
     // Clear existing products and inventory
+    logger.info('Clearing existing data...');
     console.log('🗑️  Clearing existing data...');
     await Product.deleteMany({});
     await Inventory.deleteMany({});
 
     // Insert products
+    logger.info('Inserting products...', { count: productsData.length });
     console.log('📦 Inserting products...');
     const createdProducts = await Product.insertMany(productsData);
 
     // Create inventory records
+    logger.info('Creating inventory records...');
     console.log('📊 Creating inventory records...');
     const inventoryRecords = createdProducts.map((product) => ({
       product: product._id,
@@ -170,11 +177,19 @@ const seedProducts = async () => {
 
     await Inventory.insertMany(inventoryRecords);
 
+    logger.info('Database seeded successfully', {
+      products: createdProducts.length,
+      inventory: inventoryRecords.length,
+    });
     console.log(`✅ Successfully seeded ${createdProducts.length} products`);
     console.log(`✅ Successfully created ${inventoryRecords.length} inventory records`);
     
     process.exit(0);
-  } catch (error) {
+  } catch (error: any) {
+    logger.error('Error seeding database', {
+      error: error.message,
+      stack: error.stack,
+    });
     console.error('❌ Error seeding database:', error);
     process.exit(1);
   }

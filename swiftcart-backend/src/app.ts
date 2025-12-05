@@ -6,8 +6,20 @@ import { env } from './config/env';
 import routes from './routes';
 import { apiLimiter } from './middleware/rateLimiter';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import logger from './utils/logger';
 
 const app: Application = express();
+
+// Request logging middleware
+app.use((req, res, next) => {
+  logger.debug('Incoming request', {
+    method: req.method,
+    url: req.originalUrl,
+    ip: req.ip,
+    userAgent: req.get('user-agent'),
+  });
+  next();
+});
 
 // Security middleware
 app.use(helmet());
