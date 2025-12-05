@@ -22,8 +22,26 @@ import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
+// Admin pages
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminProducts from "./pages/admin/AdminProducts";
+import AdminInventory from "./pages/admin/AdminInventory";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminUsers from "./pages/admin/AdminUsers";
 
 const queryClient = new QueryClient();
+
+// Layout wrapper for public routes
+const PublicLayout = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex min-h-screen flex-col">
+    <Header />
+    <div className="flex-1">{children}</div>
+    <Footer />
+    <CartDrawer />
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -33,31 +51,34 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <div className="flex-1">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/:slug" element={<ProductDetail />} />
-                  {/* Auth Routes */}
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/reset-password" element={<ResetPassword />} />
-                  <Route path="/verify-email/:token" element={<VerifyEmail />} />
-                  <Route path="/auth/callback" element={<AuthCallback />} />
-                  {/* Protected Routes */}
-                  <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-                  <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-                  <Route path="/orders/:orderId/confirmation" element={<ProtectedRoute><OrderConfirmation /></ProtectedRoute>} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </div>
-            <Footer />
-          </div>
-          <CartDrawer />
+          <Routes>
+            {/* Admin Routes - No Header/Footer */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute requireRole="admin"><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/orders" element={<ProtectedRoute requireRole="admin"><AdminOrders /></ProtectedRoute>} />
+            <Route path="/admin/products" element={<ProtectedRoute requireRole="admin"><AdminProducts /></ProtectedRoute>} />
+            <Route path="/admin/inventory" element={<ProtectedRoute requireRole="admin"><AdminInventory /></ProtectedRoute>} />
+            <Route path="/admin/analytics" element={<ProtectedRoute requireRole="admin"><AdminAnalytics /></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute requireRole="admin"><AdminUsers /></ProtectedRoute>} />
+            
+            {/* Public Routes - With Header/Footer */}
+            <Route path="/" element={<PublicLayout><Index /></PublicLayout>} />
+            <Route path="/products" element={<PublicLayout><Products /></PublicLayout>} />
+            <Route path="/products/:slug" element={<PublicLayout><ProductDetail /></PublicLayout>} />
+            {/* Auth Routes */}
+            <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
+            <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
+            <Route path="/forgot-password" element={<PublicLayout><ForgotPassword /></PublicLayout>} />
+            <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
+            <Route path="/verify-email/:token" element={<PublicLayout><VerifyEmail /></PublicLayout>} />
+            <Route path="/auth/callback" element={<PublicLayout><AuthCallback /></PublicLayout>} />
+            {/* Protected Routes */}
+            <Route path="/checkout" element={<PublicLayout><ProtectedRoute><Checkout /></ProtectedRoute></PublicLayout>} />
+            <Route path="/orders" element={<PublicLayout><ProtectedRoute><Orders /></ProtectedRoute></PublicLayout>} />
+            <Route path="/orders/:orderId/confirmation" element={<PublicLayout><ProtectedRoute><OrderConfirmation /></ProtectedRoute></PublicLayout>} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
+          </Routes>
         </BrowserRouter>
       </CartProvider>
       </AuthProvider>

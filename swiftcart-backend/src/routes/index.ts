@@ -3,6 +3,7 @@ import productRoutes from './products.routes';
 import authRoutes from './auth.routes';
 import orderRoutes from './orders.routes';
 import paymentRoutes from './payment.routes';
+import adminRoutes from './admin.routes';
 import { env } from '../config/env';
 
 const router = Router();
@@ -24,10 +25,10 @@ router.use(`/${apiVersion}/products`, productRoutes);
 router.use(`/${apiVersion}/auth`, authRoutes);
 router.use(`/${apiVersion}/orders`, orderRoutes);
 router.use(`/${apiVersion}/payment`, paymentRoutes);
+router.use(`/${apiVersion}/admin`, adminRoutes);
 
 // Placeholder routes for future implementation
 // router.use(`/${apiVersion}/cart`, cartRoutes);
-// router.use(`/${apiVersion}/admin`, adminRoutes);
 
 export default router;
 
