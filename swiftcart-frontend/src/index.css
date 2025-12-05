@@ -1,0 +1,432 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 13% 13%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 13% 13%;
+
+    /* Amazon-inspired primary orange */
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary slate */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 13% 26%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    /* Teal accent for deals/success */
+    --accent: 174 72% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 90%;
+    --input: 220 13% 90%;
+    --ring: 30 100% 50%;
+
+    --radius: 0.5rem;
+
+    /* E-commerce specific tokens */
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 220 13% 13%;
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+
+    /* Price colors */
+    --price: 0 84% 40%;
+    --price-deal: 0 84% 40%;
+    --price-strike: 220 9% 46%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(180deg, hsl(30, 100%, 50%) 0%, hsl(30, 100%, 42%) 100%);
+    --gradient-header: linear-gradient(180deg, hsl(220, 30%, 18%) 0%, hsl(220, 30%, 12%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(220, 14%, 97%) 0%, hsl(0, 0%, 100%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0, 0%, 100%) 0%, hsl(220, 14%, 99%) 100%);
+    --gradient-deal: linear-gradient(135deg, hsl(0, 84%, 60%) 0%, hsl(0, 84%, 50%) 100%);
+
+    /* Enhanced shadows */
+    --shadow-xs: 0 1px 2px 0 hsl(220 13% 13% / 0.03);
+    --shadow-sm: 0 1px 3px 0 hsl(220 13% 13% / 0.08), 0 1px 2px -1px hsl(220 13% 13% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(220 13% 13% / 0.08), 0 2px 4px -2px hsl(220 13% 13% / 0.05);
+    --shadow-lg: 0 10px 15px -3px hsl(220 13% 13% / 0.08), 0 4px 6px -4px hsl(220 13% 13% / 0.05);
+    --shadow-xl: 0 20px 25px -5px hsl(220 13% 13% / 0.08), 0 8px 10px -6px hsl(220 13% 13% / 0.05);
+    --shadow-card: 0 1px 3px 0 hsl(220 13% 13% / 0.1), 0 1px 2px 0 hsl(220 13% 13% / 0.06);
+    --shadow-card-hover: 0 10px 40px -15px hsl(220 13% 13% / 0.2);
+    --shadow-glow: 0 0 40px hsl(30 100% 50% / 0.15);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 220 13% 26%;
+    --sidebar-primary: 220 13% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 220 13% 10%;
+    --sidebar-border: 220 13% 90%;
+    --sidebar-ring: 30 100% 50%;
+  }
+
+  .dark {
+    --background: 220 20% 7%;
+    --foreground: 220 14% 96%;
+
+    --card: 220 20% 10%;
+    --card-foreground: 220 14% 96%;
+
+    --popover: 220 20% 10%;
+    --popover-foreground: 220 14% 96%;
+
+    --primary: 30 100% 55%;
+    --primary-foreground: 220 20% 7%;
+
+    --secondary: 220 20% 14%;
+    --secondary-foreground: 220 14% 90%;
+
+    --muted: 220 20% 14%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 174 72% 45%;
+    --accent-foreground: 220 20% 7%;
+
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 30 100% 55%;
+
+    --success: 142 71% 50%;
+    --warning: 38 92% 55%;
+    --info: 199 89% 55%;
+
+    --price: 0 84% 55%;
+    --price-deal: 0 84% 55%;
+
+    --gradient-primary: linear-gradient(180deg, hsl(30, 100%, 55%) 0%, hsl(30, 100%, 45%) 100%);
+    --gradient-header: linear-gradient(180deg, hsl(220, 25%, 14%) 0%, hsl(220, 25%, 10%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(220, 20%, 10%) 0%, hsl(220, 20%, 7%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(220, 20%, 11%) 0%, hsl(220, 20%, 10%) 100%);
+
+    --shadow-glow: 0 0 40px hsl(30 100% 55% / 0.1);
+
+    --sidebar-background: 220 20% 10%;
+    --sidebar-foreground: 220 14% 96%;
+    --sidebar-primary: 30 100% 55%;
+    --sidebar-primary-foreground: 220 20% 7%;
+    --sidebar-accent: 220 20% 14%;
+    --sidebar-accent-foreground: 220 14% 96%;
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 30 100% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight text-foreground;
+    letter-spacing: -0.025em;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl font-bold;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl font-semibold;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .container-wide {
+    @apply w-full max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Amazon-style header */
+  .header-nav {
+    background: var(--gradient-header);
+  }
+
+  /* Glass morphism card */
+  .glass-card {
+    @apply bg-card/95 backdrop-blur-md border border-border/50 rounded-lg;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-all duration-200 ease-out;
+    box-shadow: var(--shadow-card);
+  }
+
+  .hover-lift:hover {
+    @apply -translate-y-0.5;
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Price styling - Amazon style */
+  .price-current {
+    @apply text-xl font-bold;
+    color: hsl(var(--price));
+  }
+
+  .price-symbol {
+    @apply text-sm font-medium align-top;
+    color: hsl(var(--price));
+  }
+
+  .price-whole {
+    @apply text-2xl font-bold;
+    color: hsl(var(--price));
+  }
+
+  .price-fraction {
+    @apply text-sm font-medium align-top;
+    color: hsl(var(--price));
+  }
+
+  .price-original {
+    @apply text-sm line-through;
+    color: hsl(var(--price-strike));
+  }
+
+  /* Deal badge */
+  .deal-badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide;
+    background: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+  }
+
+  /* Status badges */
+  .badge-success {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+    background-color: hsl(var(--success) / 0.1);
+    color: hsl(var(--success));
+  }
+
+  .badge-warning {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+    background-color: hsl(var(--warning) / 0.15);
+    color: hsl(var(--warning));
+  }
+
+  .badge-destructive {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+    background-color: hsl(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+  }
+
+  .badge-prime {
+    @apply inline-flex items-center gap-1 text-xs font-bold;
+    color: hsl(199, 89%, 48%);
+  }
+
+  /* Amazon-style star rating */
+  .star-rating {
+    @apply inline-flex items-center gap-0.5;
+  }
+
+  .star-filled {
+    color: hsl(38, 92%, 50%);
+  }
+
+  .star-empty {
+    color: hsl(var(--muted));
+  }
+
+  /* Product card enhancements */
+  .product-card {
+    @apply relative flex flex-col rounded-lg border border-border bg-card overflow-hidden;
+    box-shadow: var(--shadow-xs);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .product-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Section headers */
+  .section-header {
+    @apply flex items-center gap-2 mb-6;
+  }
+
+  .section-title {
+    @apply text-xl md:text-2xl font-bold text-foreground;
+    letter-spacing: -0.025em;
+  }
+
+  .section-link {
+    @apply text-sm font-medium text-primary hover:text-primary/80 hover:underline transition-colors;
+  }
+
+  /* Trust feature box */
+  .trust-feature {
+    @apply flex items-center gap-3 p-3 rounded-lg bg-secondary/50;
+  }
+
+  .trust-icon {
+    @apply flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full;
+    background: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+  }
+
+  /* Navigation link */
+  .nav-link {
+    @apply text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative;
+  }
+
+  .nav-link-active {
+    @apply text-foreground;
+  }
+
+  .nav-link-active::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 right-0 h-0.5 rounded-full bg-primary;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fade-in 0.4s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.5s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out forwards;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.1s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.2s; }
+
+  /* Text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Line clamp */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--secondary));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.25);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
+
+/* Selection styling */
+::selection {
+  background: hsl(var(--primary) / 0.2);
+  color: hsl(var(--foreground));
+}

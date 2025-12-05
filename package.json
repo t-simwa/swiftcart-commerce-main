@@ -1,0 +1,37 @@
+{
+  "name": "swiftcart-monorepo",
+  "version": "1.0.0",
+  "description": "SwiftCart E-Commerce Platform - Full Stack Monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix swiftcart-backend\" \"npm run dev --prefix swiftcart-frontend\"",
+    "dev:backend": "npm run dev --prefix swiftcart-backend",
+    "dev:frontend": "npm run dev --prefix swiftcart-frontend",
+    "build": "npm run build --prefix swiftcart-backend && npm run build --prefix swiftcart-frontend",
+    "build:backend": "npm run build --prefix swiftcart-backend",
+    "build:frontend": "npm run build --prefix swiftcart-frontend",
+    "install:all": "npm install && npm install --prefix swiftcart-backend && npm install --prefix swiftcart-frontend",
+    "seed": "npm run seed --prefix swiftcart-backend",
+    "start": "npm start --prefix swiftcart-backend",
+    "lint": "npm run lint --prefix swiftcart-frontend",
+    "clean": "rm -rf node_modules swiftcart-backend/node_modules swiftcart-frontend/node_modules swiftcart-backend/dist swiftcart-frontend/dist"
+  },
+  "keywords": [
+    "ecommerce",
+    "full-stack",
+    "react",
+    "nodejs",
+    "mongodb",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
+

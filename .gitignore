@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Frontend specific
+swiftcart-frontend/dist/
+swiftcart-frontend/.vite/
+swiftcart-frontend/node_modules/
+
+# Backend specific
+swiftcart-backend/dist/
+swiftcart-backend/logs/
+swiftcart-backend/node_modules/
+
+# Root level
+node_modules/
+
+# Documentation files (except README.md)
+/*.md
+!/README.md
