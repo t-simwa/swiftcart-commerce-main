@@ -18,6 +18,9 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import AuthCallback from "./pages/AuthCallback";
+import Checkout from "./pages/Checkout";
+import OrderConfirmation from "./pages/OrderConfirmation";
+import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,17 +29,17 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
-        <CartProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <div className="flex-1">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/products/:slug" element={<ProductDetail />} />
+      <CartProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <div className="flex-1">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/:slug" element={<ProductDetail />} />
                   {/* Auth Routes */}
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
@@ -45,16 +48,18 @@ const App = () => (
                   <Route path="/verify-email/:token" element={<VerifyEmail />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   {/* Protected Routes */}
-                  {/* Example: <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} /> */}
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </div>
-              <Footer />
+                  <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                  <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                  <Route path="/orders/:orderId/confirmation" element={<ProtectedRoute><OrderConfirmation /></ProtectedRoute>} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             </div>
-            <CartDrawer />
-          </BrowserRouter>
-        </CartProvider>
+            <Footer />
+          </div>
+          <CartDrawer />
+        </BrowserRouter>
+      </CartProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

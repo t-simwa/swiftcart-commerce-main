@@ -85,7 +85,7 @@ export function Header() {
               {isAuthenticated && user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="hidden md:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-background/30 rounded p-1.5 -m-1.5 transition-all">
+              <button className="hidden md:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-background/30 rounded p-1.5 -m-1.5 transition-all">
                       <span className="text-background/70 text-xxs">
                         Hello, {user.firstName || user.email.split('@')[0]}
                       </span>
@@ -116,10 +116,10 @@ export function Header() {
                   to="/login"
                   className="hidden md:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-background/30 rounded p-1.5 -m-1.5 transition-all"
                 >
-                  <span className="text-background/70 text-xxs">Hello, Sign in</span>
-                  <span className="font-medium text-background flex items-center gap-0.5">
-                    Account <ChevronDown className="h-3 w-3" />
-                  </span>
+                <span className="text-background/70 text-xxs">Hello, Sign in</span>
+                <span className="font-medium text-background flex items-center gap-0.5">
+                  Account <ChevronDown className="h-3 w-3" />
+                </span>
                 </Link>
               )}
 
@@ -164,9 +164,9 @@ export function Header() {
                 </DropdownMenu>
               ) : (
                 <Link to="/login">
-                  <Button variant="ghost" size="icon" className="md:hidden text-background hover:bg-background/10">
-                    <User className="h-5 w-5" />
-                  </Button>
+              <Button variant="ghost" size="icon" className="md:hidden text-background hover:bg-background/10">
+                <User className="h-5 w-5" />
+              </Button>
                 </Link>
               )}
 
@@ -293,7 +293,7 @@ export function Header() {
       >
         <nav className="p-4 space-y-1">
           {isAuthenticated && user ? (
-            <div className="flex items-center gap-3 p-3 bg-secondary rounded-lg mb-4">
+          <div className="flex items-center gap-3 p-3 bg-secondary rounded-lg mb-4">
               <User className="h-8 w-8 text-muted-foreground" />
               <div>
                 <p className="font-medium">{user.firstName || user.email.split('@')[0]}</p>
@@ -306,11 +306,11 @@ export function Header() {
               className="flex items-center gap-3 p-3 bg-secondary rounded-lg mb-4"
               onClick={() => setIsMenuOpen(false)}
             >
-              <User className="h-8 w-8 text-muted-foreground" />
-              <div>
-                <p className="font-medium">Hello, Sign in</p>
-                <p className="text-sm text-muted-foreground">Access account & manage orders</p>
-              </div>
+            <User className="h-8 w-8 text-muted-foreground" />
+            <div>
+              <p className="font-medium">Hello, Sign in</p>
+              <p className="text-sm text-muted-foreground">Access account & manage orders</p>
+            </div>
             </Link>
           )}
 
@@ -345,14 +345,14 @@ export function Header() {
           
           {isAuthenticated ? (
             <>
-              <Link
-                to="/account"
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <span className="font-medium">Your Account</span>
-                <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
-              </Link>
+          <Link
+            to="/account"
+            className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <span className="font-medium">Your Account</span>
+            <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
+          </Link>
               <button
                 onClick={() => {
                   logout();
