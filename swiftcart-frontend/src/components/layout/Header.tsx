@@ -1,15 +1,25 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Search, ShoppingCart, User, Menu, X, Heart, MapPin, ChevronDown } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, X, Heart, MapPin, ChevronDown, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { totalItems, toggleCart } = useCart();
+  const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -72,12 +82,46 @@ export function Header() {
             {/* Right Actions */}
             <div className="flex items-center gap-1 md:gap-2 ml-auto">
               {/* Account */}
-              <button className="hidden md:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-background/30 rounded p-1.5 -m-1.5 transition-all">
-                <span className="text-background/70 text-xxs">Hello, Sign in</span>
-                <span className="font-medium text-background flex items-center gap-0.5">
-                  Account <ChevronDown className="h-3 w-3" />
-                </span>
-              </button>
+              {isAuthenticated && user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="hidden md:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-background/30 rounded p-1.5 -m-1.5 transition-all">
+                      <span className="text-background/70 text-xxs">
+                        Hello, {user.firstName || user.email.split('@')[0]}
+                      </span>
+                      <span className="font-medium text-background flex items-center gap-0.5">
+                        Account <ChevronDown className="h-3 w-3" />
+                      </span>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate('/account')}>
+                      <User className="mr-2 h-4 w-4" />
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/orders')}>
+                      Orders
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={logout} className="text-destructive">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link
+                  to="/login"
+                  className="hidden md:flex flex-col items-start text-xs hover:outline hover:outline-1 hover:outline-background/30 rounded p-1.5 -m-1.5 transition-all"
+                >
+                  <span className="text-background/70 text-xxs">Hello, Sign in</span>
+                  <span className="font-medium text-background flex items-center gap-0.5">
+                    Account <ChevronDown className="h-3 w-3" />
+                  </span>
+                </Link>
+              )}
 
               {/* Orders */}
               <Link 
@@ -94,9 +138,37 @@ export function Header() {
               </Button>
 
               {/* Account - Mobile */}
-              <Button variant="ghost" size="icon" className="md:hidden text-background hover:bg-background/10">
-                <User className="h-5 w-5" />
-              </Button>
+              {isAuthenticated && user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="md:hidden text-background hover:bg-background/10">
+                      <User className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate('/account')}>
+                      <User className="mr-2 h-4 w-4" />
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/orders')}>
+                      Orders
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={logout} className="text-destructive">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link to="/login">
+                  <Button variant="ghost" size="icon" className="md:hidden text-background hover:bg-background/10">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </Link>
+              )}
 
               {/* Cart */}
               <Button
@@ -220,13 +292,27 @@ export function Header() {
         )}
       >
         <nav className="p-4 space-y-1">
-          <div className="flex items-center gap-3 p-3 bg-secondary rounded-lg mb-4">
-            <User className="h-8 w-8 text-muted-foreground" />
-            <div>
-              <p className="font-medium">Hello, Sign in</p>
-              <p className="text-sm text-muted-foreground">Access account & manage orders</p>
+          {isAuthenticated && user ? (
+            <div className="flex items-center gap-3 p-3 bg-secondary rounded-lg mb-4">
+              <User className="h-8 w-8 text-muted-foreground" />
+              <div>
+                <p className="font-medium">{user.firstName || user.email.split('@')[0]}</p>
+                <p className="text-sm text-muted-foreground">{user.email}</p>
+              </div>
             </div>
-          </div>
+          ) : (
+            <Link
+              to="/login"
+              className="flex items-center gap-3 p-3 bg-secondary rounded-lg mb-4"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <User className="h-8 w-8 text-muted-foreground" />
+              <div>
+                <p className="font-medium">Hello, Sign in</p>
+                <p className="text-sm text-muted-foreground">Access account & manage orders</p>
+              </div>
+            </Link>
+          )}
 
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 pt-4 pb-2">Shop By Category</p>
           
@@ -257,14 +343,37 @@ export function Header() {
 
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 pt-6 pb-2">Help & Settings</p>
           
-          <Link
-            to="/account"
-            className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <span className="font-medium">Your Account</span>
-            <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link
+                to="/account"
+                className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="font-medium">Your Account</span>
+                <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
+              </Link>
+              <button
+                onClick={() => {
+                  logout();
+                  setIsMenuOpen(false);
+                }}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors text-destructive"
+              >
+                <span className="font-medium">Logout</span>
+                <LogOut className="h-4 w-4 text-muted-foreground" />
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span className="font-medium">Sign In</span>
+              <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
+            </Link>
+          )}
           <Link
             to="/help"
             className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"

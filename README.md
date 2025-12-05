@@ -22,7 +22,8 @@ swiftcart-commerce-main/
 
 ### Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 18+
+- pnpm 8+ (install with `npm install -g pnpm`)
 - MongoDB (local or MongoDB Atlas)
 
 ### Setup
@@ -32,15 +33,10 @@ swiftcart-commerce-main/
 2. **Install all dependencies:**
 
    ```bash
-   npm run install:all
+   pnpm install
    ```
 
-   Or install individually:
-   ```bash
-   npm install                           # Root dependencies
-   npm install --prefix swiftcart-backend   # Backend dependencies
-   npm install --prefix swiftcart-frontend  # Frontend dependencies
-   ```
+   This will install dependencies for all packages in the monorepo.
 
 3. **Configure backend:**
 
@@ -61,13 +57,13 @@ swiftcart-commerce-main/
 5. **Seed the database:**
 
    ```bash
-   npm run seed
+   pnpm seed
    ```
 
 6. **Start both servers (recommended):**
 
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
    This starts both backend (port 3000) and frontend (port 8080) simultaneously.
@@ -76,10 +72,10 @@ swiftcart-commerce-main/
 
    ```bash
    # Terminal 1 - Backend only
-   npm run dev:backend
+   pnpm dev:backend
 
    # Terminal 2 - Frontend only
-   npm run dev:frontend
+   pnpm dev:frontend
    ```
 
 7. **Access the application:**
@@ -99,35 +95,35 @@ swiftcart-commerce-main/
 ### Run Both Servers
 
 ```bash
-npm run dev              # Start both backend and frontend
+pnpm dev              # Start both backend and frontend
 ```
 
 ### Individual Commands
 
 **Backend:**
 ```bash
-npm run dev:backend      # Start backend only
-npm run build:backend    # Build backend
-npm run seed             # Seed database
+pnpm dev:backend      # Start backend only
+pnpm build:backend    # Build backend
+pnpm seed             # Seed database
 ```
 
 **Frontend:**
 ```bash
-npm run dev:frontend     # Start frontend only
-npm run build:frontend   # Build frontend
-npm run lint             # Lint frontend code
+pnpm dev:frontend     # Start frontend only
+pnpm build:frontend   # Build frontend
+pnpm lint             # Lint frontend code
 ```
 
 **Build Everything:**
 ```bash
-npm run build            # Build both backend and frontend
+pnpm build            # Build both backend and frontend
 ```
 
 ### Advanced
 
 ```bash
-npm run install:all      # Install all dependencies
-npm run clean            # Clean all node_modules and dist folders
+pnpm install          # Install all dependencies
+pnpm clean            # Clean all node_modules and dist folders
 ```
 
 ## 🔧 Environment Variables

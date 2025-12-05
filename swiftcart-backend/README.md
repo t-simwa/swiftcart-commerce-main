@@ -6,15 +6,19 @@ Backend API server for the SwiftCart E-Commerce Platform built with Node.js, Exp
 
 ### Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 18+ and pnpm (install with `npm install -g pnpm`)
 - MongoDB (local installation or MongoDB Atlas account)
 
 ### Installation
 
 1. **Install dependencies:**
 ```bash
-cd backend
-npm install
+# From root directory (recommended - installs all packages)
+pnpm install
+
+# Or from backend directory only
+cd swiftcart-backend
+pnpm install
 ```
 
 2. **Set up environment variables:**
@@ -34,12 +38,12 @@ Edit `.env` and configure:
 
 4. **Seed the database:**
 ```bash
-npm run seed
+pnpm seed
 ```
 
 5. **Start the development server:**
 ```bash
-npm run dev
+pnpm dev
 ```
 
 The API will be available at `http://localhost:3000/api/v1`
@@ -100,11 +104,11 @@ curl http://localhost:3000/api/v1/products/premium-wireless-headphones
 
 ## 🛠️ Available Scripts
 
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm run seed` - Seed database with sample products
-- `npm run lint` - Run ESLint
+- `pnpm dev` - Start development server with hot reload
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm seed` - Seed database with sample products
+- `pnpm lint` - Run ESLint
 
 ## 🔒 Security Features
 
@@ -176,6 +180,6 @@ See `.env.example` for all available environment variables.
 - Change `PORT` in `.env` or kill the process using port 3000
 
 **Module not found errors:**
-- Run `npm install` again
-- Delete `node_modules` and reinstall
+- Run `pnpm install` again
+- Delete `node_modules` and `.pnpm-store`, then reinstall
 

@@ -4,17 +4,17 @@
   "description": "SwiftCart E-Commerce Platform - Full Stack Monorepo",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix swiftcart-backend\" \"npm run dev --prefix swiftcart-frontend\"",
-    "dev:backend": "npm run dev --prefix swiftcart-backend",
-    "dev:frontend": "npm run dev --prefix swiftcart-frontend",
-    "build": "npm run build --prefix swiftcart-backend && npm run build --prefix swiftcart-frontend",
-    "build:backend": "npm run build --prefix swiftcart-backend",
-    "build:frontend": "npm run build --prefix swiftcart-frontend",
-    "install:all": "npm install && npm install --prefix swiftcart-backend && npm install --prefix swiftcart-frontend",
-    "seed": "npm run seed --prefix swiftcart-backend",
-    "start": "npm start --prefix swiftcart-backend",
-    "lint": "npm run lint --prefix swiftcart-frontend",
-    "clean": "rm -rf node_modules swiftcart-backend/node_modules swiftcart-frontend/node_modules swiftcart-backend/dist swiftcart-frontend/dist"
+    "dev": "concurrently \"pnpm --filter swiftcart-backend dev\" \"pnpm --filter swiftcart-frontend dev\"",
+    "dev:backend": "pnpm --filter swiftcart-backend dev",
+    "dev:frontend": "pnpm --filter swiftcart-frontend dev",
+    "build": "pnpm --filter swiftcart-backend build && pnpm --filter swiftcart-frontend build",
+    "build:backend": "pnpm --filter swiftcart-backend build",
+    "build:frontend": "pnpm --filter swiftcart-frontend build",
+    "install:all": "pnpm install",
+    "seed": "pnpm --filter swiftcart-backend seed",
+    "start": "pnpm --filter swiftcart-backend start",
+    "lint": "pnpm --filter swiftcart-frontend lint",
+    "clean": "rm -rf node_modules swiftcart-backend/node_modules swiftcart-frontend/node_modules swiftcart-backend/dist swiftcart-frontend/dist .pnpm-store"
   },
   "keywords": [
     "ecommerce",
@@ -31,7 +31,8 @@
   },
   "engines": {
     "node": ">=18.0.0",
-    "npm": ">=9.0.0"
-  }
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
 }
 

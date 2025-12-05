@@ -2,11 +2,14 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import session from 'express-session';
+import passport from 'passport';
 import { env } from './config/env';
 import routes from './routes';
 import { apiLimiter } from './middleware/rateLimiter';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import logger from './utils/logger';
+import './config/passport'; // Initialize passport strategies
 
 const app: Application = express();
 
@@ -33,6 +36,24 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
+
+// Session middleware (for OAuth)
+app.use(
+  session({
+    secret: env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));

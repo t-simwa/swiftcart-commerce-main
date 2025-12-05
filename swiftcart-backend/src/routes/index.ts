@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import productRoutes from './products.routes';
+import authRoutes from './auth.routes';
 import { env } from '../config/env';
 
 const router = Router();
@@ -18,9 +19,9 @@ router.get('/health', (req, res) => {
 
 // API routes
 router.use(`/${apiVersion}/products`, productRoutes);
+router.use(`/${apiVersion}/auth`, authRoutes);
 
 // Placeholder routes for future implementation
-// router.use(`/${apiVersion}/auth`, authRoutes);
 // router.use(`/${apiVersion}/cart`, cartRoutes);
 // router.use(`/${apiVersion}/orders`, orderRoutes);
 // router.use(`/${apiVersion}/payment`, paymentRoutes);

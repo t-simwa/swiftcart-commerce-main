@@ -10,18 +10,31 @@ export interface IAddress {
   isDefault?: boolean;
 }
 
+export interface IOAuthProvider {
+  provider: 'google' | 'facebook';
+  providerId: string;
+  email?: string;
+}
+
 export interface IUser extends Document {
   email: string;
-  password: string;
+  password?: string; // Optional for OAuth users
   firstName?: string;
   lastName?: string;
   phone?: string;
   role: 'customer' | 'admin';
   addresses: IAddress[];
   isEmailVerified: boolean;
+  emailVerificationToken?: string;
+  emailVerificationExpires?: Date;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
+  oauthProviders?: IOAuthProvider[];
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
+  generateEmailVerificationToken(): string;
+  generatePasswordResetToken(): string;
 }
 
 const AddressSchema = new Schema<IAddress>({
@@ -46,9 +59,19 @@ const UserSchema = new Schema<IUser>(
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
+      required: false, // Optional for OAuth users
       minlength: [6, 'Password must be at least 6 characters'],
       select: false, // Don't return password by default
+    },
+    oauthProviders: {
+      type: [
+        {
+          provider: { type: String, enum: ['google', 'facebook'], required: true },
+          providerId: { type: String, required: true },
+          email: { type: String },
+        },
+      ],
+      default: [],
     },
     firstName: {
       type: String,
@@ -77,6 +100,22 @@ const UserSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    emailVerificationToken: {
+      type: String,
+      select: false,
+    },
+    emailVerificationExpires: {
+      type: Date,
+      select: false,
+    },
+    passwordResetToken: {
+      type: String,
+      select: false,
+    },
+    passwordResetExpires: {
+      type: Date,
+      select: false,
+    },
   },
   {
     timestamps: true,
@@ -92,9 +131,10 @@ UserSchema.index({ role: 1 });
 UserSchema.index({ createdAt: -1 }); // For sorting users by creation date
 UserSchema.index({ isEmailVerified: 1 }); // For filtering verified users
 
-// Hash password before saving
+// Hash password before saving (only if password exists)
 UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
+  // Skip if password not modified or user is OAuth-only
+  if (!this.isModified('password') || !this.password) {
     return next();
   }
   
@@ -107,9 +147,38 @@ UserSchema.pre('save', async function (next) {
   }
 });
 
+// Validate that user has either password or OAuth provider
+UserSchema.pre('save', async function (next) {
+  if (!this.password && (!this.oauthProviders || this.oauthProviders.length === 0)) {
+    return next(new Error('User must have either a password or OAuth provider'));
+  }
+  next();
+});
+
 // Method to compare password
 UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
+  if (!this.password) {
+    return false;
+  }
   return bcrypt.compare(candidatePassword, this.password);
+};
+
+// Method to generate email verification token
+UserSchema.methods.generateEmailVerificationToken = function (): string {
+  const crypto = require('crypto');
+  const token = crypto.randomBytes(32).toString('hex');
+  this.emailVerificationToken = crypto.createHash('sha256').update(token).digest('hex');
+  this.emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+  return token;
+};
+
+// Method to generate password reset token
+UserSchema.methods.generatePasswordResetToken = function (): string {
+  const crypto = require('crypto');
+  const token = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto.createHash('sha256').update(token).digest('hex');
+  this.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+  return token;
 };
 
 export const User: Model<IUser> = mongoose.model<IUser>('User', UserSchema);
