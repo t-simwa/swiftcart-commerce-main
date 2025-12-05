@@ -85,9 +85,12 @@ const UserSchema = new Schema<IUser>(
   }
 );
 
-// Indexes
-UserSchema.index({ email: 1 });
+// Indexes for performance
+// Note: email already has index from 'unique: true'
+UserSchema.index({ email: 1 }); // Explicit index for clarity
 UserSchema.index({ role: 1 });
+UserSchema.index({ createdAt: -1 }); // For sorting users by creation date
+UserSchema.index({ isEmailVerified: 1 }); // For filtering verified users
 
 // Hash password before saving
 UserSchema.pre('save', async function (next) {

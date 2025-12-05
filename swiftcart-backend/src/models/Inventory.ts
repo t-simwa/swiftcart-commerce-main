@@ -80,9 +80,11 @@ const InventorySchema = new Schema<IInventory>(
   }
 );
 
-// Indexes
+// Indexes for performance
 // Note: sku and product already have indexes from 'unique: true'
 InventorySchema.index({ quantity: 1 });
+InventorySchema.index({ sku: 1, quantity: 1 }); // Compound index for SKU + quantity queries
+InventorySchema.index({ quantity: 1, lowStockThreshold: 1 }); // Compound index for low stock queries
 
 // Virtual for available quantity (quantity - reserved)
 InventorySchema.virtual('available').get(function () {

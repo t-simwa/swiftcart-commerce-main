@@ -104,10 +104,12 @@ const OrderSchema = new Schema<IOrder>(
   }
 );
 
-// Indexes
-OrderSchema.index({ user: 1, createdAt: -1 });
+// Indexes for performance
+OrderSchema.index({ user: 1, createdAt: -1 }); // Compound index for user orders
 OrderSchema.index({ status: 1 });
 OrderSchema.index({ createdAt: -1 });
+OrderSchema.index({ status: 1, createdAt: -1 }); // Compound index for status filtering with date sorting
+OrderSchema.index({ transactionId: 1 }); // For transaction lookups
 
 export const Order: Model<IOrder> = mongoose.model<IOrder>('Order', OrderSchema);
 

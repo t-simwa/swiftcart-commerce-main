@@ -3,7 +3,10 @@ import mongoose from 'mongoose';
 import { connectDatabase } from '../config/database';
 import { Product } from '../models/Product';
 import { Inventory } from '../models/Inventory';
+import { User } from '../models/User';
+import { Review } from '../models/Review';
 import logger from '../utils/logger';
+import bcrypt from 'bcrypt';
 
 const productsData = [
   {
@@ -154,11 +157,13 @@ const seedProducts = async () => {
       }
     }
 
-    // Clear existing products and inventory
+    // Clear existing data
     logger.info('Clearing existing data...');
     console.log('🗑️  Clearing existing data...');
-    await Product.deleteMany({});
+    await Review.deleteMany({});
     await Inventory.deleteMany({});
+    await Product.deleteMany({});
+    await User.deleteMany({});
 
     // Insert products
     logger.info('Inserting products...', { count: productsData.length });
@@ -177,12 +182,181 @@ const seedProducts = async () => {
 
     await Inventory.insertMany(inventoryRecords);
 
+    // Create test users
+    logger.info('Creating test users...');
+    console.log('👥 Creating test users...');
+    const hashedPassword = await bcrypt.hash('password123', 10);
+    
+    const usersData = [
+      {
+        email: 'admin@swiftcart.com',
+        password: hashedPassword,
+        firstName: 'Admin',
+        lastName: 'User',
+        phone: '+254712345678',
+        role: 'admin' as const,
+        isEmailVerified: true,
+        addresses: [{
+          street: '123 Admin Street',
+          city: 'Nairobi',
+          state: 'Nairobi',
+          zipCode: '00100',
+          country: 'Kenya',
+          isDefault: true,
+        }],
+      },
+      {
+        email: 'customer1@swiftcart.com',
+        password: hashedPassword,
+        firstName: 'John',
+        lastName: 'Doe',
+        phone: '+254723456789',
+        role: 'customer' as const,
+        isEmailVerified: true,
+        addresses: [{
+          street: '456 Customer Avenue',
+          city: 'Nairobi',
+          state: 'Nairobi',
+          zipCode: '00200',
+          country: 'Kenya',
+          isDefault: true,
+        }],
+      },
+      {
+        email: 'customer2@swiftcart.com',
+        password: hashedPassword,
+        firstName: 'Jane',
+        lastName: 'Smith',
+        phone: '+254734567890',
+        role: 'customer' as const,
+        isEmailVerified: true,
+        addresses: [{
+          street: '789 User Road',
+          city: 'Mombasa',
+          state: 'Mombasa',
+          zipCode: '80100',
+          country: 'Kenya',
+          isDefault: true,
+        }],
+      },
+      {
+        email: 'customer3@swiftcart.com',
+        password: hashedPassword,
+        firstName: 'Mike',
+        lastName: 'Johnson',
+        phone: '+254745678901',
+        role: 'customer' as const,
+        isEmailVerified: false,
+        addresses: [],
+      },
+    ];
+
+    const createdUsers = await User.insertMany(usersData);
+    logger.info('Users created', { count: createdUsers.length });
+    console.log(`✅ Successfully created ${createdUsers.length} users`);
+
+    // Create reviews
+    logger.info('Creating reviews...');
+    console.log('⭐ Creating reviews...');
+    
+    const reviewsData = [
+      // Reviews for first product (Premium Wireless Headphones)
+      {
+        product: createdProducts[0]._id,
+        user: createdUsers[1]._id,
+        rating: 5,
+        comment: 'Excellent sound quality! The noise cancellation is amazing. Battery life is as advertised. Highly recommend!',
+        isVerifiedPurchase: true,
+        helpfulCount: 12,
+      },
+      {
+        product: createdProducts[0]._id,
+        user: createdUsers[2]._id,
+        rating: 4,
+        comment: 'Great headphones overall. Comfortable for long listening sessions. Only minor issue is the case could be better.',
+        isVerifiedPurchase: true,
+        helpfulCount: 8,
+      },
+      // Reviews for second product (Smart Watch Pro)
+      {
+        product: createdProducts[1]._id,
+        user: createdUsers[1]._id,
+        rating: 5,
+        comment: 'Perfect smartwatch! The fitness tracking is accurate and the display is crystal clear. Battery lasts 2 days with heavy use.',
+        isVerifiedPurchase: true,
+        helpfulCount: 15,
+      },
+      {
+        product: createdProducts[1]._id,
+        user: createdUsers[2]._id,
+        rating: 4,
+        comment: 'Love the design and features. GPS tracking works well. Only wish the band was more comfortable.',
+        isVerifiedPurchase: true,
+        helpfulCount: 5,
+      },
+      // Reviews for third product (Designer Leather Bag)
+      {
+        product: createdProducts[2]._id,
+        user: createdUsers[1]._id,
+        rating: 5,
+        comment: 'Beautiful bag! The leather quality is outstanding and it looks very professional. Worth every penny.',
+        isVerifiedPurchase: true,
+        helpfulCount: 10,
+      },
+      // Reviews for fourth product (Portable Bluetooth Speaker)
+      {
+        product: createdProducts[3]._id,
+        user: createdUsers[2]._id,
+        rating: 5,
+        comment: 'Amazing sound for the size! Perfect for outdoor activities. Waterproof feature works great.',
+        isVerifiedPurchase: true,
+        helpfulCount: 20,
+      },
+      {
+        product: createdProducts[3]._id,
+        user: createdUsers[1]._id,
+        rating: 4,
+        comment: 'Great speaker, very portable. Sound quality is impressive. Battery life is good but could be better.',
+        isVerifiedPurchase: true,
+        helpfulCount: 7,
+      },
+      // Reviews for fifth product (Running Shoes Elite)
+      {
+        product: createdProducts[4]._id,
+        user: createdUsers[1]._id,
+        rating: 5,
+        comment: 'Best running shoes I\'ve ever owned! Great cushioning and support. Perfect for long runs.',
+        isVerifiedPurchase: true,
+        helpfulCount: 18,
+      },
+      {
+        product: createdProducts[4]._id,
+        user: createdUsers[2]._id,
+        rating: 4,
+        comment: 'Very comfortable and lightweight. Good grip on various surfaces. Sizing runs slightly small.',
+        isVerifiedPurchase: true,
+        helpfulCount: 6,
+      },
+    ];
+
+    const createdReviews = await Review.insertMany(reviewsData);
+    logger.info('Reviews created', { count: createdReviews.length });
+    console.log(`✅ Successfully created ${createdReviews.length} reviews`);
+
     logger.info('Database seeded successfully', {
       products: createdProducts.length,
       inventory: inventoryRecords.length,
+      users: createdUsers.length,
+      reviews: createdReviews.length,
     });
-    console.log(`✅ Successfully seeded ${createdProducts.length} products`);
-    console.log(`✅ Successfully created ${inventoryRecords.length} inventory records`);
+    console.log(`\n✅ Database seeding completed:`);
+    console.log(`   📦 Products: ${createdProducts.length}`);
+    console.log(`   📊 Inventory: ${inventoryRecords.length}`);
+    console.log(`   👥 Users: ${createdUsers.length}`);
+    console.log(`   ⭐ Reviews: ${createdReviews.length}`);
+    console.log(`\n🔑 Test Credentials:`);
+    console.log(`   Admin: admin@swiftcart.com / password123`);
+    console.log(`   Customer: customer1@swiftcart.com / password123`);
     
     process.exit(0);
   } catch (error: any) {

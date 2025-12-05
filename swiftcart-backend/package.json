@@ -9,6 +9,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "seed": "tsx src/scripts/seed.ts",
+    "migrate": "tsx src/scripts/migrate.ts",
+    "migrate:down": "tsx src/scripts/migrate.ts down",
     "lint": "eslint src --ext .ts"
   },
   "keywords": ["ecommerce", "api", "nodejs", "express"],
@@ -27,7 +29,8 @@
     "express-validator": "^7.0.1",
     "compression": "^1.7.4",
     "winston": "^3.11.0",
-    "winston-daily-rotate-file": "^4.7.1"
+    "winston-daily-rotate-file": "^4.7.1",
+    "redis": "^4.6.12"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",

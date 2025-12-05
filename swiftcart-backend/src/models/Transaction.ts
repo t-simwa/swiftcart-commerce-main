@@ -77,11 +77,15 @@ const TransactionSchema = new Schema<ITransaction>(
   }
 );
 
-// Indexes
-TransactionSchema.index({ txnRef: 1 });
+// Indexes for performance
+// Note: txnRef already has index from 'unique: true'
+TransactionSchema.index({ txnRef: 1 }); // Explicit index for clarity
 TransactionSchema.index({ order: 1 });
 TransactionSchema.index({ status: 1 });
 TransactionSchema.index({ createdAt: -1 });
+TransactionSchema.index({ status: 1, createdAt: -1 }); // Compound index for status filtering with date sorting
+TransactionSchema.index({ gateway: 1, status: 1 }); // Compound index for gateway + status queries
+TransactionSchema.index({ phoneNumber: 1 }); // For M-Pesa phone number lookups
 
 // Generate unique transaction reference
 TransactionSchema.pre('save', async function (next) {

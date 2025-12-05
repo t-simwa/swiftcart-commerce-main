@@ -132,6 +132,10 @@ ProductSchema.index({ featured: 1 });
 ProductSchema.index({ name: 'text', description: 'text' }); // Text search index
 ProductSchema.index({ price: 1 });
 ProductSchema.index({ createdAt: -1 });
+ProductSchema.index({ stock: 1 }); // For inventory queries
+ProductSchema.index({ category: 1, price: 1 }); // Compound index for category + price filtering
+ProductSchema.index({ featured: 1, createdAt: -1 }); // Compound index for featured products sorting
+ProductSchema.index({ category: 1, featured: 1 }); // Compound index for category + featured filtering
 
 // Virtual for checking if product is in stock
 ProductSchema.virtual('inStock').get(function () {
