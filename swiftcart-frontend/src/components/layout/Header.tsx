@@ -36,18 +36,12 @@ import {
 import { categories } from "@/data/products";
 import { digitalContentCategories, departmentCategories } from "@/data/categories";
 
-// Search departments/categories
+// Search departments/categories - sorted alphabetically, same as "All" menu
 const searchDepartments = [
   { value: "all", label: "All Departments" },
-  { value: "electronics", label: "Electronics" },
-  { value: "fashion", label: "Fashion" },
-  { value: "home-living", label: "Home & Living" },
-  { value: "sports", label: "Sports & Outdoors" },
-  { value: "beauty", label: "Beauty & Personal Care" },
-  { value: "books", label: "Books" },
-  { value: "toys", label: "Toys & Games" },
-  { value: "automotive", label: "Automotive" },
-  { value: "health", label: "Health & Household" },
+  ...departmentCategories
+    .map((cat) => ({ value: cat.slug, label: cat.name }))
+    .sort((a, b) => a.label.localeCompare(b.label)),
 ];
 
 // Languages
@@ -201,7 +195,10 @@ export function Header() {
                       <DropdownMenuItem
                         key={dept.value}
                         onClick={() => setSelectedDepartment(dept.value)}
-                        className={selectedDepartment === dept.value ? "bg-accent" : ""}
+                        className={cn(
+                          selectedDepartment === dept.value ? "bg-[#e7e7e7] text-primary" : "",
+                          "hover:bg-[#e7e7e7] hover:text-primary focus:bg-[#e7e7e7] focus:text-primary"
+                        )}
                       >
                         {dept.label}
                       </DropdownMenuItem>
@@ -496,7 +493,7 @@ export function Header() {
                         <div className="px-4 pt-3 pb-2 bg-white border-b border-[#e7e7e7]">
                           <button
                             onClick={() => setSelectedCategory(null)}
-                            className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                            className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                             style={{ fontFamily: 'inherit' }}
                           >
                             <span className="flex items-center gap-1">
@@ -525,7 +522,7 @@ export function Header() {
                                             navigate(`/products?category=${category.slug}&subcategory=${subcat.slug}`);
                           setIsMegaMenuOpen(false);
                         }}
-                                          className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                          className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                           style={{ fontFamily: 'inherit' }}
                                         >
                                           <span>{subcat.name}</span>
@@ -557,7 +554,7 @@ export function Header() {
                                   }}
                                   className={cn(
                                     "w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between",
-                                    "text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                    "text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                   )}
                                   style={{ fontFamily: 'inherit' }}
                                 >
@@ -569,7 +566,7 @@ export function Header() {
                             <li className="pt-1">
                               <button
                                 onClick={() => { setShowAllDepartments(!showAllDepartments); }}
-                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                 style={{ fontFamily: 'inherit' }}
                               >
                                 <span>{showAllDepartments ? 'See less' : 'See all'}</span>
@@ -586,7 +583,7 @@ export function Header() {
                             <li>
                               <button
                                 onClick={() => { navigate('/products?featured=true'); setIsMegaMenuOpen(false); }}
-                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                 style={{ fontFamily: 'inherit' }}
                               >
                                 <span>Gift Cards</span>
@@ -596,7 +593,7 @@ export function Header() {
                             <li>
                               <button
                                 onClick={() => { navigate('/products?interest=true'); setIsMegaMenuOpen(false); }}
-                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                 style={{ fontFamily: 'inherit' }}
                               >
                                 <span>Shop By Interest</span>
@@ -606,7 +603,7 @@ export function Header() {
                             <li>
                               <button
                                 onClick={() => { navigate('/live'); setIsMegaMenuOpen(false); }}
-                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                 style={{ fontFamily: 'inherit' }}
                               >
                                 <span>SwiftCart Live</span>
@@ -616,7 +613,7 @@ export function Header() {
                             <li>
                               <button
                                 onClick={() => { navigate('/international'); setIsMegaMenuOpen(false); }}
-                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                 style={{ fontFamily: 'inherit' }}
                               >
                                 <span>International Shopping</span>
@@ -626,7 +623,7 @@ export function Header() {
                             <li>
                               <button
                                 onClick={() => { navigate('/second-chance'); setIsMegaMenuOpen(false); }}
-                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                 style={{ fontFamily: 'inherit' }}
                               >
                                 <span>SwiftCart Second Chance</span>
@@ -643,7 +640,7 @@ export function Header() {
                             <li>
                               <button
                                 onClick={() => { navigate('/account'); setIsMegaMenuOpen(false); }}
-                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                 style={{ fontFamily: 'inherit' }}
                               >
                                 <span>Your Account</span>
@@ -656,7 +653,7 @@ export function Header() {
                                   setSelectedLanguage(selectedLanguage);
                                   setIsMegaMenuOpen(false);
                                 }}
-                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                 style={{ fontFamily: 'inherit' }}
                               >
                                 <span className="flex items-center gap-2">
@@ -672,7 +669,7 @@ export function Header() {
                                   setIsLocationDialogOpen(true);
                                   setIsMegaMenuOpen(false);
                                 }}
-                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                 style={{ fontFamily: 'inherit' }}
                               >
                                 <span className="flex items-center gap-2">
@@ -685,7 +682,7 @@ export function Header() {
                             <li>
                               <button
                                 onClick={() => { navigate('/help'); setIsMegaMenuOpen(false); }}
-                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                 style={{ fontFamily: 'inherit' }}
                               >
                                 <span>Customer Service</span>
@@ -696,7 +693,7 @@ export function Header() {
                               <li>
                                 <button
                                   onClick={() => { navigate('/login'); setIsMegaMenuOpen(false); }}
-                                  className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                  className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                                   style={{ fontFamily: 'inherit' }}
                                 >
                                   <span>Sign in</span>
@@ -714,7 +711,7 @@ export function Header() {
                               window.scrollTo({ top: 0, behavior: 'smooth' });
                               setIsMegaMenuOpen(false);
                             }}
-                            className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                            className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                             style={{ fontFamily: 'inherit' }}
                           >
                             <span>Back to top</span>
@@ -807,7 +804,10 @@ export function Header() {
                   <DropdownMenuItem
                     key={dept.value}
                     onClick={() => setSelectedDepartment(dept.value)}
-                    className={selectedDepartment === dept.value ? "bg-accent" : ""}
+                    className={cn(
+                      selectedDepartment === dept.value ? "bg-[#e7e7e7] text-primary" : "",
+                      "hover:bg-[#e7e7e7] hover:text-primary focus:bg-[#e7e7e7] focus:text-primary"
+                    )}
                   >
                     {dept.label}
                   </DropdownMenuItem>

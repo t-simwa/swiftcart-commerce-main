@@ -7,25 +7,18 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { departmentCategories } from "@/data/categories";
 
 interface DealFiltersProps {
   className?: string;
 }
 
-// Common departments/categories
+// Use the same departments as the "All" menu, sorted alphabetically
 const departments = [
   "All",
-  "Electronics",
-  "Home & Kitchen",
-  "Beauty & Personal Care",
-  "Fashion",
-  "Sports & Outdoors",
-  "Toys & Games",
-  "Books",
-  "Health & Household",
-  "Automotive",
-  "Pet Supplies",
-  "Office Supplies",
+  ...departmentCategories
+    .map((category) => category.name)
+    .sort((a, b) => a.localeCompare(b)),
 ];
 
 // Common brands (would be fetched from API in production)
@@ -67,7 +60,11 @@ export function DealFilters({ className }: DealFiltersProps) {
   const [showMoreBrands, setShowMoreBrands] = useState(false);
   const [showMoreDepartments, setShowMoreDepartments] = useState(false);
 
-  const selectedDepartment = searchParams.get("category") || "All";
+  // Map category slug from URL to category name for display
+  const categorySlug = searchParams.get("category");
+  const selectedDepartment = categorySlug
+    ? departmentCategories.find((cat) => cat.slug === categorySlug)?.name || categorySlug
+    : "All";
   const selectedBrands = searchParams.get("brands")?.split(",") || [];
   const minRating = searchParams.get("minRating") || "0";
   const minDiscount = parseInt(searchParams.get("minDiscount") || "0");
@@ -86,7 +83,9 @@ export function DealFilters({ className }: DealFiltersProps) {
     if (value === "All") {
       newParams.delete("category");
     } else {
-      newParams.set("category", value);
+      // Find the category slug from the name
+      const category = departmentCategories.find((cat) => cat.name === value);
+      newParams.set("category", category?.slug || value.toLowerCase().replace(/\s+/g, "-"));
     }
     newParams.set("page", "1"); // Reset to first page
     navigate(`/deals?${newParams.toString()}`);
