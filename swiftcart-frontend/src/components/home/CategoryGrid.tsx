@@ -8,7 +8,7 @@ export function CategoryGrid() {
       <div className="container-wide">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">Shop by Category</h2>
+          <h2 className="text-lg md:text-xl font-medium text-foreground">Shop by Category</h2>
           <Link
             to="/categories"
             className="hidden sm:flex items-center gap-1 text-sm font-medium text-primary hover:underline"
@@ -35,10 +35,10 @@ export function CategoryGrid() {
                   loading="lazy"
                 />
               </div>
-              <h3 className="font-semibold text-foreground text-sm md:text-base mb-1 line-clamp-1">
+              <h3 className="font-medium text-foreground text-sm md:text-base mb-1 line-clamp-1">
                 {category.name}
               </h3>
-              <p className="text-xs md:text-sm text-muted-foreground">
+              <p className="text-xs md:text-sm text-muted-foreground text-body-light">
                 {category.productCount}+ items
               </p>
             </Link>

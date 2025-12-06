@@ -191,7 +191,7 @@ export function DealFilters({ className }: DealFiltersProps) {
     >
       <div className="sticky top-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Filters</h2>
+          <h2 className="text-base font-medium">Filters</h2>
           {(selectedDepartment !== "All" ||
             selectedBrands.length > 0 ||
             minRating !== "0" ||

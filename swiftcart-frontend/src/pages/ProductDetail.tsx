@@ -129,7 +129,7 @@ const ProductDetail = () => {
   if (error || !product) {
     return (
       <div className="container-wide py-16 text-center min-h-[60vh]">
-        <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
+        <h1 className="text-xl font-bold mb-4">Product Not Found</h1>
         <p className="text-muted-foreground mb-8">
           The product you're looking for doesn't exist.
         </p>
@@ -456,7 +456,7 @@ const ProductDetail = () => {
               <p className="text-sm text-muted-foreground uppercase tracking-wide mb-2">
                 {product.category}
               </p>
-              <h1 className="text-2xl md:text-3xl font-bold leading-tight mb-3">
+              <h1 className="text-xl md:text-2xl font-bold leading-tight mb-3">
                 {product.name}
               </h1>
             </div>
@@ -500,7 +500,7 @@ const ProductDetail = () => {
             {/* Price Section */}
             <div className="space-y-2">
               <div className="flex items-baseline gap-3 flex-wrap">
-                <span className="text-3xl md:text-4xl font-bold text-primary">
+                <span className="text-2xl md:text-3xl font-medium text-primary">
                   {formatPrice(currentPrice)}
                 </span>
                 {product.originalPrice && (
@@ -575,7 +575,7 @@ const ProductDetail = () => {
                               <div className="flex-1 min-w-0">
                                 <div className="font-medium text-sm">{variant.name}</div>
                                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                                  <span className="text-sm font-semibold text-primary">
+                                  <span className="text-sm font-medium text-primary">
                                     {formatPrice(variant.price)}
                                   </span>
                                   {product.originalPrice && variant.price < product.originalPrice && (
@@ -787,12 +787,12 @@ const ProductDetail = () => {
 
         {/* About This Item Section */}
         <section className="mb-12 pt-8 border-t border-border">
-          <h2 className="text-2xl font-bold mb-6">About this item</h2>
+          <h2 className="text-xl font-medium mb-6">About this item</h2>
           <ul className="space-y-3 max-w-3xl">
             {features.map((feature, index) => (
               <li key={index} className="flex items-start gap-3">
                 <Check className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <span className="text-muted-foreground">{feature}</span>
+                <span className="text-muted-foreground text-body-light">{feature}</span>
               </li>
             ))}
           </ul>
@@ -800,14 +800,14 @@ const ProductDetail = () => {
 
         {/* Product Specifications */}
         <section className="mb-12 pt-8 border-t border-border">
-          <h2 className="text-2xl font-bold mb-6">Product Specifications</h2>
+          <h2 className="text-xl font-medium mb-6">Product Specifications</h2>
           <div className="max-w-2xl">
             <table className="w-full">
               <tbody className="divide-y divide-border">
                 {Object.entries(specifications).map(([key, value]) => (
                   <tr key={key}>
                     <td className="py-3 pr-8 font-medium text-sm w-1/3">{key}</td>
-                    <td className="py-3 text-sm text-muted-foreground">{value}</td>
+                    <td className="py-3 text-sm text-muted-foreground text-body-light">{value}</td>
                   </tr>
                 ))}
               </tbody>
@@ -817,14 +817,14 @@ const ProductDetail = () => {
 
         {/* Additional Details Section */}
         <section className="mb-12 pt-8 border-t border-border">
-          <h2 className="text-2xl font-bold mb-6">Additional Details</h2>
+          <h2 className="text-xl font-medium mb-6">Additional Details</h2>
           <div className="space-y-4">
             <div className="p-4 border border-border rounded-lg bg-secondary/30">
               <div className="flex items-start gap-3">
                 <Store className="h-5 w-5 text-primary mt-0.5" />
                 <div>
                   <p className="font-medium mb-1">Small Business</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground text-body-light">
                     This product is from a small business brand. Support small.
                   </p>
                   <Link to="#" className="text-sm text-primary hover:underline">
@@ -838,7 +838,7 @@ const ProductDetail = () => {
 
         {/* Videos Section Placeholder */}
         <section className="mb-12 pt-8 border-t border-border">
-          <h2 className="text-2xl font-bold mb-6">Videos</h2>
+          <h2 className="text-xl font-medium mb-6">Videos</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="aspect-video bg-secondary rounded-lg flex items-center justify-center">
               <div className="text-center">
@@ -852,7 +852,7 @@ const ProductDetail = () => {
         {/* Frequently Bought Together */}
         {frequentlyBought.length > 0 && (
           <section className="mb-12 pt-8 border-t border-border">
-            <h2 className="text-2xl font-bold mb-6">Frequently bought together</h2>
+            <h2 className="text-xl font-medium mb-6">Frequently bought together</h2>
             <div className="flex flex-col md:flex-row gap-6 items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-4 mb-4">
@@ -871,7 +871,7 @@ const ProductDetail = () => {
                       />
                       <div>
                         <p className="text-sm font-medium line-clamp-2">{product.name}</p>
-                        <p className="text-sm font-bold text-primary">{formatPrice(currentPrice)}</p>
+                        <p className="text-sm font-medium text-primary">{formatPrice(currentPrice)}</p>
                       </div>
                     </div>
                   </div>
@@ -925,9 +925,9 @@ const ProductDetail = () => {
 
         {/* Product Description (Full) */}
         <section className="mb-12 pt-8 border-t border-border">
-          <h2 className="text-2xl font-bold mb-6">Product Description</h2>
+          <h2 className="text-xl font-medium mb-6">Product Description</h2>
           <div className="prose prose-sm max-w-none">
-            <p className="text-muted-foreground whitespace-pre-line leading-relaxed">
+            <p className="text-muted-foreground whitespace-pre-line leading-relaxed text-body-light">
               {product.description}
             </p>
           </div>
@@ -935,12 +935,12 @@ const ProductDetail = () => {
 
         {/* Reviews Section */}
         <section id="reviews" className="mb-12 pt-8 border-t border-border">
-          <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
+          <h2 className="text-xl font-medium mb-6">Customer Reviews</h2>
           <div className="space-y-6">
             {/* Review Summary */}
             <div className="flex items-center gap-8 p-6 border border-border rounded-lg bg-secondary/30">
               <div className="text-center">
-                <div className="text-4xl font-bold mb-1">{product.rating.toFixed(1)}</div>
+                <div className="text-3xl font-medium mb-1">{product.rating.toFixed(1)}</div>
                 <div className="flex items-center justify-center gap-1 mb-2">
                   {[...Array(5)].map((_, i) => (
                     <Star
@@ -1009,7 +1009,7 @@ const ProductDetail = () => {
         {relatedProducts.length > 0 && (
           <section className="mb-12 pt-8 border-t border-border">
             <div className="flex items-center gap-2 mb-6">
-              <h2 className="text-xl font-bold">Consider a similar item</h2>
+              <h2 className="text-lg font-medium">Consider a similar item</h2>
               {relatedProducts[0]?.featured && (
                 <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">
                   <Award className="h-3 w-3 mr-1" />
@@ -1056,7 +1056,7 @@ const ProductDetail = () => {
                     {relatedProducts[0].rating.toFixed(1)} ({relatedProducts[0].reviewCount.toLocaleString()} ratings)
                   </Link>
                 </div>
-                <div className="text-lg font-bold text-primary mb-2">
+                <div className="text-base font-medium text-primary mb-2">
                   {formatPrice(relatedProducts[0].price)}
                   {relatedProducts[0].originalPrice && (
                     <span className="text-sm text-muted-foreground line-through ml-2">
@@ -1077,7 +1077,7 @@ const ProductDetail = () => {
         {/* Products Related to This Item */}
         {relatedProducts.length > 1 && (
           <section className="mb-12 pt-8 border-t border-border">
-            <h2 className="text-2xl font-bold mb-6">Products related to this item</h2>
+            <h2 className="text-xl font-medium mb-6">Products related to this item</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6">
               {relatedProducts.slice(1).map((relatedProduct: Product) => (
                 <ProductCard

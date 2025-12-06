@@ -18,21 +18,21 @@ export function HeroSection() {
               />
               <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
               <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-center max-w-lg">
-                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/20 rounded-full px-3 py-1 w-fit mb-4 backdrop-blur-sm">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-primary bg-primary/20 rounded-full px-3 py-1 w-fit mb-4 backdrop-blur-sm">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                   </span>
                   Free Shipping Over KSh 5,000
                 </span>
-                <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-background mb-3 leading-tight">
+                <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-background mb-3 leading-tight">
                   Discover Quality Products at Great Prices
                 </h1>
-                <p className="text-background/80 text-sm md:text-base mb-6 max-w-md">
+                <p className="text-background/80 text-sm md:text-base mb-6 max-w-md text-body-light">
                   Shop electronics, fashion, home & more with secure M-Pesa payments and fast delivery across Kenya.
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <Button variant="hero" size="lg" asChild className="font-semibold">
+                  <Button variant="hero" size="lg" asChild className="font-medium">
                     <Link to="/products">
                       Shop Now
                       <ArrowRight className="h-4 w-4 ml-1" />
@@ -88,7 +88,7 @@ export function HeroSection() {
               <Truck className="h-5 w-5 text-primary" />
             </div>
             <div className="min-w-0">
-              <p className="font-semibold text-sm text-foreground truncate">Fast Delivery</p>
+              <p className="font-medium text-sm text-foreground truncate">Fast Delivery</p>
               <p className="text-xs text-muted-foreground truncate">Same-day in Nairobi</p>
             </div>
           </div>

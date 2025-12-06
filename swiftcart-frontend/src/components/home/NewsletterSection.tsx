@@ -28,7 +28,7 @@ export function NewsletterSection() {
             <Mail className="h-7 w-7 text-primary" />
           </div>
           
-          <h2 className="text-xl md:text-2xl font-bold mb-3">
+          <h2 className="text-lg md:text-xl font-medium mb-3">
             Get Exclusive Deals & Updates
           </h2>
           <p className="text-background/70 text-sm md:text-base mb-6 max-w-md mx-auto">
@@ -49,7 +49,7 @@ export function NewsletterSection() {
             <Button 
               type="submit" 
               variant="hero" 
-              className="h-12 px-6 font-semibold"
+              className="h-12 px-6 font-medium"
               disabled={isSubmitted}
             >
               {isSubmitted ? (

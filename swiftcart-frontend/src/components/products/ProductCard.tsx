@@ -102,7 +102,7 @@ export function ProductCard({ product, className, style }: ProductCardProps) {
         <div className="mt-auto space-y-2">
           {/* Price */}
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <span className="text-lg font-bold text-price">
+            <span className="text-base font-medium text-price">
               {formatPrice(product.price)}
             </span>
             {product.originalPrice && (

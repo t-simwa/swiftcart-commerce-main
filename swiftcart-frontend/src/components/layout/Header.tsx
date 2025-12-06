@@ -108,7 +108,7 @@ export function Header() {
               <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
                 <span className="text-base font-black text-primary-foreground">S</span>
               </div>
-              <span className="text-lg font-bold tracking-tight text-white">
+              <span className="text-base font-medium tracking-tight text-white">
                 Swift<span className="text-primary">Cart</span>
               </span>
             </Link>
@@ -286,7 +286,7 @@ export function Header() {
                     </div>
                     <div className="grid grid-cols-2 gap-4 p-4">
                       <div>
-                        <DropdownMenuLabel className="px-0 py-2 text-sm font-bold">Your Lists</DropdownMenuLabel>
+                        <DropdownMenuLabel className="px-0 py-2 text-sm font-medium">Your Lists</DropdownMenuLabel>
                         <DropdownMenuItem onClick={() => navigate('/account?tab=lists')} className="px-0">
                           Create a List
                         </DropdownMenuItem>
@@ -295,7 +295,7 @@ export function Header() {
                         </DropdownMenuItem>
                       </div>
                       <div>
-                        <DropdownMenuLabel className="px-0 py-2 text-sm font-bold">Your Account</DropdownMenuLabel>
+                        <DropdownMenuLabel className="px-0 py-2 text-sm font-medium">Your Account</DropdownMenuLabel>
                         <DropdownMenuItem onClick={() => navigate('/account')} className="px-0">
                           Account
                         </DropdownMenuItem>
@@ -345,7 +345,7 @@ export function Header() {
                     </div>
                     <div className="grid grid-cols-2 gap-4 p-4">
                       <div>
-                        <DropdownMenuLabel className="px-0 py-2 text-sm font-bold">Your Lists</DropdownMenuLabel>
+                        <DropdownMenuLabel className="px-0 py-2 text-sm font-medium">Your Lists</DropdownMenuLabel>
                         <DropdownMenuItem onClick={() => navigate('/account?tab=lists')} className="px-0">
                           Create a List
                         </DropdownMenuItem>
@@ -354,7 +354,7 @@ export function Header() {
                         </DropdownMenuItem>
                       </div>
                       <div>
-                        <DropdownMenuLabel className="px-0 py-2 text-sm font-bold">Your Account</DropdownMenuLabel>
+                        <DropdownMenuLabel className="px-0 py-2 text-sm font-medium">Your Account</DropdownMenuLabel>
                         <DropdownMenuItem onClick={() => navigate('/orders')} className="px-0">
                           Orders
                         </DropdownMenuItem>
@@ -386,11 +386,11 @@ export function Header() {
               >
                 <div className="relative">
                   <ShoppingCart className="h-8 w-8" />
-                  <span className="absolute -top-1 left-4 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#b91c1c] text-[11px] font-bold text-white px-1">
+                  <span className="absolute -top-1 left-4 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#b91c1c] text-[11px] font-medium text-white px-1">
                     {totalItems > 99 ? "99+" : totalItems}
                   </span>
                 </div>
-                <span className="hidden sm:block text-xs font-bold text-white mb-0.5">Cart</span>
+                <span className="hidden sm:block text-xs font-medium text-white mb-0.5">Cart</span>
               </Link>
 
               {/* Account - Mobile */}
@@ -471,7 +471,7 @@ export function Header() {
                       <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
                         <User className="h-5 w-5 text-white" />
                       </div>
-                      <span className="text-sm font-bold leading-5" style={{ fontFamily: 'inherit' }}>
+                      <span className="text-sm font-medium leading-5" style={{ fontFamily: 'inherit' }}>
                         Hello, {isAuthenticated && user ? (user.firstName || user.email.split('@')[0]) : 'sign in'}
                       </span>
                     </Link>
@@ -512,7 +512,7 @@ export function Header() {
                             
                             return (
                               <>
-                                <h2 className="text-base font-bold text-[#111] mb-3 leading-5" style={{ fontFamily: 'inherit' }}>{category.name}</h2>
+                                <h2 className="text-base font-medium text-[#111] mb-3 leading-5" style={{ fontFamily: 'inherit' }}>{category.name}</h2>
                                 {category.subcategories && category.subcategories.length > 0 ? (
                                   <ul className="space-y-0.5">
                                     {category.subcategories.map((subcat) => (
@@ -544,7 +544,7 @@ export function Header() {
                       <>
                         {/* Shop by Department Section */}
                         <div className="px-4 pt-3 pb-2">
-                          <h3 className="text-xs font-bold text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Shop by Department</h3>
+                          <h3 className="text-xs font-medium text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Shop by Department</h3>
                           <ul className="space-y-0.5">
                             {(showAllDepartments ? departmentCategories : departmentCategories.slice(0, 4)).map((category) => (
                               <li key={category.slug}>
@@ -578,7 +578,7 @@ export function Header() {
 
                         {/* Programs & Features Section */}
                         <div className="px-4 pt-3 pb-2 border-t border-[#e7e7e7]">
-                          <h3 className="text-xs font-bold text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Programs & Features</h3>
+                          <h3 className="text-xs font-medium text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Programs & Features</h3>
                           <ul className="space-y-0.5">
                             <li>
                               <button
@@ -635,7 +635,7 @@ export function Header() {
 
                         {/* Help & Settings Section */}
                         <div className="px-4 pt-3 pb-4 border-t border-[#e7e7e7]">
-                          <h3 className="text-xs font-bold text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Help & Settings</h3>
+                          <h3 className="text-xs font-medium text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Help & Settings</h3>
                           <ul className="space-y-0.5">
                             <li>
                               <button
@@ -862,7 +862,7 @@ export function Header() {
             </Link>
           )}
 
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 pt-4 pb-2">Shop By Category</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-3 pt-4 pb-2">Shop By Category</p>
           
           <Link
             to="/products"
@@ -889,7 +889,7 @@ export function Header() {
             <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
           </Link>
 
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 pt-6 pb-2">Help & Settings</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-3 pt-6 pb-2">Help & Settings</p>
           
           {isAuthenticated ? (
             <>

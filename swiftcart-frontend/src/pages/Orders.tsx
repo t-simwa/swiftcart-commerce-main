@@ -120,7 +120,7 @@ const Orders = () => {
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2 flex items-center">
+        <h1 className="text-2xl font-bold mb-2 flex items-center">
           <ShoppingBag className="h-8 w-8 mr-2" />
           My Orders
         </h1>
@@ -170,7 +170,7 @@ const Orders = () => {
         <Card>
           <CardContent className="py-16 text-center">
             <Package className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">No orders found</h3>
+            <h3 className="text-lg font-medium mb-2">No orders found</h3>
             <p className="text-muted-foreground mb-4">
               {statusFilter
                 ? `You don't have any ${statusFilter} orders`
@@ -230,7 +230,7 @@ const Orders = () => {
                       <p className="text-sm text-muted-foreground">
                         {order.items.length} item{order.items.length !== 1 ? 's' : ''}
                       </p>
-                      <p className="font-semibold text-lg mt-1">
+                      <p className="font-medium text-base mt-1">
                         {formatPrice(order.totalAmount)}
                       </p>
                     </div>

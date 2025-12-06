@@ -84,7 +84,7 @@ const OrderConfirmation = () => {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-success/10 mb-4">
           <CheckCircle2 className="h-8 w-8 text-success" />
         </div>
-        <h1 className="text-3xl font-bold mb-2">Order Confirmed!</h1>
+        <h1 className="text-2xl font-bold mb-2">Order Confirmed!</h1>
         <p className="text-muted-foreground">
           Thank you for your order. We've received your order and will begin processing it shortly.
         </p>
@@ -195,7 +195,7 @@ const OrderConfirmation = () => {
               </span>
             </div>
             <Separator />
-            <div className="flex justify-between font-bold text-lg">
+            <div className="flex justify-between font-medium text-base">
               <span>Total</span>
               <span>{formatPrice(order.totalAmount)}</span>
             </div>

@@ -59,7 +59,7 @@ export function DealCarousel({
     <div className={cn("deal-carousel", className)}>
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-xl font-bold text-foreground">{title}</h3>
+        <h3 className="text-lg font-medium text-foreground">{title}</h3>
         {seeMoreLink && (
           <a
             href={seeMoreLink}

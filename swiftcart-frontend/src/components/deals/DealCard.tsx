@@ -133,7 +133,7 @@ export function DealCard({ product, className, style }: DealCardProps) {
               </div>
               {/* Secondary Badge - Limited Time Deal */}
               <div
-                className="inline-flex items-center px-1.5 py-1 rounded-sm text-[11px] font-bold leading-3"
+                className="inline-flex items-center px-1.5 py-1 rounded-sm text-[11px] font-medium leading-3"
                 style={{
                   backgroundColor: "#ffffff",
                   color: "#CC0C39",
@@ -148,7 +148,7 @@ export function DealCard({ product, className, style }: DealCardProps) {
           <div className="space-y-0.5">
             <div className="flex flex-wrap items-baseline gap-x-1 gap-y-0.5">
               <span className="text-xs text-muted-foreground">Deal Price:</span>
-              <span className="text-base font-semibold text-foreground">
+              <span className="text-base font-medium text-foreground">
                 {formatPrice(product.price)}
               </span>
             </div>

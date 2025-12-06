@@ -58,7 +58,7 @@ export function CategoryOffersCarousel({
   return (
     <div className={cn("category-offers-carousel py-3", className)}>
       {/* Header */}
-      <h3 className="text-xl font-bold text-foreground mb-4 ml-4">{title}</h3>
+      <h3 className="text-lg font-medium text-foreground mb-4 ml-4">{title}</h3>
 
       {/* Carousel Container */}
       <div className="relative">

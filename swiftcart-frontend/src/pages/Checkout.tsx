@@ -234,7 +234,7 @@ const Checkout = () => {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back
         </Button>
-        <h1 className="text-3xl font-bold">Checkout</h1>
+        <h1 className="text-2xl font-bold">Checkout</h1>
         <p className="text-muted-foreground mt-2">Complete your order</p>
       </div>
 
@@ -482,7 +482,7 @@ const Checkout = () => {
                   </span>
                 </div>
                 <Separator />
-                <div className="flex justify-between font-bold text-lg">
+                <div className="flex justify-between font-medium text-base">
                   <span>Total</span>
                   <span>{formatPrice(total)}</span>
                 </div>

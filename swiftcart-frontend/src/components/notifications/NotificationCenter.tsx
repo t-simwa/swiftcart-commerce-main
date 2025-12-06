@@ -72,7 +72,7 @@ export function NotificationCenter() {
       <PopoverContent className="w-80 md:w-96 p-0" align="end">
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold">Notifications</h3>
+            <h3 className="font-medium">Notifications</h3>
             {unreadCount > 0 && (
               <Badge variant="secondary" className="text-xs">
                 {unreadCount} new

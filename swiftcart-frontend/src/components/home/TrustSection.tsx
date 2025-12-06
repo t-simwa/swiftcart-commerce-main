@@ -40,7 +40,7 @@ export function TrustSection() {
       <div className="container-wide">
         {/* Section Header */}
         <div className="text-center mb-10">
-          <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">
+          <h2 className="text-lg md:text-xl font-medium text-foreground mb-2">
             Why Shop with SwiftCart?
           </h2>
           <p className="text-muted-foreground text-sm max-w-md mx-auto">
@@ -59,8 +59,8 @@ export function TrustSection() {
               <div className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full mb-4 ${colorMap[feature.color]} transition-transform group-hover:scale-110`}>
                 <feature.icon className="h-7 w-7" />
               </div>
-              <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+              <h3 className="font-medium text-foreground mb-2">{feature.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed text-body-light">{feature.description}</p>
             </div>
           ))}
         </div>
@@ -73,19 +73,19 @@ export function TrustSection() {
                 <CreditCard className="h-6 w-6 text-success" />
               </div>
               <div>
-                <h4 className="font-semibold text-foreground">Secure Payment Options</h4>
-                <p className="text-sm text-muted-foreground">Pay with confidence using your preferred method</p>
+                <h4 className="font-medium text-foreground">Secure Payment Options</h4>
+                <p className="text-sm text-muted-foreground text-body-light">Pay with confidence using your preferred method</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 px-4 py-2 bg-background rounded-lg border border-border">
-                <span className="text-success font-bold text-lg">M-Pesa</span>
+                <span className="text-success font-medium text-base">M-Pesa</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-background rounded-lg border border-border">
-                <span className="text-info font-bold">VISA</span>
+                <span className="text-info font-medium">VISA</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-background rounded-lg border border-border">
-                <span className="text-destructive font-bold">Mastercard</span>
+                <span className="text-destructive font-medium">Mastercard</span>
               </div>
             </div>
           </div>

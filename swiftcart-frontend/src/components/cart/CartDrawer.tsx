@@ -29,7 +29,7 @@ export function CartDrawer() {
         <div className="flex h-full flex-col">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-border px-6 py-4">
-            <h2 className="text-lg font-semibold">Shopping Cart</h2>
+            <h2 className="text-base font-medium">Shopping Cart</h2>
             <Button variant="ghost" size="icon" onClick={() => setCartOpen(false)}>
               <X className="h-5 w-5" />
             </Button>
@@ -75,7 +75,7 @@ export function CartDrawer() {
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
-                      <p className="text-sm text-primary font-semibold mt-1">
+                      <p className="text-sm text-primary font-medium mt-1">
                         {formatPrice(item.product.price)}
                       </p>
                       <div className="flex items-center gap-2 mt-2">
@@ -112,7 +112,7 @@ export function CartDrawer() {
             <div className="border-t border-border px-6 py-4 space-y-4">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-semibold">{formatPrice(totalPrice)}</span>
+                <span className="font-medium">{formatPrice(totalPrice)}</span>
               </div>
               <p className="text-xs text-muted-foreground">
                 Shipping and taxes calculated at checkout

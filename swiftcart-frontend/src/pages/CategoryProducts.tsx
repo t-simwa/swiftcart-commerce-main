@@ -170,20 +170,6 @@ const CategoryProducts = () => {
           </ol>
         </nav>
 
-        {/* Page Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">
-            {subcategory ? subcategory.name : category ? category.name : "Products"}
-          </h1>
-          {!isLoading && data?.pagination && (
-            <p className="text-muted-foreground">
-              {data.pagination.total > 0
-                ? `Showing ${products.length} of ${data.pagination.total} products`
-                : "No products found"}
-            </p>
-          )}
-        </div>
-
         {/* Sort and Filter Controls */}
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div className="flex items-center gap-3">

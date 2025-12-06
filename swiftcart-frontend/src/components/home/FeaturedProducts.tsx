@@ -25,8 +25,8 @@ export function FeaturedProducts() {
         {/* Section Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-foreground">Featured Products</h2>
-            <p className="text-sm text-muted-foreground mt-0.5">Hand-picked for quality and value</p>
+            <h2 className="text-lg md:text-xl font-medium text-foreground">Featured Products</h2>
+            <p className="text-sm text-muted-foreground mt-0.5 text-body-light">Hand-picked for quality and value</p>
           </div>
           <div className="flex items-center gap-2">
             <div className="hidden md:flex items-center gap-1">

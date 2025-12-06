@@ -23,7 +23,7 @@ export function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {/* Get to Know Us */}
             <div>
-              <h3 className="font-bold text-background mb-4 text-sm">Get to Know Us</h3>
+              <h3 className="font-medium text-background mb-4 text-sm">Get to Know Us</h3>
               <ul className="space-y-2.5 text-sm">
                 <li>
                   <Link to="/about" className="text-background/75 hover:text-background hover:underline transition-colors">
@@ -50,7 +50,7 @@ export function Footer() {
 
             {/* Make Money with Us */}
             <div>
-              <h3 className="font-bold text-background mb-4 text-sm">Make Money with Us</h3>
+              <h3 className="font-medium text-background mb-4 text-sm">Make Money with Us</h3>
               <ul className="space-y-2.5 text-sm">
                 <li>
                   <Link to="/sell" className="text-background/75 hover:text-background hover:underline transition-colors">
@@ -77,7 +77,7 @@ export function Footer() {
 
             {/* Payment Methods */}
             <div>
-              <h3 className="font-bold text-background mb-4 text-sm">Payment Methods</h3>
+              <h3 className="font-medium text-background mb-4 text-sm">Payment Methods</h3>
               <ul className="space-y-2.5 text-sm">
                 <li>
                   <Link to="/mpesa" className="text-background/75 hover:text-background hover:underline transition-colors">
@@ -104,7 +104,7 @@ export function Footer() {
 
             {/* Let Us Help You */}
             <div>
-              <h3 className="font-bold text-background mb-4 text-sm">Let Us Help You</h3>
+              <h3 className="font-medium text-background mb-4 text-sm">Let Us Help You</h3>
               <ul className="space-y-2.5 text-sm">
                 <li>
                   <Link to="/account" className="text-background/75 hover:text-background hover:underline transition-colors">
@@ -145,7 +145,7 @@ export function Footer() {
               <div className="flex h-7 w-7 items-center justify-center rounded bg-primary">
                 <span className="text-sm font-black text-primary-foreground">S</span>
               </div>
-              <span className="text-base font-bold text-background">
+              <span className="text-base font-medium text-background">
                 Swift<span className="text-primary">Cart</span>
               </span>
             </Link>

@@ -135,7 +135,7 @@ export function CategoryFilters({ className, availableBrands = [] }: CategoryFil
     >
       <div className="sticky top-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Filters</h2>
+          <h2 className="text-base font-medium">Filters</h2>
           {hasActiveFilters && (
             <Button
               variant="ghost"
