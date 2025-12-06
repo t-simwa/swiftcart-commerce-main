@@ -451,6 +451,16 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
+
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes fade-in {

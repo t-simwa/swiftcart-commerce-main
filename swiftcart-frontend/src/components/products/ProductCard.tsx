@@ -29,13 +29,13 @@ export function ProductCard({ product, className, style }: ProductCardProps) {
   return (
     <div
       className={cn(
-        "product-card group bg-card h-full",
+        "product-card group bg-background border border-border rounded-md overflow-hidden flex flex-col",
         className
       )}
-      style={style}
+      style={{ ...style, height: '420px' }}
     >
       {/* Image Container */}
-      <Link to={`/products/${product.slug}`} className="relative aspect-square overflow-hidden bg-secondary/30 block">
+      <Link to={`/products/${product.slug}`} className="relative aspect-square overflow-hidden bg-background block">
         <img
           src={product.image}
           alt={product.name}
@@ -74,13 +74,13 @@ export function ProductCard({ product, className, style }: ProductCardProps) {
         {/* Product Name */}
         <Link
           to={`/products/${product.slug}`}
-          className="font-medium text-sm text-foreground line-clamp-2 hover:text-primary transition-colors mb-1.5 leading-snug"
+          className="font-medium text-sm text-foreground line-clamp-2 hover:text-primary transition-colors mb-1.5 leading-snug min-h-[2.5rem]"
         >
           {product.name}
         </Link>
 
         {/* Rating */}
-        <div className="flex items-center gap-1.5 mb-2">
+        <div className="flex items-center gap-1.5 mb-2 min-h-[1.25rem]">
           <div className="star-rating">
             {[...Array(5)].map((_, i) => (
               <Star
@@ -101,7 +101,7 @@ export function ProductCard({ product, className, style }: ProductCardProps) {
 
         <div className="mt-auto space-y-2">
           {/* Price */}
-          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 min-h-[1.5rem]">
             <span className="text-base font-medium text-price">
               {formatPrice(product.price)}
             </span>
@@ -112,22 +112,24 @@ export function ProductCard({ product, className, style }: ProductCardProps) {
             )}
           </div>
 
-          {/* Stock Status */}
-          {stockStatus === "low" && (
-            <p className="text-xs text-warning font-medium">
-              Only {product.stock} left - order soon
-            </p>
-          )}
+          {/* Stock Status - Always reserve space */}
+          <div className="min-h-[1.25rem]">
+            {stockStatus === "low" && (
+              <p className="text-xs text-warning font-medium">
+                Only {product.stock} left - order soon
+              </p>
+            )}
 
-          {stockStatus === "in" && (
-            <p className="text-xs text-success font-medium">In Stock</p>
-          )}
+            {stockStatus === "in" && (
+              <p className="text-xs text-success font-medium">In Stock</p>
+            )}
+          </div>
 
           {/* Add to Cart */}
           <Button
             variant="cart"
             size="sm"
-            className="w-full mt-2"
+            className="w-full mt-2 h-9"
             disabled={stockStatus === "out"}
             onClick={() => addToCart(product)}
           >
