@@ -3,7 +3,8 @@ import { AmazonHeroCarousel } from "@/components/home/AmazonHeroCarousel";
 import { AmazonCategorySection } from "@/components/home/AmazonCategorySection";
 import { AmazonProductCarousel } from "@/components/home/AmazonProductCarousel";
 import { WalmartDealsSection } from "@/components/home/WalmartDealsSection";
-import { categories } from "@/data/products";
+import { CategoryCircleCarousel } from "@/components/home/CategoryCircleCarousel";
+import { departmentCategories } from "@/data/categories";
 import { apiClient } from "@/lib/api";
 
 const Index = () => {
@@ -113,41 +114,6 @@ const Index = () => {
   // Get deals products from deals API
   const dealsProducts = dealsData?.products || [];
 
-  // Category sections data
-  const shopByPriceCategories = [
-    {
-      id: "1",
-      name: "Under KSh 1,000",
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
-      link: "/products?maxPrice=1000",
-    },
-    {
-      id: "2",
-      name: "Under KSh 5,000",
-      image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&h=300&fit=crop",
-      link: "/products?maxPrice=5000",
-    },
-    {
-      id: "3",
-      name: "Under KSh 10,000",
-      image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop",
-      link: "/products?maxPrice=10000",
-    },
-    {
-      id: "4",
-      name: "Deals",
-      image: "https://images.unsplash.com/photo-1461896836934-0fe2bd9d3089?w=400&h=300&fit=crop",
-      link: "/deals",
-    },
-  ];
-
-  const shopByCategoryItems = categories.slice(0, 4).map((cat) => ({
-    id: cat.id,
-    name: cat.name,
-    image: cat.image,
-    link: `/products?category=${cat.slug}`,
-  }));
-
   const homeEssentialsCategories = [
     {
       id: "1",
@@ -189,22 +155,12 @@ const Index = () => {
         viewAllText="View all"
       />
 
-      {/* Shop by Price */}
-      <AmazonCategorySection
-        title="Shop by price"
-        categories={shopByPriceCategories}
-        seeMoreLink="/products"
-        seeMoreText="Discover more"
-        columns={4}
-      />
-
-      {/* Shop by Category */}
-      <AmazonCategorySection
+      {/* Shop by Category - Circular Carousel */}
+      <CategoryCircleCarousel
         title="Shop by category"
-        categories={shopByCategoryItems}
+        categories={departmentCategories}
         seeMoreLink="/products"
         seeMoreText="See all categories"
-        columns={4}
       />
 
       {/* Home Essentials */}

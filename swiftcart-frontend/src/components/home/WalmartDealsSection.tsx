@@ -51,7 +51,7 @@ export function WalmartDealsSection({
           {viewAllLink && (
             <Link
               to={viewAllLink}
-              className="text-sm font-medium text-red-600 hover:text-red-700 hover:underline whitespace-nowrap"
+              className="text-sm font-medium text-primary hover:text-primary/90 hover:underline whitespace-nowrap"
             >
               {viewAllText}
             </Link>

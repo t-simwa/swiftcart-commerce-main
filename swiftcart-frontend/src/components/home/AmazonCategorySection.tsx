@@ -41,7 +41,7 @@ export function AmazonCategorySection({
           {seeMoreLink && (
             <Link
               to={seeMoreLink}
-              className="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline whitespace-nowrap"
+              className="text-sm font-medium text-primary hover:text-primary/90 hover:underline whitespace-nowrap"
             >
               {seeMoreText}
             </Link>

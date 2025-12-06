@@ -456,7 +456,7 @@ export function Header() {
               <DialogTrigger asChild>
                 <button className="flex items-center gap-1 font-medium px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white">
                   <Menu className="h-4 w-4" />
-                  All
+                  All Departments
                 </button>
               </DialogTrigger>
               <DialogContent className="w-[350px] max-w-[90vw] h-[100vh] max-h-[100vh] p-0 m-0 rounded-none border-0 bg-white overflow-hidden left-0 top-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-0 data-[state=closed]:slide-out-to-left-0 data-[state=closed]:slide-out-to-top-0 [&>button]:hidden">
@@ -512,24 +512,41 @@ export function Header() {
                             
                             return (
                               <>
-                                <h2 className="text-base font-medium text-[#111] mb-3 leading-5" style={{ fontFamily: 'inherit' }}>{category.name}</h2>
+                                <button
+                                  onClick={() => {
+                                    navigate(`/category?category=${category.slug}`);
+                                    setIsMegaMenuOpen(false);
+                                  }}
+                                  className="w-full text-left text-base font-medium text-[#111] mb-3 leading-5 hover:text-primary transition-colors"
+                                  style={{ fontFamily: 'inherit' }}
+                                >
+                                  {category.name}
+                                </button>
                                 {category.subcategories && category.subcategories.length > 0 ? (
                                   <ul className="space-y-0.5">
-                                    {category.subcategories.map((subcat) => (
-                                      <li key={subcat.slug}>
-                                        <button
-                        onClick={() => {
-                                            navigate(`/category?category=${category.slug}&subcategory=${subcat.slug}`);
-                          setIsMegaMenuOpen(false);
-                        }}
-                                          className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                                          style={{ fontFamily: 'inherit' }}
-                                        >
-                                          <span>{subcat.name}</span>
-                                          <ChevronRight className="h-4 w-4 opacity-60" />
-                                        </button>
-                                      </li>
-                                    ))}
+                                    {category.subcategories.map((subcat) => {
+                                      // If subcategory slug starts with "all-", navigate to main category page
+                                      const isAllCategory = subcat.slug.startsWith('all-');
+                                      const navigateUrl = isAllCategory 
+                                        ? `/category?category=${category.slug}`
+                                        : `/category?category=${category.slug}&subcategory=${subcat.slug}`;
+                                      
+                                      return (
+                                        <li key={subcat.slug}>
+                                          <button
+                                            onClick={() => {
+                                              navigate(navigateUrl);
+                                              setIsMegaMenuOpen(false);
+                                            }}
+                                            className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                                            style={{ fontFamily: 'inherit' }}
+                                          >
+                                            <span>{subcat.name}</span>
+                                            <ChevronRight className="h-4 w-4 opacity-60" />
+                                          </button>
+                                        </li>
+                                      );
+                                    })}
                                   </ul>
                                 ) : (
                                   <p className="text-sm text-[#666]" style={{ fontFamily: 'inherit' }}>No subcategories available</p>

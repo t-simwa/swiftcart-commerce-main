@@ -37,7 +37,7 @@ const slides: CarouselSlide[] = [
   },
   {
     id: "5",
-    image: "https://images.unsplash.com/photo-1461896836934-0fe2bd9d3089?w=1500&h=600&fit=crop&q=85",
+    image: "https://images.unsplash.com/photo-1607083206968-13611e3d76db?w=1500&h=600&fit=crop&q=85",
     title: "Flash Deals | Up to 50% Off | Limited Time Only",
     link: "/deals",
   },
@@ -90,7 +90,7 @@ export function AmazonHeroCarousel() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="container-wide px-4 md:px-6 lg:px-8">
                     <div className="max-w-2xl mx-auto text-center">
-                      <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-background mb-8 drop-shadow-lg leading-loose">
+                      <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-background mb-8 drop-shadow-lg leading-tight">
                         {slide.title}
                       </h2>
                       <div className="flex flex-col items-center">
