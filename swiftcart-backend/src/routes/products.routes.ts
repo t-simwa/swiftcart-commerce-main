@@ -22,6 +22,7 @@ router.get(
       minPrice: z.string().regex(/^\d+(\.\d+)?$/).transform(Number).optional(),
       maxPrice: z.string().regex(/^\d+(\.\d+)?$/).transform(Number).optional(),
       featured: z.enum(['true', 'false']).transform((val) => val === 'true').optional(),
+      brands: z.string().optional(), // Comma-separated list of brands
     }),
   }),
   getProducts

@@ -12,6 +12,7 @@ interface QueryParams {
   minPrice?: number;
   maxPrice?: number;
   featured?: boolean;
+  brands?: string; // Comma-separated list of brands
 }
 
 /**
@@ -35,6 +36,7 @@ export const getProducts = async (
       minPrice,
       maxPrice,
       featured,
+      brands,
     } = req.query;
 
     logger.info('Fetching products', { page, limit, category, search, sort });
@@ -64,6 +66,37 @@ export const getProducts = async (
 
     if (featured === true) {
       query.featured = true;
+    }
+
+    // Filter by brands - brands are in the product name (e.g., "Apple iPhone 15 Pro")
+    if (brands) {
+      const brandList = brands.split(',').map((b: string) => b.trim()).filter(Boolean);
+      if (brandList.length > 0) {
+        // Match products where the name starts with any of the selected brands
+        // Escape special regex characters and match at the start of the name
+        const brandConditions = brandList.map((brand: string) => {
+          // Escape special regex characters
+          const escapedBrand = brand.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          // Match brand at the start of the product name (case-insensitive)
+          // Use space or end of string after brand to avoid partial matches
+          return {
+            name: { $regex: `^${escapedBrand}(\\s|$)`, $options: 'i' }
+          };
+        });
+        
+        // If we have $text search, we need to use $and to combine it with $or
+        // Otherwise, MongoDB automatically ANDs all conditions
+        if (query.$text) {
+          const textQuery = query.$text;
+          delete query.$text;
+          query.$and = [
+            { $text: textQuery },
+            { $or: brandConditions }
+          ];
+        } else {
+          query.$or = brandConditions;
+        }
+      }
     }
 
     // Build sort

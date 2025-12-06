@@ -9,9 +9,13 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "seed": "tsx src/scripts/seed.ts",
+    "seed:products": "tsx src/scripts/seedProducts.ts",
+    "seed:amazon": "tsx src/scripts/seedProductsAmazon.ts",
+    "seed:manual": "tsx src/scripts/seedManualProducts.ts",
     "migrate": "tsx src/scripts/migrate.ts",
     "migrate:down": "tsx src/scripts/migrate.ts down",
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src --ext .ts",
+    "track:products": "node src/scripts/utils/generateProductTracking.js"
   },
   "keywords": ["ecommerce", "api", "nodejs", "express"],
   "author": "",

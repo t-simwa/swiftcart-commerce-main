@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Example Product Name",
+    "description": "Example product description with key features",
+    "priceUsd": 29.99,
+    "originalPriceUsd": 39.99,
+    "imageUrl": "https://example.com/image.jpg",
+    "images": [
+      "https://example.com/image1.jpg",
+      "https://example.com/image2.jpg"
+    ],
+    "rating": 4.5,
+    "reviewCount": 1234,
+    "category": "electronics",
+    "subcategory": "computers-accessories",
+    "amazonUrl": "https://www.amazon.com/dp/EXAMPLE"
+  }
+]
+
