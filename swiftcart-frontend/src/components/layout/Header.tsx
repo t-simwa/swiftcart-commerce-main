@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Search, ShoppingCart, User, Menu, X, Heart, MapPin, ChevronDown, LogOut, Globe, Package, CreditCard, HelpCircle, Gift, Star, Settings, FileText } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, X, Heart, MapPin, ChevronDown, LogOut, Globe, Package, CreditCard, HelpCircle, Gift, Star, Settings, FileText, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/context/CartContext";
@@ -34,6 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { categories } from "@/data/products";
+import { digitalContentCategories, departmentCategories } from "@/data/categories";
 
 // Search departments/categories
 const searchDepartments = [
@@ -59,17 +60,20 @@ const languages = [
 
 // Countries/Regions
 const countries = [
-  { code: "KE", name: "Kenya" },
-  { code: "US", name: "United States" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "CA", name: "Canada" },
-  { code: "AU", name: "Australia" },
+  { code: "KE", name: "Kenya", flag: "🇰🇪" },
+  { code: "US", name: "United States", flag: "🇺🇸" },
+  { code: "GB", name: "United Kingdom", flag: "🇬🇧" },
+  { code: "CA", name: "Canada", flag: "🇨🇦" },
+  { code: "AU", name: "Australia", flag: "🇦🇺" },
 ];
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLocationDialogOpen, setIsLocationDialogOpen] = useState(false);
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [showAllDepartments, setShowAllDepartments] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("all");
   const [selectedLanguage, setSelectedLanguage] = useState("en");
@@ -443,69 +447,286 @@ export function Header() {
       <div className="hidden md:block bg-[#232f3e] text-white border-b border-[#131921] relative">
         <div className="container-wide">
           <nav className="flex items-center gap-1 h-9 text-sm overflow-x-auto">
-            {/* All Categories Mega Menu */}
-            <DropdownMenu open={isMegaMenuOpen} onOpenChange={setIsMegaMenuOpen}>
-              <DropdownMenuTrigger asChild>
+            {/* All Categories Mega Menu - Full Screen Dialog */}
+        <Dialog open={isMegaMenuOpen} onOpenChange={(open) => {
+          setIsMegaMenuOpen(open);
+          if (!open) {
+            setSelectedCategory(null);
+            setHoveredCategory(null);
+            setShowAllDepartments(false);
+          }
+        }}>
+              <DialogTrigger asChild>
                 <button className="flex items-center gap-1 font-medium px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white">
                   <Menu className="h-4 w-4" />
                   All
                 </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="start" 
-                className="w-[600px] p-4 max-h-[600px] overflow-y-auto"
-                onCloseAutoFocus={(e) => e.preventDefault()}
-              >
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <DropdownMenuLabel className="mb-2">Shop by Category</DropdownMenuLabel>
-                    {categories.map((category) => (
-                      <DropdownMenuItem
-                        key={category.id}
+              </DialogTrigger>
+              <DialogContent className="w-[350px] max-w-[90vw] h-[100vh] max-h-[100vh] p-0 m-0 rounded-none border-0 bg-white overflow-hidden left-0 top-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-0 data-[state=closed]:slide-out-to-left-0 data-[state=closed]:slide-out-to-top-0 [&>button]:hidden">
+                <div className="flex flex-col h-full relative">
+                  {/* Header - Exact Amazon styling */}
+                  <div className="flex items-center justify-between px-4 py-3 bg-[#232f3e] text-white border-b border-[#131921] shrink-0">
+                    <Link
+                      to={isAuthenticated ? "/account" : "/login"}
+                      onClick={() => setIsMegaMenuOpen(false)}
+                      className="flex items-center gap-2 text-white hover:text-white/90 no-underline"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                        <User className="h-5 w-5 text-white" />
+                      </div>
+                      <span className="text-sm font-bold leading-5" style={{ fontFamily: 'inherit' }}>
+                        Hello, {isAuthenticated && user ? (user.firstName || user.email.split('@')[0]) : 'sign in'}
+                      </span>
+                    </Link>
+                    <button
+                      onClick={() => setIsMegaMenuOpen(false)}
+                      className="text-white hover:bg-white/10 rounded p-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 shrink-0"
+                      aria-label="Close menu"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  </div>
+
+                  {/* Scrollable Content Area */}
+                  <div className="flex-1 overflow-y-auto bg-[#f3f3f3]" style={{ maxHeight: 'calc(100vh - 60px)' }}>
+                    {selectedCategory ? (
+                      /* Subcategory View */
+                      <>
+                        {/* Back to Main Menu Button */}
+                        <div className="px-4 pt-3 pb-2 bg-white border-b border-[#e7e7e7]">
+                          <button
+                            onClick={() => setSelectedCategory(null)}
+                            className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                            style={{ fontFamily: 'inherit' }}
+                          >
+                            <span className="flex items-center gap-1">
+                              <ChevronRight className="h-4 w-4 rotate-180" />
+                              <span>MAIN MENU</span>
+                            </span>
+                            <ChevronRight className="h-4 w-4 opacity-60" />
+                          </button>
+                        </div>
+
+                        {/* Category Name and Subcategories */}
+                        <div className="px-4 pt-3 pb-4">
+                          {(() => {
+                            const category = [...digitalContentCategories, ...departmentCategories].find(c => c.slug === selectedCategory);
+                            if (!category) return null;
+                            
+                            return (
+                              <>
+                                <h2 className="text-base font-bold text-[#111] mb-3 leading-5" style={{ fontFamily: 'inherit' }}>{category.name}</h2>
+                                {category.subcategories && category.subcategories.length > 0 ? (
+                                  <ul className="space-y-0.5">
+                                    {category.subcategories.map((subcat) => (
+                                      <li key={subcat.slug}>
+                                        <button
                         onClick={() => {
-                          navigate(`/products?category=${category.slug}`);
+                                            navigate(`/products?category=${category.slug}&subcategory=${subcat.slug}`);
                           setIsMegaMenuOpen(false);
                         }}
-                        className="flex items-center gap-2 p-2"
-                      >
-                        <img src={category.image} alt={category.name} className="w-8 h-8 rounded object-cover" />
-                        <div>
-                          <div className="font-medium">{category.name}</div>
-                          <div className="text-xs text-muted-foreground">{category.productCount}+ items</div>
+                                          className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                          style={{ fontFamily: 'inherit' }}
+                                        >
+                                          <span>{subcat.name}</span>
+                                          <ChevronRight className="h-4 w-4 opacity-60" />
+                                        </button>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  <p className="text-sm text-[#666]" style={{ fontFamily: 'inherit' }}>No subcategories available</p>
+                                )}
+                              </>
+                            );
+                          })()}
                         </div>
-                      </DropdownMenuItem>
-                    ))}
+                      </>
+                    ) : (
+                      /* Main Menu View */
+                      <>
+                        {/* Shop by Department Section */}
+                        <div className="px-4 pt-3 pb-2">
+                          <h3 className="text-xs font-bold text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Shop by Department</h3>
+                          <ul className="space-y-0.5">
+                            {(showAllDepartments ? departmentCategories : departmentCategories.slice(0, 4)).map((category) => (
+                              <li key={category.slug}>
+                                <button
+                                  onClick={() => {
+                                    setSelectedCategory(category.slug);
+                                  }}
+                                  className={cn(
+                                    "w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between",
+                                    "text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                  )}
+                                  style={{ fontFamily: 'inherit' }}
+                                >
+                                  <span>{category.name}</span>
+                                  <ChevronRight className="h-4 w-4 opacity-60" />
+                                </button>
+                              </li>
+                            ))}
+                            <li className="pt-1">
+                              <button
+                                onClick={() => { setShowAllDepartments(!showAllDepartments); }}
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                style={{ fontFamily: 'inherit' }}
+                              >
+                                <span>{showAllDepartments ? 'See less' : 'See all'}</span>
+                                <ChevronRight className={cn("h-4 w-4 opacity-60 transition-transform", showAllDepartments && "rotate-180")} />
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+
+                        {/* Programs & Features Section */}
+                        <div className="px-4 pt-3 pb-2 border-t border-[#e7e7e7]">
+                          <h3 className="text-xs font-bold text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Programs & Features</h3>
+                          <ul className="space-y-0.5">
+                            <li>
+                              <button
+                                onClick={() => { navigate('/products?featured=true'); setIsMegaMenuOpen(false); }}
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                style={{ fontFamily: 'inherit' }}
+                              >
+                                <span>Gift Cards</span>
+                                <ChevronRight className="h-4 w-4 opacity-60" />
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                onClick={() => { navigate('/products?interest=true'); setIsMegaMenuOpen(false); }}
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                style={{ fontFamily: 'inherit' }}
+                              >
+                                <span>Shop By Interest</span>
+                                <ChevronRight className="h-4 w-4 opacity-60" />
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                onClick={() => { navigate('/live'); setIsMegaMenuOpen(false); }}
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                style={{ fontFamily: 'inherit' }}
+                              >
+                                <span>SwiftCart Live</span>
+                                <ChevronRight className="h-4 w-4 opacity-60" />
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                onClick={() => { navigate('/international'); setIsMegaMenuOpen(false); }}
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                style={{ fontFamily: 'inherit' }}
+                              >
+                                <span>International Shopping</span>
+                                <ChevronRight className="h-4 w-4 opacity-60" />
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                onClick={() => { navigate('/second-chance'); setIsMegaMenuOpen(false); }}
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                style={{ fontFamily: 'inherit' }}
+                              >
+                                <span>SwiftCart Second Chance</span>
+                                <ChevronRight className="h-4 w-4 opacity-60" />
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+
+                        {/* Help & Settings Section */}
+                        <div className="px-4 pt-3 pb-4 border-t border-[#e7e7e7]">
+                          <h3 className="text-xs font-bold text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Help & Settings</h3>
+                          <ul className="space-y-0.5">
+                            <li>
+                              <button
+                                onClick={() => { navigate('/account'); setIsMegaMenuOpen(false); }}
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                style={{ fontFamily: 'inherit' }}
+                              >
+                                <span>Your Account</span>
+                                <ChevronRight className="h-4 w-4 opacity-60" />
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                onClick={() => {
+                                  setSelectedLanguage(selectedLanguage);
+                                  setIsMegaMenuOpen(false);
+                                }}
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                style={{ fontFamily: 'inherit' }}
+                              >
+                                <span className="flex items-center gap-2">
+                                  <Globe className="h-4 w-4" />
+                                  {languages.find(l => l.code === selectedLanguage)?.name || "English"}
+                                </span>
+                                <ChevronRight className="h-4 w-4 opacity-60" />
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                onClick={() => {
+                                  setIsLocationDialogOpen(true);
+                                  setIsMegaMenuOpen(false);
+                                }}
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                style={{ fontFamily: 'inherit' }}
+                              >
+                                <span className="flex items-center gap-2">
+                                  <span className="text-base">{countries.find(c => c.code === selectedCountry)?.flag || "🇺🇸"}</span>
+                                  {countries.find(c => c.code === selectedCountry)?.name || "United States"}
+                                </span>
+                                <ChevronRight className="h-4 w-4 opacity-60" />
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                onClick={() => { navigate('/help'); setIsMegaMenuOpen(false); }}
+                                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                style={{ fontFamily: 'inherit' }}
+                              >
+                                <span>Customer Service</span>
+                                <ChevronRight className="h-4 w-4 opacity-60" />
+                              </button>
+                            </li>
+                            {!isAuthenticated && (
+                              <li>
+                                <button
+                                  onClick={() => { navigate('/login'); setIsMegaMenuOpen(false); }}
+                                  className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                                  style={{ fontFamily: 'inherit' }}
+                                >
+                                  <span>Sign in</span>
+                                  <ChevronRight className="h-4 w-4 opacity-60" />
+                                </button>
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+
+                        {/* Footer with Back to top */}
+                        <div className="px-4 py-3 bg-white border-t border-[#e7e7e7]">
+                          <button
+                            onClick={() => {
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                              setIsMegaMenuOpen(false);
+                            }}
+                            className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-[#c45500]"
+                            style={{ fontFamily: 'inherit' }}
+                          >
+                            <span>Back to top</span>
+                            <ChevronRight className="h-4 w-4 opacity-60" />
+                          </button>
                   </div>
-                  <div>
-                    <DropdownMenuLabel className="mb-2">Programs & Features</DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => { navigate('/deals'); setIsMegaMenuOpen(false); }}>
-                      <Star className="mr-2 h-4 w-4" />
-                      Today's Deals
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => { navigate('/products?featured=true'); setIsMegaMenuOpen(false); }}>
-                      <Gift className="mr-2 h-4 w-4" />
-                      Gift Cards
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => { navigate('/help'); setIsMegaMenuOpen(false); }}>
-                      <HelpCircle className="mr-2 h-4 w-4" />
-                      Customer Service
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuLabel className="mt-2">Help & Settings</DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => { navigate('/help'); setIsMegaMenuOpen(false); }}>
-                      <FileText className="mr-2 h-4 w-4" />
-                      Help Center
-                    </DropdownMenuItem>
-                    {isAuthenticated && (
-                      <DropdownMenuItem onClick={() => { navigate('/account'); setIsMegaMenuOpen(false); }}>
-                        <Settings className="mr-2 h-4 w-4" />
-                        Account Settings
-                      </DropdownMenuItem>
+                      </>
                     )}
                   </div>
                 </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </DialogContent>
+            </Dialog>
 
             <Link
               to="/deals"
