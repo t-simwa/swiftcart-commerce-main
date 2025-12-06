@@ -519,7 +519,7 @@ export function Header() {
                                       <li key={subcat.slug}>
                                         <button
                         onClick={() => {
-                                            navigate(`/products?category=${category.slug}&subcategory=${subcat.slug}`);
+                                            navigate(`/category?category=${category.slug}&subcategory=${subcat.slug}`);
                           setIsMegaMenuOpen(false);
                         }}
                                           className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"

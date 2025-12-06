@@ -23,6 +23,7 @@ import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import Orders from "./pages/Orders";
 import Deals from "./pages/Deals";
+import CategoryProducts from "./pages/CategoryProducts";
 import NotFound from "./pages/NotFound";
 // Admin pages
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -69,6 +70,7 @@ const App = () => (
             <Route path="/products" element={<PublicLayout><Products /></PublicLayout>} />
             <Route path="/products/:slug" element={<PublicLayout><ProductDetail /></PublicLayout>} />
             <Route path="/deals" element={<PublicLayout><Deals /></PublicLayout>} />
+            <Route path="/category" element={<PublicLayout><CategoryProducts /></PublicLayout>} />
             {/* Auth Routes */}
             <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
             <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />

@@ -76,6 +76,7 @@ class ApiClient {
     minPrice?: number;
     maxPrice?: number;
     featured?: boolean;
+    brands?: string; // Comma-separated list of brands
   }): Promise<ApiResponse<PaginatedResponse<any>>> {
     const queryParams = new URLSearchParams();
     
