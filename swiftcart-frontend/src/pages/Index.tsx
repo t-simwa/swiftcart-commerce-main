@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AmazonHeroCarousel } from "@/components/home/AmazonHeroCarousel";
 import { AmazonCategorySection } from "@/components/home/AmazonCategorySection";
 import { AmazonProductCarousel } from "@/components/home/AmazonProductCarousel";
+import { WalmartDealsSection } from "@/components/home/WalmartDealsSection";
 import { categories } from "@/data/products";
 import { apiClient } from "@/lib/api";
 
@@ -89,12 +90,28 @@ const Index = () => {
     },
   });
 
+  // Fetch deals products (products with discounts/originalPrice)
+  const { data: dealsData } = useQuery({
+    queryKey: ["deals", "home"],
+    queryFn: async () => {
+      const response = await apiClient.getDeals({
+        page: 1,
+        limit: 30,
+        sort: "discount-desc",
+      });
+      return response.data;
+    },
+  });
+
   const featuredProducts = featuredData?.products || [];
   const bestSellers = bestSellersData?.products || [];
   const electronicsProducts = electronicsData?.products || [];
   const fashionProducts = fashionData?.products || [];
   const homeProducts = homeData?.products || [];
   const sportsProducts = sportsData?.products || [];
+  
+  // Get deals products from deals API
+  const dealsProducts = dealsData?.products || [];
 
   // Category sections data
   const shopByPriceCategories = [
@@ -162,6 +179,15 @@ const Index = () => {
     <main className="bg-secondary/30 min-h-screen">
       {/* Hero Carousel */}
       <AmazonHeroCarousel />
+
+      {/* Cyber Monday Deals & more - Walmart Style Section */}
+      <WalmartDealsSection
+        products={dealsProducts.slice(0, 20)}
+        title="Shop all Deals & more"
+        subtitle="Up to 50% off"
+        viewAllLink="/deals"
+        viewAllText="View all"
+      />
 
       {/* Shop by Price */}
       <AmazonCategorySection

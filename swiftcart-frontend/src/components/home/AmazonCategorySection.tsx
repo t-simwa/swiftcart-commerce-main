@@ -13,6 +13,7 @@ interface AmazonCategorySectionProps {
   seeMoreLink?: string;
   seeMoreText?: string;
   columns?: 2 | 4;
+  subtitle?: string;
 }
 
 export function AmazonCategorySection({
@@ -21,18 +22,26 @@ export function AmazonCategorySection({
   seeMoreLink,
   seeMoreText = "See more",
   columns = 2,
+  subtitle,
 }: AmazonCategorySectionProps) {
   const gridCols = columns === 2 ? "grid-cols-2" : "grid-cols-2 md:grid-cols-4";
 
   return (
     <section className="bg-background py-4 md:py-6">
       <div className="container-wide">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg md:text-xl font-medium text-foreground">{title}</h2>
+        <div className="flex items-end justify-between mb-4 px-2">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 leading-tight">
+              {title}
+            </h2>
+            {subtitle && (
+              <p className="text-base text-gray-600 font-normal">{subtitle}</p>
+            )}
+          </div>
           {seeMoreLink && (
             <Link
               to={seeMoreLink}
-              className="text-sm text-primary hover:underline hover:text-primary/80"
+              className="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline whitespace-nowrap"
             >
               {seeMoreText}
             </Link>

@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, Heart, Star } from "lucide-react";
+import { Heart, ShoppingCart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { cn } from "@/lib/utils";
 
-interface ProductCardProps {
+interface WalmartDealCardProps {
   product: Product;
   className?: string;
   style?: React.CSSProperties;
 }
 
-export function ProductCard({ product, className, style }: ProductCardProps) {
+export function WalmartDealCard({ product, className, style }: WalmartDealCardProps) {
   const { addToCart } = useCart();
 
   const discount = product.originalPrice
@@ -36,10 +36,17 @@ export function ProductCard({ product, className, style }: ProductCardProps) {
     }
   };
 
+  // Format price for Walmart style: "Now $X" or just "$X"
+  const formatWalmartPrice = (price: number) => {
+    const formatted = formatPrice(price);
+    // Remove "KES" and replace with "KSh" for consistency, or keep as is
+    return formatted.replace("KES", "KSh");
+  };
+
   return (
     <div
       className={cn(
-        "product-card group bg-white border border-gray-200 rounded-sm overflow-hidden flex flex-col relative",
+        "walmart-deal-card group bg-white border border-gray-200 rounded-sm overflow-hidden flex flex-col relative",
         "hover:shadow-lg transition-shadow duration-200",
         className
       )}
@@ -53,7 +60,7 @@ export function ProductCard({ product, className, style }: ProductCardProps) {
           className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
-        
+
         {/* Cyber Deal Badge - Top Left */}
         {hasDiscount && (
           <div
@@ -122,16 +129,16 @@ export function ProductCard({ product, className, style }: ProductCardProps) {
                 <div className="flex items-baseline gap-1">
                   <span className="text-xs text-gray-600 font-normal">Now</span>
                   <span className="text-base font-semibold" style={{ color: "#007a00" }}>
-                    {formatPrice(product.price)}
+                    {formatWalmartPrice(product.price)}
                   </span>
                 </div>
                 <span className="text-xs text-gray-500 line-through font-normal">
-                  Was {formatPrice(product.originalPrice!)}
+                  Was {formatWalmartPrice(product.originalPrice!)}
                 </span>
               </>
             ) : (
               <span className="text-base font-semibold text-gray-900">
-                {formatPrice(product.price)}
+                {formatWalmartPrice(product.price)}
               </span>
             )}
           </div>
@@ -149,7 +156,6 @@ export function ProductCard({ product, className, style }: ProductCardProps) {
             )}
           </div>
 
-          {/* Add to Cart Button */}
           {product.variants && product.variants.length > 0 ? (
             <Button
               variant="outline"
