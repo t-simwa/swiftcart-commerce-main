@@ -320,12 +320,12 @@ const ProductDetail = () => {
       <div className="container-wide">
 
         {/* Main Product Section - Walmart Style Layout (3 Columns) */}
-        <div className="flex gap-6 mb-12">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6 mb-8 md:mb-12">
           {/* Left: Image Gallery with Vertical Thumbnails */}
-          <div className="flex gap-4 flex-shrink-0">
-            {/* Vertical Thumbnail Strip */}
+          <div className="flex flex-col md:flex-row gap-4 flex-shrink-0 w-full md:w-auto">
+            {/* Vertical Thumbnail Strip - Hidden on mobile, shown on desktop */}
             {images.length > 1 && (
-              <div className="flex flex-col gap-2 w-20 flex-shrink-0">
+              <div className="hidden md:flex flex-col gap-2 w-20 flex-shrink-0">
                 {images.slice(0, 6).map((image, index) => (
                   <button
                     key={index}
@@ -359,8 +359,32 @@ const ProductDetail = () => {
               </div>
             )}
 
+            {/* Horizontal Thumbnail Strip - Mobile only */}
+            {images.length > 1 && (
+              <div className="flex md:hidden gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
+                {images.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImage(index)}
+                    className={cn(
+                      "aspect-square w-16 h-16 overflow-hidden rounded border-2 transition-all flex-shrink-0",
+                      selectedImage === index
+                        ? "border-red-600 ring-2 ring-red-600/20"
+                        : "border-gray-300"
+                    )}
+                  >
+                    <img
+                      src={image}
+                      alt={`${product.name} ${index + 1}`}
+                      className="h-full w-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+
             {/* Main Image */}
-            <div className="relative w-[500px] h-[500px] bg-white border border-gray-200 rounded flex-shrink-0">
+            <div className="relative w-full md:w-[500px] aspect-square md:h-[500px] bg-white border border-gray-200 rounded flex-shrink-0">
               <Dialog open={imageZoomed} onOpenChange={setImageZoomed}>
                 <DialogTrigger asChild>
                   <button className="w-full h-full relative group">
@@ -416,7 +440,7 @@ const ProductDetail = () => {
           </div>
 
           {/* Center: Product Details - Walmart Style */}
-          <div className="flex-1 max-w-[500px]">
+          <div className="flex-1 max-w-full md:max-w-[500px] w-full">
             {/* Popular Pick Badge */}
             {product.featured && (
               <div className="mb-2">
@@ -561,7 +585,7 @@ const ProductDetail = () => {
           </div>
 
           {/* Right: Purchase Section - Walmart Style */}
-          <div className="w-[350px] flex-shrink-0 bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <div className="w-full md:w-[350px] flex-shrink-0 bg-gray-50 border border-gray-200 rounded-lg p-4">
             {/* Price Section - Walmart Style */}
             <div className="mb-6">
               <div className="mb-2">
@@ -760,12 +784,12 @@ const ProductDetail = () => {
                 <h3 className="text-sm text-gray-600">Explore additional savings</h3>
               </div>
             </div>
-            <div className="flex gap-4 overflow-x-auto pb-4">
+            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
               {relatedProducts.slice(0, 8).map((item: Product) => (
                 <Link
                   key={item._id || item.id}
                   to={`/products/${item.slug}`}
-                  className="flex-shrink-0 w-[200px] group"
+                  className="flex-shrink-0 w-[160px] md:w-[200px] group"
                 >
                   <div className="relative mb-2">
                     <img
@@ -979,8 +1003,8 @@ const ProductDetail = () => {
         {frequentlyBought.length > 0 && (
           <section className="mb-12 pt-8 border-t border-gray-200">
             <h2 className="text-xl font-medium text-gray-900 mb-6">Frequently bought together</h2>
-            <div className="flex gap-6 items-start">
-              <div className="flex-1">
+            <div className="flex flex-col md:flex-row gap-6 items-start">
+              <div className="flex-1 w-full">
                 <div className="flex items-center gap-4 mb-4">
                   <input
                     type="checkbox"
@@ -1028,7 +1052,7 @@ const ProductDetail = () => {
                   </div>
                 ))}
               </div>
-              <div className="w-80 p-6 border border-gray-200 rounded-lg bg-gray-50">
+              <div className="w-full md:w-80 p-6 border border-gray-200 rounded-lg bg-gray-50">
                 <div className="space-y-3 mb-4">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-700">Current price is</span>

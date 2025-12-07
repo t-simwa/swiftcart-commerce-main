@@ -481,7 +481,12 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 className="md:hidden text-white hover:bg-white/10"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                onClick={() => {
+                  setIsMenuOpen(!isMenuOpen);
+                  if (isMenuOpen) {
+                    setSelectedCategory(null);
+                  }
+                }}
               >
                 {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </Button>
@@ -919,7 +924,10 @@ export function Header() {
               </span>
             </Link>
             <button
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                setIsMenuOpen(false);
+                setSelectedCategory(null);
+              }}
               className="text-white hover:bg-white/10 rounded p-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 shrink-0"
               aria-label="Close menu"
             >
@@ -929,175 +937,233 @@ export function Header() {
 
           {/* Scrollable Content Area */}
           <div className="flex-1 overflow-y-auto bg-[#f3f3f3] pb-0" style={{ maxHeight: 'calc(100vh - 60px)' }}>
-            {/* Shop by Department Section */}
-            <div className="px-4 pt-3 pb-2">
-              <h3 className="text-xs font-medium text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Shop by Department</h3>
-              <ul className="space-y-0.5">
-                {(showAllDepartments ? departmentCategories : departmentCategories.slice(0, 4)).map((category) => (
-                  <li key={category.slug}>
-                    <button
-                      onClick={() => {
-                        navigate(`/category?category=${category.slug}`);
-                        setIsMenuOpen(false);
-                      }}
-                      className={cn(
-                        "w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between",
-                        "text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                      )}
-                      style={{ fontFamily: 'inherit' }}
-                    >
-                      <span>{category.name}</span>
-                      <ChevronRight className="h-4 w-4 opacity-60" />
-                    </button>
-                  </li>
-                ))}
-                <li className="pt-1">
+            {selectedCategory ? (
+              /* Subcategory View */
+              <>
+                {/* Back to Main Menu Button */}
+                <div className="px-4 pt-3 pb-2 bg-white border-b border-[#e7e7e7]">
                   <button
-                    onClick={() => { setShowAllDepartments(!showAllDepartments); }}
+                    onClick={() => setSelectedCategory(null)}
                     className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                     style={{ fontFamily: 'inherit' }}
                   >
-                    <span>{showAllDepartments ? 'See less' : 'See all'}</span>
-                    <ChevronRight className={cn("h-4 w-4 opacity-60 transition-transform", showAllDepartments && "rotate-180")} />
+                    <span className="flex items-center gap-1">
+                      <ChevronRight className="h-4 w-4 rotate-180" />
+                      <span>MAIN MENU</span>
+                    </span>
+                    <ChevronRight className="h-4 w-4 opacity-60" />
                   </button>
-                </li>
-              </ul>
-            </div>
+                </div>
 
-            {/* Shop Section */}
-            <div className="px-4 pt-3 pb-2 border-t border-[#e7e7e7]">
-              <h3 className="text-xs font-medium text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Shop</h3>
-              <ul className="space-y-0.5">
-                <li>
-          <Link
-                    to="/deals"
-            onClick={() => setIsMenuOpen(false)}
-                    className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                    style={{ fontFamily: 'inherit' }}
-          >
-                    <span>Today's Deals</span>
-                    <ChevronRight className="h-4 w-4 opacity-60" />
-          </Link>
-                </li>
-                <li>
-          <Link
-                    to="/best-sellers"
-            onClick={() => setIsMenuOpen(false)}
-                    className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                    style={{ fontFamily: 'inherit' }}
-          >
-                    <span>Best Sellers</span>
-                    <ChevronRight className="h-4 w-4 opacity-60" />
-          </Link>
-                </li>
-                <li>
-          <Link
-                    to="/new-arrivals"
-            onClick={() => setIsMenuOpen(false)}
-                    className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                    style={{ fontFamily: 'inherit' }}
-          >
-                    <span>New Arrivals</span>
-                    <ChevronRight className="h-4 w-4 opacity-60" />
-          </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/sell"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                    style={{ fontFamily: 'inherit' }}
-                  >
-                    <span>Sell</span>
-                    <ChevronRight className="h-4 w-4 opacity-60" />
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/gift-cards"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                    style={{ fontFamily: 'inherit' }}
-                  >
-                    <span>Gift Cards</span>
-                    <ChevronRight className="h-4 w-4 opacity-60" />
-                  </Link>
-                </li>
-              </ul>
-            </div>
+                {/* Category Name and Subcategories */}
+                <div className="px-4 pt-3 pb-4">
+                  {(() => {
+                    const category = [...digitalContentCategories, ...departmentCategories].find(c => c.slug === selectedCategory);
+                    if (!category) return null;
 
-            {/* Help & Settings Section */}
-            <div className="px-4 pt-3 pb-4 border-t border-[#e7e7e7]">
-              <h3 className="text-xs font-medium text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Help & Settings</h3>
-              <ul className="space-y-0.5">
-          {isAuthenticated ? (
-            <>
+                    return (
+                      <>
+                        <button
+                          onClick={() => {
+                            navigate(`/category?category=${category.slug}`);
+                            setIsMenuOpen(false); // Close mobile menu after navigation
+                          }}
+                          className="w-full text-left text-base font-medium text-[#111] mb-3 leading-5 hover:text-primary transition-colors"
+                          style={{ fontFamily: 'inherit' }}
+                        >
+                          {category.name}
+                        </button>
+                        {category.subcategories && category.subcategories.length > 0 ? (
+                          <ul className="space-y-0.5">
+                            {category.subcategories.map((subcat) => {
+                              const isAllCategory = subcat.slug.startsWith('all-');
+                              const navigateUrl = isAllCategory
+                                ? `/category?category=${category.slug}`
+                                : `/category?category=${category.slug}&subcategory=${subcat.slug}`;
+
+                              return (
+                                <li key={subcat.slug}>
+                                  <button
+                                    onClick={() => {
+                                      navigate(navigateUrl);
+                                      setIsMenuOpen(false); // Close mobile menu after navigation
+                                    }}
+                                    className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                                    style={{ fontFamily: 'inherit' }}
+                                  >
+                                    <span>{subcat.name}</span>
+                                    <ChevronRight className="h-4 w-4 opacity-60" />
+                                  </button>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        ) : (
+                          <p className="text-sm text-[#666]" style={{ fontFamily: 'inherit' }}>No subcategories available</p>
+                        )}
+                      </>
+                    );
+                  })()}
+                </div>
+              </>
+            ) : (
+              /* Main Menu View */
+              <>
+                {/* Shop by Department Section */}
+                <div className="px-4 pt-3 pb-2">
+                  <h3 className="text-xs font-medium text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Shop by Department</h3>
+                  <ul className="space-y-0.5">
+                    {(showAllDepartments ? departmentCategories : departmentCategories.slice(0, 4)).map((category) => (
+                      <li key={category.slug}>
+                        <button
+                          onClick={() => {
+                            setSelectedCategory(category.slug);
+                          }}
+                          className={cn(
+                            "w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between",
+                            "text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                          )}
+                          style={{ fontFamily: 'inherit' }}
+                        >
+                          <span>{category.name}</span>
+                          <ChevronRight className="h-4 w-4 opacity-60" />
+                        </button>
+                      </li>
+                    ))}
+                    <li className="pt-1">
+                      <button
+                        onClick={() => { setShowAllDepartments(!showAllDepartments); }}
+                        className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                        style={{ fontFamily: 'inherit' }}
+                      >
+                        <span>{showAllDepartments ? 'See less' : 'See all'}</span>
+                        <ChevronRight className={cn("h-4 w-4 opacity-60 transition-transform", showAllDepartments && "rotate-180")} />
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Shop Section */}
+                <div className="px-4 pt-3 pb-2 border-t border-[#e7e7e7]">
+                  <h3 className="text-xs font-medium text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Shop</h3>
+                  <ul className="space-y-0.5">
                     <li>
           <Link
-            to="/account"
+                        to="/deals"
             onClick={() => setIsMenuOpen(false)}
                         className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
                         style={{ fontFamily: 'inherit' }}
           >
-                        <span>Your Account</span>
+                        <span>Today's Deals</span>
                         <ChevronRight className="h-4 w-4 opacity-60" />
           </Link>
                     </li>
                     <li>
+          <Link
+                        to="/best-sellers"
+            onClick={() => setIsMenuOpen(false)}
+                        className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                        style={{ fontFamily: 'inherit' }}
+          >
+                        <span>Best Sellers</span>
+                        <ChevronRight className="h-4 w-4 opacity-60" />
+          </Link>
+                    </li>
+                    <li>
+          <Link
+                        to="/new-arrivals"
+            onClick={() => setIsMenuOpen(false)}
+                        className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                        style={{ fontFamily: 'inherit' }}
+          >
+                        <span>New Arrivals</span>
+                        <ChevronRight className="h-4 w-4 opacity-60" />
+          </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/sell"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                        style={{ fontFamily: 'inherit' }}
+                      >
+                        <span>Sell</span>
+                        <ChevronRight className="h-4 w-4 opacity-60" />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/gift-cards"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                        style={{ fontFamily: 'inherit' }}
+                      >
+                        <span>Gift Cards</span>
+                        <ChevronRight className="h-4 w-4 opacity-60" />
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Help & Settings Section */}
+                <div className="px-4 pt-3 pb-4 border-t border-[#e7e7e7]">
+                  <h3 className="text-xs font-medium text-[#111] uppercase tracking-wide mb-2 leading-4" style={{ fontFamily: 'inherit' }}>Help & Settings</h3>
+                  <ul className="space-y-0.5">
+          {isAuthenticated ? (
+            <>
+                        <li>
+          <Link
+            to="/account"
+            onClick={() => setIsMenuOpen(false)}
+                            className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                            style={{ fontFamily: 'inherit' }}
+          >
+                            <span>Your Account</span>
+                            <ChevronRight className="h-4 w-4 opacity-60" />
+          </Link>
+                        </li>
+                        <li>
               <button
                 onClick={() => {
                   logout();
                   setIsMenuOpen(false);
                 }}
-                        className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-destructive"
-                        style={{ fontFamily: 'inherit' }}
+                            className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-destructive"
+                            style={{ fontFamily: 'inherit' }}
               >
-                        <span>Sign Out</span>
-                        <ChevronRight className="h-4 w-4 opacity-60" />
+                            <span>Sign Out</span>
+                            <ChevronRight className="h-4 w-4 opacity-60" />
               </button>
-                    </li>
+                        </li>
             </>
           ) : (
-                  <li>
+                      <li>
             <Link
               to="/login"
               onClick={() => setIsMenuOpen(false)}
-                      className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                      style={{ fontFamily: 'inherit' }}
+                          className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                          style={{ fontFamily: 'inherit' }}
             >
-                      <span>Sign in</span>
-                      <ChevronRight className="h-4 w-4 opacity-60" />
+                          <span>Sign in</span>
+                          <ChevronRight className="h-4 w-4 opacity-60" />
             </Link>
-                  </li>
+                      </li>
           )}
-                <li>
+                    <li>
           <Link
             to="/help"
             onClick={() => setIsMenuOpen(false)}
-                    className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                    style={{ fontFamily: 'inherit' }}
+                        className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                        style={{ fontFamily: 'inherit' }}
           >
-                    <span>Customer Service</span>
-                    <ChevronRight className="h-4 w-4 opacity-60" />
+                        <span>Customer Service</span>
+                        <ChevronRight className="h-4 w-4 opacity-60" />
           </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Footer with Back to top */}
-            <div className="px-4 pt-3 pb-0 bg-white border-t border-[#e7e7e7]">
-              <button
-                onClick={() => {
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                  setIsMenuOpen(false);
-                }}
-                className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                style={{ fontFamily: 'inherit' }}
-              >
-                <span>Back to top</span>
-                <ChevronRight className="h-4 w-4 opacity-60" />
-              </button>
-            </div>
+                    </li>
+                  </ul>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

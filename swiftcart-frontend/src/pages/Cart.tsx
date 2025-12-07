@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown, ChevronUp, Trash2, Truck, Car, ShoppingBag } from "lucide-react";
+import { ChevronDown, ChevronUp, Trash2, Truck, Car, ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart, getProductId } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
@@ -15,6 +15,7 @@ const Cart = () => {
   const [zipCode, setZipCode] = useState("95829");
   const [isGift, setIsGift] = useState(false);
   const [isOptionsExpanded, setIsOptionsExpanded] = useState(false);
+  const essentialsScrollRef = useRef<HTMLDivElement>(null);
 
   // Calculate totals
   const subtotal = totalPrice;
@@ -36,6 +37,21 @@ const Cart = () => {
     },
   });
 
+  // Scroll function for essentials carousel
+  const scrollEssentials = (direction: "left" | "right") => {
+    if (essentialsScrollRef.current) {
+      // On mobile: scroll by one card width (full viewport minus padding), on desktop: scroll by 400px
+      const isMobile = window.innerWidth < 768;
+      const scrollAmount = isMobile 
+        ? essentialsScrollRef.current.clientWidth 
+        : 400;
+      essentialsScrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   if (state.items.length === 0) {
     return (
       <div className="container-wide py-16 min-h-[60vh]">
@@ -51,10 +67,10 @@ const Cart = () => {
   }
 
   return (
-    <div className="container-wide py-6">
-      <div className="flex flex-col lg:flex-row gap-6">
+    <div className="container-wide py-4 md:py-6">
+      <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
         {/* Left Column - Cart Items */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 w-full order-1 lg:order-1">
           {/* Cart Header */}
           <div className="mb-4">
             <h1 className="text-2xl font-medium text-gray-900">
@@ -77,49 +93,49 @@ const Cart = () => {
             </button>
 
             {isOptionsExpanded && (
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
                 {/* Shipping Card */}
                 <button
                   onClick={() => setDeliveryOption("shipping")}
-                  className={`flex-1 flex flex-col items-center justify-center p-4 border rounded-lg bg-white transition-all ${
+                  className={`flex-1 min-w-[100px] flex flex-col items-center justify-center p-3 sm:p-4 border rounded-lg bg-white transition-all flex-shrink-0 ${
                     deliveryOption === "shipping"
                       ? "border-gray-900 border-2"
                       : "border-gray-200"
                   }`}
                 >
-                  <Truck className="h-8 w-8 text-red-600 mb-2" />
-                  <span className="text-sm font-medium text-gray-900 mb-1">Shipping</span>
+                  <Truck className="h-6 w-6 sm:h-8 sm:w-8 text-red-600 mb-2" />
+                  <span className="text-xs sm:text-sm font-medium text-gray-900 mb-1">Shipping</span>
                   <span className="text-xs text-gray-600">Available</span>
                 </button>
 
                 {/* Pickup Card */}
                 <button
                   onClick={() => setDeliveryOption("pickup")}
-                  className={`flex-1 flex flex-col items-center justify-center p-4 border rounded-lg bg-white transition-all ${
+                  className={`flex-1 min-w-[100px] flex flex-col items-center justify-center p-3 sm:p-4 border rounded-lg bg-white transition-all flex-shrink-0 ${
                     deliveryOption === "pickup"
                       ? "border-gray-900 border-2"
                       : "border-gray-200"
                   }`}
                 >
-                  <Car className="h-8 w-8 text-red-600 mb-2" />
-                  <span className="text-sm font-medium text-gray-900 mb-1">Pickup</span>
+                  <Car className="h-6 w-6 sm:h-8 sm:w-8 text-red-600 mb-2" />
+                  <span className="text-xs sm:text-sm font-medium text-gray-900 mb-1">Pickup</span>
                   <span className="text-xs text-gray-600">Available</span>
                 </button>
 
                 {/* Delivery Card */}
                 <button
                   onClick={() => setDeliveryOption("delivery")}
-                  className={`flex-1 flex flex-col items-center justify-center p-4 border rounded-lg bg-white transition-all ${
+                  className={`flex-1 min-w-[100px] flex flex-col items-center justify-center p-3 sm:p-4 border rounded-lg bg-white transition-all flex-shrink-0 ${
                     deliveryOption === "delivery"
                       ? "border-gray-900 border-2"
                       : "border-gray-200"
                   }`}
                 >
                   <div className="relative mb-2">
-                    <ShoppingBag className="h-8 w-8 text-red-600" />
+                    <ShoppingBag className="h-6 w-6 sm:h-8 sm:w-8 text-red-600" />
                     <div className="absolute -bottom-1 -right-1 h-3 w-3 bg-orange-500 rounded-full"></div>
                   </div>
-                  <span className="text-sm font-medium text-gray-900 mb-1">Delivery</span>
+                  <span className="text-xs sm:text-sm font-medium text-gray-900 mb-1">Delivery</span>
                   <span className="text-xs text-gray-600">Available</span>
                 </button>
               </div>
@@ -127,7 +143,7 @@ const Cart = () => {
           </div>
 
           {/* Cart Items */}
-          <div className="space-y-4 mb-16">
+          <div className="space-y-4 mb-6 md:mb-16">
             {state.items.map((item) => {
               const hasDiscount = item.product.originalPrice && item.product.originalPrice > item.product.price;
               const discount = hasDiscount
@@ -145,23 +161,23 @@ const Cart = () => {
               return (
                 <div
                   key={productId}
-                  className="border border-gray-200 rounded-lg p-4 bg-white"
+                  className="border border-gray-200 rounded-lg p-3 md:p-4 bg-white"
                 >
-                  <div className="flex gap-4">
+                  <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                     {/* Product Image */}
                     <Link
                       to={`/products/${item.product.slug}`}
-                      className="flex-shrink-0"
+                      className="flex-shrink-0 self-center sm:self-start"
                     >
                       <img
                         src={item.product.image}
                         alt={item.product.name}
-                        className="w-32 h-32 object-contain rounded border border-gray-200"
+                        className="w-24 h-24 sm:w-32 sm:h-32 object-contain rounded border border-gray-200"
                       />
                     </Link>
 
                     {/* Product Details */}
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 w-full">
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex-1 min-w-0">
                           <Link
@@ -243,8 +259,8 @@ const Cart = () => {
                       )}
 
                       {/* Actions */}
-                      <div className="flex items-center gap-4 mt-3">
-                        <div className="flex items-center gap-2 border border-gray-300 rounded">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-3 mt-3">
+                        <div className="flex items-center gap-2 border border-gray-300 rounded w-fit">
                           <button
                             onClick={() => updateQuantity(productId, Math.max(1, item.quantity - 1))}
                             className="px-3 py-1 text-gray-600 hover:bg-gray-100"
@@ -263,15 +279,17 @@ const Cart = () => {
                             +
                           </button>
                         </div>
-                        <button 
-                          onClick={() => removeFromCart(productId)}
-                          className="text-sm text-red-600 hover:text-red-700"
-                        >
-                          Remove
-                        </button>
-                        <button className="text-sm text-red-600 hover:text-red-700">
-                          Save for later
-                        </button>
+                        <div className="flex items-center gap-3 sm:gap-4">
+                          <button 
+                            onClick={() => removeFromCart(productId)}
+                            className="text-sm text-red-600 hover:text-red-700"
+                          >
+                            Remove
+                          </button>
+                          <button className="text-sm text-red-600 hover:text-red-700">
+                            Save for later
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -280,33 +298,15 @@ const Cart = () => {
             })}
           </div>
 
-          {/* Add your essentials Section */}
-          {recommendedProducts && recommendedProducts.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">
-                Add your essentials
-              </h2>
-              <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4">
-                {recommendedProducts.slice(0, 4).map((product: Product) => (
-                  <div key={product._id || product.id || product.slug} className="flex-shrink-0 w-[200px] sm:w-[220px]">
-                    <ProductCard
-                      product={product}
-                      style={{ height: '420px' }}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Right Column - Order Summary */}
-        <div className="w-full lg:w-80 flex-shrink-0">
+        <div className="w-full lg:w-80 flex-shrink-0 order-2 lg:order-2">
           <div className="lg:sticky lg:top-4">
-            {/* Continue to Checkout Button */}
+            {/* Continue to Checkout Button - Desktop only (top) */}
             <Button
               size="lg"
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-medium text-base py-3 mb-4 rounded"
+              className="hidden lg:block w-full bg-red-600 hover:bg-red-700 text-white font-medium text-base py-3 mb-4 rounded"
               asChild
             >
               <Link to="/checkout">Continue to checkout</Link>
@@ -421,8 +421,77 @@ const Cart = () => {
                 Learn more
               </button>
             </div>
+
+            {/* Continue to Checkout Button - Mobile only (bottom) */}
+            <Button
+              size="lg"
+              className="lg:hidden w-full bg-red-600 hover:bg-red-700 text-white font-medium text-base py-3 mt-4 rounded"
+              asChild
+            >
+              <Link to="/checkout">Continue to checkout</Link>
+            </Button>
           </div>
         </div>
+
+        {/* Add your essentials Section - After checkout button on mobile */}
+        {recommendedProducts && recommendedProducts.length > 0 && (
+          <div className="w-full order-3 lg:order-3 mb-6">
+            <h2 className="text-lg font-medium text-gray-900 mb-4 px-4 md:px-0">
+              Add your essentials
+            </h2>
+            <div className="relative px-4 md:px-0">
+              {/* Left Navigation Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute left-0 md:left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 hidden md:flex"
+                onClick={() => scrollEssentials("left")}
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="h-5 w-5 text-gray-700" />
+              </Button>
+
+              {/* Right Navigation Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-0 md:right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 hidden md:flex"
+                onClick={() => scrollEssentials("right")}
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="h-5 w-5 text-gray-700" />
+              </Button>
+
+              {/* Product Scroll Container */}
+              <div
+                ref={essentialsScrollRef}
+                className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0"
+                style={{
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  WebkitOverflowScrolling: "touch",
+                }}
+              >
+                {/* Mobile: Add padding spacer for first card centering */}
+                <div className="min-w-[calc((100vw-2rem)/2-100px)] md:hidden flex-shrink-0" />
+                {recommendedProducts.slice(0, 4).map((product: Product) => (
+                  <div 
+                    key={product._id || product.id || product.slug} 
+                    className="min-w-[calc(100vw-2rem)] md:min-w-[220px] w-[calc(100vw-2rem)] md:w-[220px] snap-center md:snap-start flex-shrink-0 flex justify-center"
+                  >
+                    <ProductCard
+                      product={product}
+                      className="h-full w-full max-w-[200px] md:max-w-none"
+                      style={{ height: '420px' }}
+                    />
+                  </div>
+                ))}
+                {/* Mobile: Add padding spacer for last card centering */}
+                <div className="min-w-[calc((100vw-2rem)/2-100px)] md:hidden flex-shrink-0" />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

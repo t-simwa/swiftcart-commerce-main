@@ -164,8 +164,9 @@ const Index = () => {
         seeMoreText="See all categories"
       />
 
-      {/* Centered Product Carousel - One card at a time on mobile */}
+      {/* Centered Product Carousel - Hidden on mobile */}
       {featuredProducts.length > 0 && (
+        <div className="hidden md:block">
         <CenteredProductCarousel
           products={featuredProducts.slice(0, 10)}
           title="Featured for You"
@@ -173,6 +174,7 @@ const Index = () => {
           seeMoreLink="/products?featured=true"
           seeMoreText="See more"
         />
+        </div>
       )}
 
       {/* Home Essentials */}

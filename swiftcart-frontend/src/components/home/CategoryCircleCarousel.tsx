@@ -70,10 +70,10 @@ export function CategoryCircleCarousel({
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      // On mobile: scroll by 50% (2 items), on desktop: scroll by 100% (5 items)
+      // On mobile: scroll by 33.33% (3 items), on desktop: scroll by 100% (5 items)
       const isMobile = window.innerWidth < 768;
       const scrollAmount = isMobile 
-        ? scrollRef.current.clientWidth * 0.5 
+        ? scrollRef.current.clientWidth * (1/3)
         : scrollRef.current.clientWidth;
       scrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
@@ -92,29 +92,7 @@ export function CategoryCircleCarousel({
         </div>
 
         <div className="relative">
-          {/* Navigation Buttons */}
-          {canScrollLeft && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-8 w-8 rounded-full bg-background shadow-md border border-border hover:bg-secondary"
-              onClick={() => scroll("left")}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-          )}
-          {canScrollRight && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-8 w-8 rounded-full bg-background shadow-md border border-border hover:bg-secondary"
-              onClick={() => scroll("right")}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          )}
-
-          {/* Category Scroll Container - 2 items visible on mobile, 5 on desktop */}
+          {/* Category Scroll Container - 3 items visible on mobile, 5 on desktop */}
           <div
             ref={scrollRef}
             className="overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"
@@ -129,7 +107,7 @@ export function CategoryCircleCarousel({
                 <Link
                   key={category.slug}
                   to={`/category?category=${category.slug}`}
-                  className="group flex-shrink-0 snap-start flex flex-col items-center gap-2 md:gap-3 w-[calc(50%-6px)] md:w-[calc(20%-19px)]"
+                  className="group flex-shrink-0 snap-start flex flex-col items-center gap-2 md:gap-3 w-[calc(33.333%-8px)] md:w-[calc(20%-19px)]"
                 >
                   {/* Circular Image - Smaller on mobile */}
                   <div className="relative w-20 h-20 md:w-40 md:h-40 rounded-full overflow-hidden bg-secondary/30 border-2 border-border group-hover:border-primary transition-all duration-200 shadow-md group-hover:shadow-lg">
@@ -148,6 +126,28 @@ export function CategoryCircleCarousel({
               ))}
             </div>
           </div>
+          
+          {/* Navigation Buttons - Aligned with center of circle cards */}
+          {canScrollLeft && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute left-0 z-10 h-8 w-8 rounded-full bg-background shadow-md border border-border hover:bg-secondary top-[calc(2.5rem-1rem)] md:top-[calc(5rem-1rem)]"
+              onClick={() => scroll("left")}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+          )}
+          {canScrollRight && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-0 z-10 h-8 w-8 rounded-full bg-background shadow-md border border-border hover:bg-secondary top-[calc(2.5rem-1rem)] md:top-[calc(5rem-1rem)]"
+              onClick={() => scroll("right")}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          )}
         </div>
       </div>
     </section>

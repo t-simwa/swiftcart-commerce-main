@@ -2,8 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ProductCard } from "@/components/products/ProductCard";
 import { Product } from "@/types/product";
+import { ProductCard } from "@/components/products/ProductCard";
 
 interface CenteredProductCarouselProps {
   products: Product[];

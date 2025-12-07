@@ -24,7 +24,11 @@ export function AmazonProductCarousel({
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const scrollAmount = 300;
+      // On mobile: scroll by one card width (full viewport minus padding), on desktop: scroll by 300px
+      const isMobile = window.innerWidth < 768;
+      const scrollAmount = isMobile 
+        ? scrollRef.current.clientWidth 
+        : 300;
       scrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
@@ -85,15 +89,19 @@ export function AmazonProductCarousel({
               WebkitOverflowScrolling: "touch"
             }}
           >
+            {/* Mobile: Add padding spacer for first card centering */}
+            <div className="min-w-[calc((100vw-2rem)/2-100px)] md:hidden flex-shrink-0" />
             {products.map((product) => (
               <div
                 key={product.id}
-                className="min-w-[200px] md:min-w-[240px] w-[200px] md:w-[240px] snap-start flex-shrink-0"
+                className="min-w-[calc(100vw-2rem)] md:min-w-[240px] w-[calc(100vw-2rem)] md:w-[240px] snap-center md:snap-start flex-shrink-0 flex justify-center"
                 style={{ height: '100%' }}
               >
-                <ProductCard product={product} className="h-full" />
+                <ProductCard product={product} className="h-full w-full max-w-[200px] md:max-w-none" />
               </div>
             ))}
+            {/* Mobile: Add padding spacer for last card centering */}
+            <div className="min-w-[calc((100vw-2rem)/2-100px)] md:hidden flex-shrink-0" />
           </div>
         </div>
       </div>
