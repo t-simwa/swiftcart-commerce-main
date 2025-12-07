@@ -274,50 +274,99 @@ export function Header() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-[350px] p-0">
                     <div className="p-4 border-b bg-primary/5">
-                      <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground mb-2">
-                        Sign in
-                      </Button>
-                      <p className="text-xs text-muted-foreground text-center">
-                        New customer?{" "}
-                        <Link to="/register" className="text-primary hover:underline">
-                          Start here.
-                        </Link>
-                      </p>
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                          <User className="h-5 w-5 text-primary" />
+                        </div>
+                        <span className="text-sm font-medium leading-5" style={{ fontFamily: 'inherit' }}>
+                          Hello, {user.firstName || user.email.split('@')[0]}
+                        </span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex-1"
+                          onClick={() => {
+                            logout();
+                            navigate('/login');
+                          }}
+                        >
+                          Switch Accounts
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="flex-1 text-destructive hover:text-destructive"
+                          onClick={logout}
+                        >
+                          Sign Out
+                        </Button>
+                      </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4 p-4">
-                      <div>
+                    <div className="grid grid-cols-2 p-4">
+                      <div className="pr-4">
                         <DropdownMenuLabel className="px-0 py-2 text-sm font-medium">Your Lists</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigate('/account?tab=lists')} className="px-0">
+                        <DropdownMenuItem 
+                          onClick={() => navigate('/account?tab=lists')} 
+                          className={cn(
+                            "px-0 hover:bg-[#e7e7e7] hover:text-primary focus:bg-[#e7e7e7] focus:text-primary"
+                          )}
+                        >
                           Create a List
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate('/account?tab=registry')} className="px-0">
+                        <DropdownMenuItem 
+                          onClick={() => navigate('/account?tab=registry')} 
+                          className={cn(
+                            "px-0 hover:bg-[#e7e7e7] hover:text-primary focus:bg-[#e7e7e7] focus:text-primary"
+                          )}
+                        >
                           Find a List or Registry
                         </DropdownMenuItem>
                       </div>
-                      <div>
+                      <div className="border-l border-border/80 pl-4">
                         <DropdownMenuLabel className="px-0 py-2 text-sm font-medium">Your Account</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigate('/account')} className="px-0">
+                        <DropdownMenuItem 
+                          onClick={() => navigate('/account')} 
+                          className={cn(
+                            "px-0 hover:bg-[#e7e7e7] hover:text-primary focus:bg-[#e7e7e7] focus:text-primary"
+                          )}
+                        >
                           Account
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate('/orders')} className="px-0">
+                        <DropdownMenuItem 
+                          onClick={() => navigate('/orders')} 
+                          className={cn(
+                            "px-0 hover:bg-[#e7e7e7] hover:text-primary focus:bg-[#e7e7e7] focus:text-primary"
+                          )}
+                        >
                           Orders
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate('/account?tab=recommendations')} className="px-0">
+                        <DropdownMenuItem 
+                          onClick={() => navigate('/account?tab=recommendations')} 
+                          className={cn(
+                            "px-0 hover:bg-[#e7e7e7] hover:text-primary focus:bg-[#e7e7e7] focus:text-primary"
+                          )}
+                        >
                           Recommendations
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate('/account?tab=browsing-history')} className="px-0">
+                        <DropdownMenuItem 
+                          onClick={() => navigate('/account?tab=browsing-history')} 
+                          className={cn(
+                            "px-0 hover:bg-[#e7e7e7] hover:text-primary focus:bg-[#e7e7e7] focus:text-primary"
+                          )}
+                        >
                           Browsing History
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate('/account?tab=wishlist')} className="px-0">
+                        <DropdownMenuItem 
+                          onClick={() => navigate('/account?tab=wishlist')} 
+                          className={cn(
+                            "px-0 hover:bg-[#e7e7e7] hover:text-primary focus:bg-[#e7e7e7] focus:text-primary"
+                          )}
+                        >
                           Watchlist
                         </DropdownMenuItem>
                       </div>
-                    </div>
-                    <DropdownMenuSeparator />
-                    <div className="p-2">
-                      <DropdownMenuItem onClick={logout} className="text-destructive">
-                        Sign Out
-                      </DropdownMenuItem>
                     </div>
                   </DropdownMenuContent>
                 </DropdownMenu>
