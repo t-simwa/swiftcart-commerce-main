@@ -89,7 +89,7 @@ const Checkout = () => {
     try {
       // Create order
       const orderItems = cartState.items.map((item) => ({
-        productId: item.product.id,
+        productId: item.product._id || item.product.id,
         quantity: item.quantity,
       }));
 
@@ -107,9 +107,19 @@ const Checkout = () => {
         });
       }
     } catch (error: any) {
+      let errorMessage = error.message || 'An error occurred';
+      
+      // Show specific validation errors if available
+      if (error.details && Array.isArray(error.details) && error.details.length > 0) {
+        const validationErrors = error.details
+          .map((detail: any) => `${detail.path}: ${detail.message}`)
+          .join(', ');
+        errorMessage = `Validation failed: ${validationErrors}`;
+      }
+      
       toast({
         title: 'Failed to create order',
-        description: error.message || 'An error occurred',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {

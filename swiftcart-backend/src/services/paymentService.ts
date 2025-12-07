@@ -57,9 +57,15 @@ class PaymentService {
         );
       }
 
+      // Generate unique transaction reference
+      const timestamp = Date.now();
+      const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+      const txnRef = `TXN-${timestamp}-${random}`;
+
       // Create transaction
       const transaction = new Transaction({
         order: data.orderId,
+        txnRef,
         gateway: data.gateway,
         amount: data.amount,
         status: 'pending',
