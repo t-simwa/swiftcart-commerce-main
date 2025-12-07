@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { X, Plus, Minus, ShoppingBag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/context/CartContext";
+import { useCart, getProductId } from "@/context/CartContext";
 import { formatPrice } from "@/data/products";
 import { cn } from "@/lib/utils";
 
@@ -47,62 +47,65 @@ export function CartDrawer() {
               </div>
             ) : (
               <ul className="space-y-4">
-                {state.items.map((item, index) => (
-                  <li
-                    key={item.product.id || `cart-item-${index}`}
-                    className="flex gap-4 rounded-lg border border-border p-3 animate-fade-in"
-                  >
-                    <img
-                      src={item.product.image}
-                      alt={item.product.name}
-                      className="h-20 w-20 rounded-md object-cover"
-                    />
-                    <div className="flex flex-1 flex-col">
-                      <div className="flex justify-between">
-                        <Link
-                          to={`/products/${item.product.slug}`}
-                          className="font-medium text-sm hover:text-primary transition-colors line-clamp-2"
-                          onClick={() => setCartOpen(false)}
-                        >
-                          {item.product.name}
-                        </Link>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
-                          onClick={() => removeFromCart(item.product.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                {state.items.map((item, index) => {
+                  const productId = getProductId(item.product);
+                  return (
+                    <li
+                      key={productId || `cart-item-${index}`}
+                      className="flex gap-4 rounded-lg border border-border p-3 animate-fade-in"
+                    >
+                      <img
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="h-20 w-20 rounded-md object-cover"
+                      />
+                      <div className="flex flex-1 flex-col">
+                        <div className="flex justify-between">
+                          <Link
+                            to={`/products/${item.product.slug}`}
+                            className="font-medium text-sm hover:text-primary transition-colors line-clamp-2"
+                            onClick={() => setCartOpen(false)}
+                          >
+                            {item.product.name}
+                          </Link>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+                            onClick={() => removeFromCart(productId)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <p className="text-sm text-primary font-medium mt-1">
+                          {formatPrice(item.product.price)}
+                        </p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-7 w-7"
+                            onClick={() => updateQuantity(productId, item.quantity - 1)}
+                          >
+                            <Minus className="h-3 w-3" />
+                          </Button>
+                          <span className="w-8 text-center text-sm font-medium">
+                            {item.quantity}
+                          </span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-7 w-7"
+                            onClick={() => updateQuantity(productId, item.quantity + 1)}
+                            disabled={item.quantity >= item.product.stock}
+                          >
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                        </div>
                       </div>
-                      <p className="text-sm text-primary font-medium mt-1">
-                        {formatPrice(item.product.price)}
-                      </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-7 w-7"
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                        >
-                          <Minus className="h-3 w-3" />
-                        </Button>
-                        <span className="w-8 text-center text-sm font-medium">
-                          {item.quantity}
-                        </span>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-7 w-7"
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          disabled={item.quantity >= item.product.stock}
-                        >
-                          <Plus className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>

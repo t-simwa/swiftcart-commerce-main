@@ -59,19 +59,6 @@ export function DealCard({ product, className, style }: DealCardProps) {
 
   const brand = getBrand();
 
-  // Get color/variant options (if available)
-  const getVariants = () => {
-    if (product.variants && product.variants.length > 0) {
-      return product.variants.slice(0, 5).map((v) => ({
-        name: v.attributes.color || v.attributes.size || v.name,
-        slug: product.slug,
-      }));
-    }
-    return [];
-  };
-
-  const variants = getVariants();
-
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -84,12 +71,6 @@ export function DealCard({ product, className, style }: DealCardProps) {
     e.preventDefault();
     e.stopPropagation();
     navigate(`/deals?brands=${encodeURIComponent(brand)}`);
-  };
-
-  const handleVariantClick = (e: React.MouseEvent, variantSlug: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(`/products/${variantSlug}`);
   };
 
   return (
@@ -186,7 +167,7 @@ export function DealCard({ product, className, style }: DealCardProps) {
                 </span>
               </>
             ) : (
-              <span className="text-base font-semibold text-gray-900">
+              <span className="text-base font-semibold" style={{ color: "#007a00" }}>
                 {formatPrice(product.price)}
               </span>
             )}
@@ -206,54 +187,16 @@ export function DealCard({ product, className, style }: DealCardProps) {
           </div>
 
           {/* Add to Cart Button */}
-          {product.variants && product.variants.length > 0 ? (
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full h-8 text-sm font-normal bg-white border-gray-300 text-gray-700 hover:bg-gray-50 rounded-sm mt-2"
-              disabled={stockStatus === "out"}
-              asChild
-            >
-              <Link to={`/products/${product.slug}`}>
-                Options
-              </Link>
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full h-8 text-sm font-normal bg-white border-gray-300 text-gray-700 hover:bg-gray-50 rounded-sm mt-2"
-              disabled={stockStatus === "out" || isAdding}
-              onClick={handleAddToCart}
-            >
-              <ShoppingCart className="h-3.5 w-3.5 mr-1" />
-              Add
-            </Button>
-          )}
-
-          {/* Color/Variant Selection */}
-          {variants.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 items-center pt-1">
-              {variants.slice(0, 4).map((variant, idx) => (
-                <Link
-                  key={idx}
-                  to={`/products/${variant.slug}`}
-                  onClick={(e) => handleVariantClick(e, variant.slug)}
-                  className="text-xs text-red-600 hover:underline"
-                >
-                  {variant.name}
-                </Link>
-              ))}
-              {variants.length > 4 && (
-                <Link
-                  to={`/products/${product.slug}`}
-                  className="text-xs text-red-600 hover:underline"
-                >
-                  +{variants.length - 4} more
-                </Link>
-              )}
-            </div>
-          )}
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full h-8 text-sm font-normal bg-white border-gray-300 text-gray-700 hover:bg-gray-50 rounded-sm mt-2"
+            disabled={stockStatus === "out" || isAdding}
+            onClick={handleAddToCart}
+          >
+            <ShoppingCart className="h-3.5 w-3.5 mr-1" />
+            Add
+          </Button>
 
           {/* Deal Claim Percentage */}
           {dealClaimPercentage > 0 && (
@@ -264,14 +207,13 @@ export function DealCard({ product, className, style }: DealCardProps) {
 
           {/* Brand Deals Button */}
           {brand && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full h-7 text-xs mt-1 text-red-600 hover:text-red-700"
+            <button
               onClick={handleBrandClick}
+              className="w-full mt-1 px-2 py-0.5 text-[11px] font-semibold text-white rounded-sm"
+              style={{ backgroundColor: "#991B1B", letterSpacing: "0.01em" }}
             >
               Shop {brand} deals
-            </Button>
+            </button>
           )}
         </div>
       </div>

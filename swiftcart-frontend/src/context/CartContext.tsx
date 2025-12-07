@@ -7,6 +7,11 @@ interface CartState {
   isOpen: boolean;
 }
 
+// Helper function to get a unique identifier for a product
+export function getProductId(product: Product): string {
+  return product._id || product.id || product.slug;
+}
+
 type CartAction =
   | { type: "ADD_ITEM"; payload: { product: Product; quantity: number } }
   | { type: "REMOVE_ITEM"; payload: string }
@@ -32,15 +37,16 @@ const CartContext = createContext<{
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case "ADD_ITEM": {
+      const newProductId = getProductId(action.payload.product);
       const existingItem = state.items.find(
-        (item) => item.product.id === action.payload.product.id
+        (item) => getProductId(item.product) === newProductId
       );
 
       if (existingItem) {
         return {
           ...state,
           items: state.items.map((item) =>
-            item.product.id === action.payload.product.id
+            getProductId(item.product) === newProductId
               ? { ...item, quantity: item.quantity + action.payload.quantity }
               : item
           ),
@@ -59,7 +65,9 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case "REMOVE_ITEM":
       return {
         ...state,
-        items: state.items.filter((item) => item.product.id !== action.payload),
+        items: state.items.filter(
+          (item) => getProductId(item.product) !== action.payload
+        ),
       };
 
     case "UPDATE_QUANTITY":
@@ -67,14 +75,14 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         return {
           ...state,
           items: state.items.filter(
-            (item) => item.product.id !== action.payload.productId
+            (item) => getProductId(item.product) !== action.payload.productId
           ),
         };
       }
       return {
         ...state,
         items: state.items.map((item) =>
-          item.product.id === action.payload.productId
+          getProductId(item.product) === action.payload.productId
             ? { ...item, quantity: action.payload.quantity }
             : item
         ),

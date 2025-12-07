@@ -10,6 +10,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
@@ -24,6 +25,7 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import Orders from "./pages/Orders";
 import Deals from "./pages/Deals";
 import CategoryProducts from "./pages/CategoryProducts";
+import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 // Admin pages
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -50,6 +52,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <BrowserRouter>
+      <ScrollToTop />
       <AuthProvider>
           <NotificationProvider>
       <CartProvider>
@@ -71,6 +74,7 @@ const App = () => (
             <Route path="/products/:slug" element={<PublicLayout><ProductDetail /></PublicLayout>} />
             <Route path="/deals" element={<PublicLayout><Deals /></PublicLayout>} />
             <Route path="/category" element={<PublicLayout><CategoryProducts /></PublicLayout>} />
+            <Route path="/cart" element={<PublicLayout><Cart /></PublicLayout>} />
             {/* Auth Routes */}
             <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
             <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />

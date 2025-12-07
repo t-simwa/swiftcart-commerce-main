@@ -532,19 +532,19 @@ export function Header() {
                                         : `/category?category=${category.slug}&subcategory=${subcat.slug}`;
                                       
                                       return (
-                                        <li key={subcat.slug}>
-                                          <button
-                                            onClick={() => {
+                                      <li key={subcat.slug}>
+                                        <button
+                        onClick={() => {
                                               navigate(navigateUrl);
-                                              setIsMegaMenuOpen(false);
-                                            }}
-                                            className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
-                                            style={{ fontFamily: 'inherit' }}
-                                          >
-                                            <span>{subcat.name}</span>
-                                            <ChevronRight className="h-4 w-4 opacity-60" />
-                                          </button>
-                                        </li>
+                          setIsMegaMenuOpen(false);
+                        }}
+                                          className="w-full text-left text-sm py-1.5 px-2 -mx-2 rounded transition-colors flex items-center justify-between text-[#111] hover:bg-[#e7e7e7] hover:text-primary"
+                                          style={{ fontFamily: 'inherit' }}
+                                        >
+                                          <span>{subcat.name}</span>
+                                          <ChevronRight className="h-4 w-4 opacity-60" />
+                                        </button>
+                                      </li>
                                       );
                                     })}
                                   </ul>

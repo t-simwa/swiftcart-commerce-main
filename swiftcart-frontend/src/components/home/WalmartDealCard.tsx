@@ -137,7 +137,7 @@ export function WalmartDealCard({ product, className, style }: WalmartDealCardPr
                 </span>
               </>
             ) : (
-              <span className="text-base font-semibold text-gray-900">
+              <span className="text-base font-semibold" style={{ color: "#007a00" }}>
                 {formatWalmartPrice(product.price)}
               </span>
             )}
@@ -156,30 +156,16 @@ export function WalmartDealCard({ product, className, style }: WalmartDealCardPr
             )}
           </div>
 
-          {product.variants && product.variants.length > 0 ? (
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full h-8 text-sm font-normal bg-white border-gray-300 text-gray-700 hover:bg-gray-50 rounded-sm mt-2"
-              disabled={stockStatus === "out"}
-              asChild
-            >
-              <Link to={`/products/${product.slug}`}>
-                Options
-              </Link>
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full h-8 text-sm font-normal bg-white border-gray-300 text-gray-700 hover:bg-gray-50 rounded-sm mt-2"
-              disabled={stockStatus === "out"}
-              onClick={handleAddToCart}
-            >
-              <ShoppingCart className="h-3.5 w-3.5 mr-1" />
-              Add
-            </Button>
-          )}
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full h-8 text-sm font-normal bg-white border-gray-300 text-gray-700 hover:bg-gray-50 rounded-sm mt-2"
+            disabled={stockStatus === "out"}
+            onClick={handleAddToCart}
+          >
+            <ShoppingCart className="h-3.5 w-3.5 mr-1" />
+            Add
+          </Button>
         </div>
       </div>
     </div>
