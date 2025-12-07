@@ -24,6 +24,8 @@ import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import Orders from "./pages/Orders";
 import Deals from "./pages/Deals";
+import NewArrivals from "./pages/NewArrivals";
+import BestSellers from "./pages/BestSellers";
 import CategoryProducts from "./pages/CategoryProducts";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
@@ -73,6 +75,8 @@ const App = () => (
             <Route path="/products" element={<PublicLayout><Products /></PublicLayout>} />
             <Route path="/products/:slug" element={<PublicLayout><ProductDetail /></PublicLayout>} />
             <Route path="/deals" element={<PublicLayout><Deals /></PublicLayout>} />
+            <Route path="/new-arrivals" element={<PublicLayout><NewArrivals /></PublicLayout>} />
+            <Route path="/best-sellers" element={<PublicLayout><BestSellers /></PublicLayout>} />
             <Route path="/category" element={<PublicLayout><CategoryProducts /></PublicLayout>} />
             <Route path="/cart" element={<PublicLayout><Cart /></PublicLayout>} />
             {/* Auth Routes */}

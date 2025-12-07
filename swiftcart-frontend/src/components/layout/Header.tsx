@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { Search, ShoppingCart, User, Menu, X, Heart, MapPin, ChevronDown, LogOut, Globe, Package, CreditCard, HelpCircle, Gift, Star, Settings, FileText, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -77,6 +77,7 @@ export function Header() {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -801,50 +802,47 @@ export function Header() {
               Today's Deals
             </Link>
             <Link
-              to="/products"
+              to="/best-sellers"
               className={cn(
                 "px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white",
-                isActive("/products") && "outline outline-1 outline-white/30"
+                isActive("/best-sellers") && "outline outline-1 outline-white/30 font-medium"
               )}
             >
-              All Products
+              Best Sellers
             </Link>
             <Link
-              to="/categories"
+              to="/new-arrivals"
               className={cn(
                 "px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white",
-                isActive("/categories") && "outline outline-1 outline-white/30"
+                isActive("/new-arrivals") && "outline outline-1 outline-white/30 font-medium"
               )}
             >
-              Categories
+              New Arrivals
             </Link>
             <Link
-              to="/products?category=electronics"
-              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white"
+              to="/sell"
+              className={cn(
+                "px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white",
+                isActive("/sell") && "outline outline-1 outline-white/30 font-medium"
+              )}
             >
-              Electronics
+              Sell
             </Link>
             <Link
-              to="/products?category=fashion"
-              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white"
+              to="/gift-cards"
+              className={cn(
+                "px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white",
+                isActive("/gift-cards") && "outline outline-1 outline-white/30 font-medium"
+              )}
             >
-              Fashion
-            </Link>
-            <Link
-              to="/products?category=home-living"
-              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white"
-            >
-              Home & Kitchen
-            </Link>
-            <Link
-              to="/products?category=sports"
-              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap text-white"
-            >
-              Sports & Outdoors
+              Gift Cards
             </Link>
             <Link
               to="/help"
-              className="px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap ml-auto text-white"
+              className={cn(
+                "px-2 py-1 hover:outline hover:outline-1 hover:outline-white/30 rounded transition-all whitespace-nowrap ml-auto text-white",
+                isActive("/help") && "outline outline-1 outline-white/30 font-medium"
+              )}
             >
               Customer Service
             </Link>
@@ -928,30 +926,47 @@ export function Header() {
             </Link>
           )}
 
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-3 pt-4 pb-2">Shop By Category</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-3 pt-4 pb-2">Shop</p>
           
-          <Link
-            to="/products"
-            className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <span className="font-medium">All Products</span>
-            <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
-          </Link>
-          <Link
-            to="/categories"
-            className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <span className="font-medium">Categories</span>
-            <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
-          </Link>
           <Link
             to="/deals"
             className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
             <span className="font-medium text-primary">Today's Deals</span>
+            <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
+          </Link>
+          <Link
+            to="/best-sellers"
+            className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <span className="font-medium">Best Sellers</span>
+            <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
+          </Link>
+          <Link
+            to="/new-arrivals"
+            className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <span className="font-medium">New Arrivals</span>
+            <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
+          </Link>
+
+          <Link
+            to="/sell"
+            className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <span className="font-medium">Sell</span>
+            <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
+          </Link>
+          <Link
+            to="/gift-cards"
+            className="flex items-center justify-between p-3 rounded-lg hover:bg-secondary transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <span className="font-medium">Gift Cards</span>
             <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
           </Link>
 
