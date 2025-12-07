@@ -73,16 +73,106 @@ class AuthApiClient {
 
     try {
       const response = await fetch(url, config);
-      const data = await response.json();
+
+      let data;
+      try {
+        const text = await response.text();
+        data = text ? JSON.parse(text) : {};
+      } catch (jsonError) {
+        // If response is not JSON, create a generic error
+        throw new Error(`Request failed with status ${response.status}`);
+      }
 
       if (!response.ok) {
-        throw new Error(data.message || 'An error occurred');
+        // Log the full error response for debugging
+        console.error('Backend Error Response:', {
+          status: response.status,
+          statusText: response.statusText,
+          data: data,
+        });
+        
+        // Safely extract error message, avoiding any stack traces or code references
+        let errorMessage = `Request failed with status ${response.status}`;
+        
+        // Handle validation errors with details
+        if (data?.details && Array.isArray(data.details)) {
+          // Format validation errors nicely
+          const validationErrors = data.details
+            .map((detail: any) => {
+              if (typeof detail === 'string') return detail;
+              if (detail?.message) return `${detail.path || 'Field'}: ${detail.message}`;
+              return null;
+            })
+            .filter(Boolean)
+            .join(', ');
+          
+          if (validationErrors) {
+            errorMessage = validationErrors;
+          }
+        }
+        
+        // Only use the message field, never the stack trace
+        if (data?.message && typeof data.message === 'string') {
+          // Clean the message - remove any potential code references
+          const cleanMsg = data.message
+            .replace(/require\s*\(/gi, '') // Remove require() calls
+            .replace(/at\s+.*require.*/gi, '') // Remove require stack traces
+            .replace(/at\s+.*\n/gi, '') // Remove all stack trace lines
+            .trim();
+          
+          if (cleanMsg && cleanMsg.length > 0) {
+            errorMessage = cleanMsg;
+          }
+        } else if (data?.error && typeof data.error === 'string') {
+          const cleanErr = data.error
+            .replace(/require\s*\(/gi, '')
+            .replace(/at\s+.*require.*/gi, '')
+            .replace(/at\s+.*\n/gi, '')
+            .trim();
+          
+          if (cleanErr && cleanErr.length > 0) {
+            errorMessage = cleanErr;
+          }
+        }
+        
+        // Never include stack trace in error message
+        // Stack traces contain Node.js require() calls that break in browser
+        
+        // If message is empty after cleaning, use default
+        if (!errorMessage || errorMessage.length === 0) {
+          errorMessage = `Request failed with status ${response.status}`;
+        }
+        
+        throw new Error(errorMessage);
       }
 
       return data;
     } catch (error: any) {
-      console.error('API Error:', error);
-      throw error;
+      // Log full error details for debugging
+      console.error('API Error Details:', {
+        error,
+        message: error?.message,
+        stack: error?.stack,
+        name: error?.name,
+        response: error?.response,
+      });
+      
+      // Try to extract more details from the error
+      let errorMessage = 'An unexpected error occurred';
+      
+      if (error instanceof Error) {
+        errorMessage = error.message
+          .replace(/require\s*\(/gi, '')
+          .replace(/at\s+.*require.*/gi, '')
+          .trim() || 'An unexpected error occurred';
+      } else if (error?.message) {
+        errorMessage = String(error.message)
+          .replace(/require\s*\(/gi, '')
+          .replace(/at\s+.*require.*/gi, '')
+          .trim() || 'An unexpected error occurred';
+      }
+      
+      throw new Error(errorMessage);
     }
   }
 

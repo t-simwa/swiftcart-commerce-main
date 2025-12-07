@@ -139,12 +139,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         navigate('/');
       }
     } catch (error: any) {
+      // Extract error message safely, cleaning any problematic content
+      let errorMessage = 'An error occurred during registration';
+      
+      if (error instanceof Error) {
+        errorMessage = error.message
+          .replace(/require\s*\(/gi, '') // Remove require() calls
+          .replace(/at\s+.*require.*/gi, '') // Remove require stack traces
+          .trim();
+      } else if (typeof error === 'string') {
+        errorMessage = error
+          .replace(/require\s*\(/gi, '')
+          .replace(/at\s+.*require.*/gi, '')
+          .trim();
+      } else if (error?.message) {
+        errorMessage = String(error.message)
+          .replace(/require\s*\(/gi, '')
+          .replace(/at\s+.*require.*/gi, '')
+          .trim();
+      }
+      
+      // If message is empty after cleaning, use default
+      if (!errorMessage || errorMessage.length === 0) {
+        errorMessage = 'An error occurred during registration';
+      }
+      
       toast({
         title: 'Registration failed',
-        description: error.message || 'An error occurred during registration',
+        description: errorMessage,
         variant: 'destructive',
       });
-      throw error;
+      throw new Error(errorMessage);
     }
   };
 

@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 export interface IAddress {
   street: string;
@@ -165,7 +166,6 @@ UserSchema.methods.comparePassword = async function (candidatePassword: string):
 
 // Method to generate email verification token
 UserSchema.methods.generateEmailVerificationToken = function (): string {
-  const crypto = require('crypto');
   const token = crypto.randomBytes(32).toString('hex');
   this.emailVerificationToken = crypto.createHash('sha256').update(token).digest('hex');
   this.emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
@@ -174,7 +174,6 @@ UserSchema.methods.generateEmailVerificationToken = function (): string {
 
 // Method to generate password reset token
 UserSchema.methods.generatePasswordResetToken = function (): string {
-  const crypto = require('crypto');
   const token = crypto.randomBytes(32).toString('hex');
   this.passwordResetToken = crypto.createHash('sha256').update(token).digest('hex');
   this.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
