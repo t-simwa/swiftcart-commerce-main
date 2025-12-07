@@ -4,6 +4,7 @@ import { AmazonCategorySection } from "@/components/home/AmazonCategorySection";
 import { AmazonProductCarousel } from "@/components/home/AmazonProductCarousel";
 import { WalmartDealsSection } from "@/components/home/WalmartDealsSection";
 import { CategoryCircleCarousel } from "@/components/home/CategoryCircleCarousel";
+import { CenteredProductCarousel } from "@/components/home/CenteredProductCarousel";
 import { departmentCategories } from "@/data/categories";
 import { apiClient } from "@/lib/api";
 
@@ -162,6 +163,17 @@ const Index = () => {
         seeMoreLink="/products"
         seeMoreText="See all categories"
       />
+
+      {/* Centered Product Carousel - One card at a time on mobile */}
+      {featuredProducts.length > 0 && (
+        <CenteredProductCarousel
+          products={featuredProducts.slice(0, 10)}
+          title="Featured for You"
+          subtitle="Handpicked just for you"
+          seeMoreLink="/products?featured=true"
+          seeMoreText="See more"
+        />
+      )}
 
       {/* Home Essentials */}
       <AmazonCategorySection

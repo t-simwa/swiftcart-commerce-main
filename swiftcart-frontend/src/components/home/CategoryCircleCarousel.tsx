@@ -70,9 +70,11 @@ export function CategoryCircleCarousel({
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      // Calculate scroll amount to show 5 items at a time
-      // Each item is approximately 20% of container width (5 items visible)
-      const scrollAmount = scrollRef.current.clientWidth;
+      // On mobile: scroll by 50% (2 items), on desktop: scroll by 100% (5 items)
+      const isMobile = window.innerWidth < 768;
+      const scrollAmount = isMobile 
+        ? scrollRef.current.clientWidth * 0.5 
+        : scrollRef.current.clientWidth;
       scrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
@@ -112,21 +114,25 @@ export function CategoryCircleCarousel({
             </Button>
           )}
 
-          {/* Category Scroll Container - Single Row, 5 items visible */}
+          {/* Category Scroll Container - 2 items visible on mobile, 5 on desktop */}
           <div
             ref={scrollRef}
-            className="overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            className="overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"
+            style={{ 
+              scrollbarWidth: "none", 
+              msOverflowStyle: "none",
+              WebkitOverflowScrolling: "touch"
+            }}
           >
-            <div className="flex gap-4 md:gap-6">
+            <div className="flex gap-3 md:gap-6">
               {categories.map((category) => (
                 <Link
                   key={category.slug}
                   to={`/category?category=${category.slug}`}
-                  className="group flex-shrink-0 snap-start flex flex-col items-center gap-3 w-[calc(20%-13px)] md:w-[calc(20%-19px)]"
+                  className="group flex-shrink-0 snap-start flex flex-col items-center gap-2 md:gap-3 w-[calc(50%-6px)] md:w-[calc(20%-19px)]"
                 >
-                  {/* Circular Image - Much Larger */}
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden bg-secondary/30 border-2 border-border group-hover:border-primary transition-all duration-200 shadow-md group-hover:shadow-lg">
+                  {/* Circular Image - Smaller on mobile */}
+                  <div className="relative w-20 h-20 md:w-40 md:h-40 rounded-full overflow-hidden bg-secondary/30 border-2 border-border group-hover:border-primary transition-all duration-200 shadow-md group-hover:shadow-lg">
                     <img
                       src={getCategoryImage(category.slug)}
                       alt={category.name}
@@ -135,7 +141,7 @@ export function CategoryCircleCarousel({
                     />
                   </div>
                   {/* Category Name */}
-                  <p className="text-sm md:text-base font-medium text-foreground text-center line-clamp-2 w-full group-hover:text-primary transition-colors">
+                  <p className="text-xs md:text-base font-medium text-foreground text-center line-clamp-2 w-full group-hover:text-primary transition-colors">
                     {category.name}
                   </p>
                 </Link>

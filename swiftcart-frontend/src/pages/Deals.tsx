@@ -66,7 +66,7 @@ const Deals = () => {
   return (
     <main className="min-h-screen bg-background">
       {/* Sub-Navigation */}
-      <div className="bg-white text-black border-b border-gray-200">
+      <div className="hidden md:block bg-white text-black border-b border-gray-200">
         <div className="container-wide">
           <nav className="flex items-center justify-center gap-6 h-10 text-sm overflow-x-auto">
             {subNavTabs.map((tab) => {
