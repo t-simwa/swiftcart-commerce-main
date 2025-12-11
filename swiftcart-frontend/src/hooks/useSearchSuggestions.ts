@@ -17,9 +17,10 @@ interface SearchSuggestion {
  * Custom hook for fetching search suggestions
  * @param query - Search query string
  * @param enabled - Whether to fetch suggestions
+ * @param category - Optional category filter
  * @returns Search suggestions data and loading state
  */
-export function useSearchSuggestions(query: string, enabled: boolean = true) {
+export function useSearchSuggestions(query: string, enabled: boolean = true, category?: string) {
   const [shouldFetch, setShouldFetch] = useState(false);
 
   useEffect(() => {
@@ -28,11 +29,12 @@ export function useSearchSuggestions(query: string, enabled: boolean = true) {
   }, [query, enabled]);
 
   const { data, isLoading, error } = useQuery<SearchSuggestion>({
-    queryKey: ['searchSuggestions', query],
+    queryKey: ['searchSuggestions', query, category],
     queryFn: async () => {
       const response = await apiClient.getSearchSuggestions({
         q: query.trim(),
         limit: 5,
+        category: category && category !== 'all' ? category : undefined,
       });
       return response.data || { suggestions: [], products: [] };
     },

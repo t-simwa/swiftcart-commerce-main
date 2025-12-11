@@ -65,17 +65,17 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => (
 
 const App = () => (
   <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <BrowserRouter>
-        <ScrollToTop />
-        <AuthProvider>
-            <NotificationProvider>
-        <CartProvider>
-          <Toaster />
-          <Sonner />
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <BrowserRouter>
+      <ScrollToTop />
+      <AuthProvider>
+          <NotificationProvider>
+      <CartProvider>
+        <Toaster />
+        <Sonner />
             <Suspense fallback={<PageLoader />}>
-            <Routes>
+          <Routes>
             {/* Admin Routes - No Header/Footer */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<ProtectedRoute requireRole="admin"><AdminDashboard /></ProtectedRoute>} />

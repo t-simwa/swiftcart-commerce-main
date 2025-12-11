@@ -40,6 +40,38 @@ import {
 import { categories } from "@/data/products";
 import { digitalContentCategories, departmentCategories } from "@/data/categories";
 
+// Helper function to find category slug from suggestion text
+const findCategorySlug = (suggestion: string): string | null => {
+  const normalizedSuggestion = suggestion.toLowerCase().trim();
+  
+  // Check all department categories
+  for (const category of departmentCategories) {
+    // Check if suggestion matches category name (case-insensitive)
+    if (category.name.toLowerCase() === normalizedSuggestion) {
+      return category.slug;
+    }
+    // Check if suggestion matches category slug
+    if (category.slug.toLowerCase() === normalizedSuggestion) {
+      return category.slug;
+    }
+    // Check if suggestion contains category name
+    if (normalizedSuggestion.includes(category.name.toLowerCase()) || 
+        category.name.toLowerCase().includes(normalizedSuggestion)) {
+      return category.slug;
+    }
+  }
+  
+  // Check digital content categories
+  for (const category of digitalContentCategories) {
+    if (category.name.toLowerCase() === normalizedSuggestion || 
+        category.slug.toLowerCase() === normalizedSuggestion) {
+      return category.slug;
+    }
+  }
+  
+  return null;
+};
+
 // Search departments/categories - sorted alphabetically, same as "All" menu
 const searchDepartments = [
   { value: "all", label: "All Departments" },
@@ -89,10 +121,11 @@ export function Header() {
   // Debounce search query for real-time suggestions
   const debouncedQuery = useDebounce(searchQuery, 300);
 
-  // Fetch search suggestions
+  // Fetch search suggestions (filtered by selected department)
   const { suggestions, products, isLoading: isLoadingSuggestions } = useSearchSuggestions(
     debouncedQuery,
-    showSuggestions && debouncedQuery.length >= 2
+    showSuggestions && debouncedQuery.length >= 2,
+    selectedDepartment !== "all" ? selectedDepartment : undefined
   );
 
   // Handle search submission
@@ -117,7 +150,19 @@ export function Header() {
   // Handle suggestion selection
   const handleSuggestionSelect = (query: string) => {
     setSearchQuery(query);
-    handleSearch(undefined, query);
+    
+    // Check if the suggestion matches a category
+    const categorySlug = findCategorySlug(query);
+    
+    if (categorySlug) {
+      // Navigate to category page
+      addToSearchHistory(query, categorySlug);
+      navigate(`/category?category=${categorySlug}`);
+      setShowSuggestions(false);
+    } else {
+      // Regular search
+      handleSearch(undefined, query);
+    }
   };
 
   // Handle input focus

@@ -39,6 +39,7 @@ router.get(
     query: z.object({
       q: z.string().optional(),
       limit: z.string().regex(/^\d+$/).transform(Number).optional().default('5'),
+      category: z.string().optional(),
     }),
   }),
   getSearchSuggestions

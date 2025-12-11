@@ -249,12 +249,13 @@ class ApiClient {
   async getSearchSuggestions(params?: {
     q?: string;
     limit?: number;
+    category?: string;
   }): Promise<ApiResponse<{ suggestions: string[]; products: Array<{ name: string; slug: string; image: string; price: number; category: string }> }>> {
     const queryParams = new URLSearchParams();
     
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
+        if (value !== undefined && value !== null && value !== 'all') {
           queryParams.append(key, value.toString());
         }
       });

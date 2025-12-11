@@ -39,15 +39,21 @@ export function SearchSuggestions({
   // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as HTMLElement;
+      // Don't close if clicking on a link or button inside the container
+      if (target.tagName === 'A' || target.closest('a') || target.closest('button')) {
+        return;
+      }
+      if (containerRef.current && !containerRef.current.contains(target)) {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      // Use click instead of mousedown to allow link navigation
+      document.addEventListener('click', handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('click', handleClickOutside);
       };
     }
   }, [isOpen, onClose]);
@@ -96,15 +102,18 @@ export function SearchSuggestions({
           <div className="px-2 py-1 text-xs font-semibold text-gray-500 uppercase">Suggestions</div>
           {suggestions.map((suggestion, index) => (
             <button
+              type="button"
               key={index}
-              onClick={() => {
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 onSelect(suggestion);
                 onClose();
               }}
-              className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-sm flex items-center gap-2 text-sm"
+              className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-sm flex items-center gap-2 text-sm text-gray-900 cursor-pointer"
             >
               <Search className="h-4 w-4 text-gray-400" />
-              <span>{suggestion}</span>
+              <span className="text-gray-900">{suggestion}</span>
             </button>
           ))}
         </div>
@@ -118,8 +127,11 @@ export function SearchSuggestions({
             <Link
               key={product.slug}
               to={`/products/${product.slug}`}
-              onClick={onClose}
-              className="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-sm"
+              onClick={() => {
+                // Close dropdown - Link will handle navigation
+                onClose();
+              }}
+              className="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-sm cursor-pointer"
             >
               <OptimizedImage
                 src={product.image}
@@ -152,16 +164,19 @@ export function SearchSuggestions({
               className="flex items-center justify-between px-3 py-2 hover:bg-gray-50 rounded-sm group"
             >
               <button
-                onClick={() => {
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   onSelect(item.query);
                   onClose();
                 }}
-                className="flex-1 text-left text-sm text-gray-700 flex items-center gap-2"
+                className="flex-1 text-left text-sm text-gray-900 flex items-center gap-2 cursor-pointer"
               >
                 <Clock className="h-4 w-4 text-gray-400" />
-                <span>{item.query}</span>
+                <span className="text-gray-900">{item.query}</span>
                 {item.category && (
-                  <span className="text-xs text-gray-400">in {item.category}</span>
+                  <span className="text-xs text-gray-500">in {item.category}</span>
                 )}
               </button>
               <button

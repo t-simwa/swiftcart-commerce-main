@@ -92,12 +92,12 @@ export const search = async (
  * @access  Public
  */
 export const getSearchSuggestions = async (
-  req: Request<{}, {}, {}, { q?: string; limit?: number }>,
+  req: Request<{}, {}, {}, { q?: string; limit?: number; category?: string }>,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { q, limit = 5 } = req.query;
+    const { q, limit = 5, category } = req.query;
 
     if (!q || q.trim().length < 2) {
       return res.status(200).json({
@@ -112,14 +112,29 @@ export const getSearchSuggestions = async (
 
     const query = q.trim();
 
+    // Build search query - match query in name, description, or category
+    const orConditions = [
+      { name: { $regex: query, $options: 'i' } },
+      { description: { $regex: query, $options: 'i' } },
+      { category: { $regex: query, $options: 'i' } },
+    ];
+
+    // Build final query
+    const searchQuery: any = {};
+    
+    if (category && category !== 'all') {
+      // If category filter is provided, use $and to combine search with category filter
+      searchQuery.$and = [
+        { $or: orConditions },
+        { category: { $regex: category, $options: 'i' } },
+      ];
+    } else {
+      // No category filter, just use $or
+      searchQuery.$or = orConditions;
+    }
+
     // Search for products matching the query
-    const products = await Product.find({
-      $or: [
-        { name: { $regex: query, $options: 'i' } },
-        { description: { $regex: query, $options: 'i' } },
-        { category: { $regex: query, $options: 'i' } },
-      ],
-    })
+    const products = await Product.find(searchQuery)
       .select('name slug image price category')
       .limit(limit)
       .lean();
