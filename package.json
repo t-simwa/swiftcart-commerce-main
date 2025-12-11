@@ -14,7 +14,13 @@
     "seed": "pnpm --filter swiftcart-backend seed",
     "start": "pnpm --filter swiftcart-backend start",
     "lint": "pnpm --filter swiftcart-frontend lint",
-    "clean": "rm -rf node_modules swiftcart-backend/node_modules swiftcart-frontend/node_modules swiftcart-backend/dist swiftcart-frontend/dist .pnpm-store"
+    "clean": "rm -rf node_modules swiftcart-backend/node_modules swiftcart-frontend/node_modules swiftcart-backend/dist swiftcart-frontend/dist .pnpm-store",
+    "test": "pnpm --filter swiftcart-backend test && pnpm --filter swiftcart-frontend test",
+    "test:backend": "pnpm --filter swiftcart-backend test",
+    "test:frontend": "pnpm --filter swiftcart-frontend test",
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open",
+    "test:coverage": "pnpm --filter swiftcart-backend test:coverage && pnpm --filter swiftcart-frontend test:coverage"
   },
   "keywords": [
     "ecommerce",
@@ -27,7 +33,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "cypress": "^13.6.0"
   },
   "engines": {
     "node": ">=18.0.0",
