@@ -299,9 +299,9 @@ const Cart = () => {
             })}
           </div>
 
-          {/* Add your essentials Section - Left column after cart items */}
+          {/* Add your essentials Section - Left column after cart items (Desktop only) */}
           {recommendedProducts && recommendedProducts.length > 0 && (
-            <div className="w-full mb-6 md:mb-0">
+            <div className="hidden lg:block w-full mb-6 md:mb-0">
               <h2 className="text-lg font-medium text-gray-900 mb-4">
                 Add your essentials
               </h2>
@@ -492,6 +492,43 @@ const Cart = () => {
             </Button>
           </div>
         </div>
+
+        {/* Add your essentials Section - Mobile only (after checkout button) */}
+        {recommendedProducts && recommendedProducts.length > 0 && (
+          <div className="lg:hidden w-full mt-6">
+            <h2 className="text-lg font-medium text-gray-900 mb-4 px-4 md:px-0">
+              Add your essentials
+            </h2>
+            <div className="relative">
+              {/* Product Scroll Container */}
+              <div
+                className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
+                style={{
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  WebkitOverflowScrolling: "touch",
+                }}
+              >
+                {/* Mobile: Add padding spacer for first card centering */}
+                <div className="min-w-[calc((100vw-2rem)/2-100px)] flex-shrink-0" />
+                {recommendedProducts.slice(0, 4).map((product: Product) => (
+                  <div 
+                    key={product._id || product.id || product.slug} 
+                    className="min-w-[calc(100vw-2rem)] w-[calc(100vw-2rem)] snap-center flex-shrink-0 flex justify-center"
+                  >
+                    <ProductCard
+                      product={product}
+                      className="h-full w-full max-w-[200px]"
+                      style={{ height: '420px' }}
+                    />
+                  </div>
+                ))}
+                {/* Mobile: Add padding spacer for last card centering */}
+                <div className="min-w-[calc((100vw-2rem)/2-100px)] flex-shrink-0" />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

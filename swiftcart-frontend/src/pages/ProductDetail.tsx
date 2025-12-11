@@ -325,26 +325,26 @@ const ProductDetail = () => {
           <div className="flex flex-col md:flex-row gap-4 flex-shrink-0 w-full md:w-auto">
             {/* Vertical Thumbnail Strip - Hidden on mobile, shown on desktop */}
             {/* Show 3 thumbnails all using the main product image */}
-            <div className="hidden md:flex flex-col gap-2 w-20 flex-shrink-0">
+              <div className="hidden md:flex flex-col gap-2 w-20 flex-shrink-0">
               {[0, 1, 2].map((index) => (
-                <button
-                  key={index}
+                  <button
+                    key={index}
                   onClick={() => setSelectedImage(0)}
-                  className={cn(
-                    "aspect-square w-full overflow-hidden rounded border-2 transition-all",
+                    className={cn(
+                      "aspect-square w-full overflow-hidden rounded border-2 transition-all",
                     selectedImage === 0
-                      ? "border-red-600 ring-2 ring-red-600/20"
-                      : "border-gray-300 hover:border-gray-400"
-                  )}
-                >
-                  <img
+                        ? "border-red-600 ring-2 ring-red-600/20"
+                        : "border-gray-300 hover:border-gray-400"
+                    )}
+                  >
+                    <img
                     src={product.image}
                     alt={`${product.name}`}
-                    className="h-full w-full object-cover"
-                  />
-                </button>
-              ))}
-            </div>
+                      className="h-full w-full object-cover"
+                    />
+                  </button>
+                ))}
+                    </div>
 
             {/* Horizontal Thumbnail Strip - Mobile only */}
             {images.length > 1 && (
