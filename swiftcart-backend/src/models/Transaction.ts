@@ -24,13 +24,11 @@ const TransactionSchema = new Schema<ITransaction>(
       type: Schema.Types.ObjectId,
       ref: 'Order',
       required: true,
-      index: true,
     },
     txnRef: {
       type: String,
       required: true,
       unique: true,
-      index: true,
     },
     gateway: {
       type: String,
@@ -47,7 +45,6 @@ const TransactionSchema = new Schema<ITransaction>(
       type: String,
       enum: ['pending', 'success', 'failed', 'cancelled'],
       default: 'pending',
-      index: true,
     },
     phoneNumber: {
       type: String,
@@ -78,8 +75,7 @@ const TransactionSchema = new Schema<ITransaction>(
 );
 
 // Indexes for performance
-// Note: txnRef already has index from 'unique: true'
-TransactionSchema.index({ txnRef: 1 }); // Explicit index for clarity
+// Note: txnRef already has index from 'unique: true', so we don't need to add it again
 TransactionSchema.index({ order: 1 });
 TransactionSchema.index({ status: 1 });
 TransactionSchema.index({ createdAt: -1 });

@@ -599,12 +599,25 @@ export async function generateProduct(
   // Generate slug
   const slug = `${categorySlug}-${subcategorySlug}-${productName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${faker.string.alphanumeric(4)}`;
   
-  // Generate image keywords based on product name and template
-  const imageKeywords = (template as any).imageKeywords || template.imageKeywords || `${brand} ${productName}`;
+  // Use imageUrl from template if available (from Jumia scraping), otherwise fetch from Pixabay
+  const templateImageUrl = (enhancedTemplate as any).imageUrl || enhancedTemplate.imageUrl;
   
-  // Fetch images
-  const image = await fetchProductImage(imageKeywords);
-  const images = await fetchProductImages(imageKeywords, 3);
+  let image: string;
+  let images: string[];
+  
+  if (templateImageUrl) {
+    // Use the scraped Jumia image URL
+    image = templateImageUrl;
+    // Use the same image for the images array, or fetch additional images as fallback
+    const imageKeywords = (template as any).imageKeywords || template.imageKeywords || `${brand} ${productName}`;
+    const additionalImages = await fetchProductImages(imageKeywords, 2).catch(() => []);
+    images = [templateImageUrl, ...additionalImages];
+  } else {
+    // Fallback to fetching from Pixabay if no imageUrl in template
+    const imageKeywords = (template as any).imageKeywords || template.imageKeywords || `${brand} ${productName}`;
+    image = await fetchProductImage(imageKeywords);
+    images = await fetchProductImages(imageKeywords, 3);
+  }
   
   // Generate variants if needed
   let variants;

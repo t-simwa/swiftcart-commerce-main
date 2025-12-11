@@ -41,6 +41,16 @@ coverage/
 # Misc
 *.tsbuildinfo
 
+# Script progress files
+src/scripts/utils/.image-fetch-progress.json
+src/scripts/utils/.amazon-image-progress.json
+src/scripts/utils/.jumia-image-progress.json
+src/scripts/utils/.auto-image-progress.json
+src/scripts/utils/product-image-urls.json
+
+# Downloaded product images (too large for git)
+public/uploads/products/
+
 # Documentation files (except README.md)
 *.md
 !README.md

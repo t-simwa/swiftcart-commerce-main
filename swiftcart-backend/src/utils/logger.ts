@@ -1,6 +1,18 @@
 import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
+import { existsSync, mkdirSync } from 'fs';
 import { env } from '../config/env';
+
+// Ensure logs directory exists (non-blocking)
+const ensureLogsDirectory = () => {
+  try {
+    if (!existsSync('logs')) {
+      mkdirSync('logs', { recursive: true });
+    }
+  } catch (error) {
+    // Silently fail - we'll use console only
+  }
+};
 
 // Define log format
 const logFormat = winston.format.combine(
@@ -32,52 +44,96 @@ const transports: winston.transport[] = [
   }),
 ];
 
-// File transports for production
+// File transports for production (only if directory can be created)
+// Skip in development to avoid any potential blocking issues
 if (env.NODE_ENV === 'production') {
-  // Error log file
-  transports.push(
-    new DailyRotateFile({
-      filename: 'logs/error-%DATE%.log',
-      datePattern: 'YYYY-MM-DD',
-      level: 'error',
-      format: logFormat,
-      maxSize: '20m',
-      maxFiles: '14d',
-      zippedArchive: true,
-    })
-  );
+  try {
+    ensureLogsDirectory();
+    // Error log file
+    transports.push(
+      new DailyRotateFile({
+        filename: 'logs/error-%DATE%.log',
+        datePattern: 'YYYY-MM-DD',
+        level: 'error',
+        format: logFormat,
+        maxSize: '20m',
+        maxFiles: '14d',
+        zippedArchive: true,
+      })
+    );
 
-  // Combined log file
-  transports.push(
-    new DailyRotateFile({
-      filename: 'logs/combined-%DATE%.log',
-      datePattern: 'YYYY-MM-DD',
-      format: logFormat,
-      maxSize: '20m',
-      maxFiles: '14d',
-      zippedArchive: true,
-    })
-  );
+    // Combined log file
+    transports.push(
+      new DailyRotateFile({
+        filename: 'logs/combined-%DATE%.log',
+        datePattern: 'YYYY-MM-DD',
+        format: logFormat,
+        maxSize: '20m',
+        maxFiles: '14d',
+        zippedArchive: true,
+      })
+    );
+  } catch (error) {
+    // If file transports fail, just use console
+    // Silently continue - console transport is already added
+  }
 }
 
-// Create logger instance
-const logger = winston.createLogger({
-  level: env.NODE_ENV === 'production' ? 'info' : 'debug',
-  format: logFormat,
-  defaultMeta: { service: 'swiftcart-api' },
-  transports,
-  exceptionHandlers: [
+// Create logger instance with error handling for file transports
+let exceptionHandlers: winston.transport[] = [];
+let rejectionHandlers: winston.transport[] = [];
+
+try {
+  ensureLogsDirectory();
+  // Try to create file handlers, but don't fail if directory doesn't exist
+  exceptionHandlers = [
     new winston.transports.File({ filename: 'logs/exceptions.log' }),
-  ],
-  rejectionHandlers: [
+  ];
+  rejectionHandlers = [
     new winston.transports.File({ filename: 'logs/rejections.log' }),
-  ],
-});
+  ];
+} catch (error) {
+  // If file handlers fail, just use console (development mode)
+  // Silently continue - console transport is already added
+}
+
+// Create logger with error handling to prevent blocking
+let logger: winston.Logger;
+try {
+  logger = winston.createLogger({
+    level: env.NODE_ENV === 'production' ? 'info' : 'debug',
+    format: logFormat,
+    defaultMeta: { service: 'swiftcart-api' },
+    transports,
+    exceptionHandlers: exceptionHandlers.length > 0 ? exceptionHandlers : transports,
+    rejectionHandlers: rejectionHandlers.length > 0 ? rejectionHandlers : transports,
+    // Suppress winston errors to prevent hanging
+    silent: false,
+  });
+
+  // Add error handlers to prevent hanging on file write errors
+  logger.on('error', (error) => {
+    // Suppress winston internal errors to prevent hanging
+    console.error('Logger error (non-fatal):', error.message);
+  });
+} catch (error: any) {
+  // Fallback to console-only logger if winston fails
+  console.warn('Failed to initialize winston logger, using console only:', error.message);
+  logger = winston.createLogger({
+    level: 'debug',
+    transports: [new winston.transports.Console({ format: consoleFormat })],
+  });
+}
 
 // Stream for Morgan HTTP logger (if needed in future)
 logger.stream = {
   write: (message: string) => {
-    logger.info(message.trim());
+    try {
+      logger.info(message.trim());
+    } catch (error) {
+      // Fallback to console if logger fails
+      console.log(message.trim());
+    }
   },
 };
 

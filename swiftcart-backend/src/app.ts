@@ -1,72 +1,105 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
-import compression from 'compression';
-import session from 'express-session';
-import passport from 'passport';
 import { env } from './config/env';
-import routes from './routes';
-import { apiLimiter } from './middleware/rateLimiter';
-import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import logger from './utils/logger';
-import './config/passport'; // Initialize passport strategies
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 const app: Application = express();
 
-// Request logging middleware
-app.use((req, res, next) => {
-  logger.debug('Incoming request', {
-    method: req.method,
-    url: req.originalUrl,
-    ip: req.ip,
-    userAgent: req.get('user-agent'),
-  });
-  next();
-});
-
-// Security middleware
-app.use(helmet());
+// Basic middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS configuration
 app.use(
   cors({
-    origin: env.FRONTEND_URL,
+    origin: env.NODE_ENV === 'production' 
+      ? env.FRONTEND_URL 
+      : true, // Allow all origins in development
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 
-// Session middleware (for OAuth)
-app.use(
-  session({
-    secret: env.JWT_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: env.NODE_ENV === 'production',
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    },
-  })
-);
+// Health check route
+app.get('/api/health', (req, res) => {
+  res.json({ success: true, status: 200, message: 'API is running', version: env.API_VERSION });
+});
 
-// Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
+// Products route - dynamically import controller to avoid blocking compilation
+app.get('/api/v1/products', async (req, res, next) => {
+  try {
+    const { getProducts } = await import('./controllers/products.controller');
+    return getProducts(req, res, next);
+  } catch (error: any) {
+    logger.error('Failed to load products controller:', error.message);
+    res.status(500).json({ success: false, message: 'Failed to load products' });
+  }
+});
 
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// Product by slug route
+app.get('/api/v1/products/:slug', async (req, res, next) => {
+  try {
+    const { getProductBySlug } = await import('./controllers/products.controller');
+    return getProductBySlug(req, res, next);
+  } catch (error: any) {
+    logger.error('Failed to load products controller:', error.message);
+    res.status(500).json({ success: false, message: 'Failed to load product' });
+  }
+});
 
-// Compression middleware
-app.use(compression());
+// Load routes dynamically to avoid blocking compilation
+// Routes are loaded on first request, then cached
+const routeCache: Record<string, any> = {};
 
-// Rate limiting
-app.use('/api', apiLimiter);
+const loadRoute = async (routePath: string, routeFile: string) => {
+  if (!routeCache[routePath]) {
+    try {
+      const routeModule = await import(routeFile);
+      routeCache[routePath] = routeModule.default;
+      logger.info(`Route loaded: ${routePath}`);
+    } catch (error: any) {
+      logger.error(`Failed to load route ${routePath}:`, error.message);
+      throw error;
+    }
+  }
+  return routeCache[routePath];
+};
 
-// API routes
-app.use('/api', routes);
+// Async middleware wrapper for Express - properly handles async
+const asyncRouteLoader = (routePath: string, routeFile: string) => {
+  return (req: any, res: any, next: any) => {
+    loadRoute(routePath, routeFile)
+      .then((router) => {
+        router(req, res, next);
+      })
+      .catch((error: any) => {
+        logger.error(`Error loading route ${routePath}:`, error.message);
+        if (!res.headersSent) {
+          res.status(500).json({ success: false, message: `Failed to load ${routePath} routes` });
+        }
+      });
+  };
+};
+
+// Auth routes - dynamically import to avoid blocking
+app.use('/api/v1/auth', asyncRouteLoader('auth', './routes/auth.routes'));
+
+// Orders routes - dynamically import to avoid blocking
+app.use('/api/v1/orders', asyncRouteLoader('orders', './routes/orders.routes'));
+
+// Payment routes - dynamically import to avoid blocking
+app.use('/api/v1/payment', asyncRouteLoader('payment', './routes/payment.routes'));
+
+// Admin routes - dynamically import to avoid blocking
+app.use('/api/v1/admin', asyncRouteLoader('admin', './routes/admin.routes'));
+
+// Deals routes - dynamically import to avoid blocking
+app.use('/api/v1/deals', asyncRouteLoader('deals', './routes/deals.routes'));
+
+// Search routes - dynamically import to avoid blocking
+app.use('/api/v1/search', asyncRouteLoader('search', './routes/search.routes'));
 
 // 404 handler
 app.use(notFoundHandler);
@@ -75,4 +108,3 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 export default app;
-

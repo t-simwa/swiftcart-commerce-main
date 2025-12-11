@@ -25,8 +25,13 @@ export const connectElasticsearch = async (): Promise<void> => {
 
     elasticsearchClient = new Client(clientConfig);
 
-    // Test connection
-    const health = await elasticsearchClient.cluster.health();
+    // Test connection with timeout
+    const healthPromise = elasticsearchClient.cluster.health();
+    const timeoutPromise = new Promise<never>((_, reject) => 
+      setTimeout(() => reject(new Error('Elasticsearch connection timeout after 5 seconds')), 5000)
+    );
+
+    const health = await Promise.race([healthPromise, timeoutPromise]);
     logger.info('Elasticsearch connected successfully', {
       cluster_name: health.cluster_name,
       status: health.status,

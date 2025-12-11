@@ -1,34 +1,59 @@
+// This log should appear immediately if file is being executed
+console.log('🚀 SERVER.TS STARTING...');
+
 import { createServer } from 'http';
-import app from './app';
+import { env } from './config/env';
+import logger from './utils/logger';
 import { connectDatabase } from './config/database';
 import { connectRedis, disconnectRedis } from './config/redis';
 import { connectElasticsearch, disconnectElasticsearch } from './config/elasticsearch';
-import { env } from './config/env';
-import logger from './utils/logger';
-import { initializeSocket, setSocketInstance } from './config/socket';
+// import { initializeSocket, setSocketInstance } from './config/socket'; // Lazy load to avoid blocking
+import app from './app';
 
 const PORT = env.PORT;
 
 // Create HTTP server
 const httpServer = createServer(app);
 
-// Initialize Socket.io
-const io = initializeSocket(httpServer);
-setSocketInstance(io);
+// Initialize Socket.io - lazy load to avoid blocking
+let io: any = null;
+const initSocket = async () => {
+  try {
+    const socketModule = await import('./config/socket');
+    io = socketModule.initializeSocket(httpServer);
+    socketModule.setSocketInstance(io);
+    logger.info('Socket.io initialized');
+  } catch (error: any) {
+    logger.warn('Socket.io initialization skipped:', error.message);
+  }
+};
+initSocket();
 
 // Connect to database and Redis, then start server
 const startServer = async () => {
   try {
+    console.log('🔄 Starting server initialization...');
+    console.log(`📡 Connecting to MongoDB: ${env.MONGODB_URI?.replace(/\/\/[^:]+:[^@]+@/, '//***:***@') || 'not set'}`);
+    
     // Connect to MongoDB
+    console.log('⏳ Connecting to MongoDB...');
     await connectDatabase();
+    console.log('✅ MongoDB connected');
     
     // Connect to Redis (non-blocking - app continues if Redis fails)
-    await connectRedis();
+    console.log('⏳ Connecting to Redis...');
+    await connectRedis().catch(() => {
+      console.log('⚠️ Redis connection skipped (optional)');
+    });
     
     // Connect to Elasticsearch (non-blocking - app continues if Elasticsearch fails)
-    await connectElasticsearch();
+    console.log('⏳ Connecting to Elasticsearch...');
+    await connectElasticsearch().catch(() => {
+      console.log('⚠️ Elasticsearch connection skipped (optional)');
+    });
     
     // Start server with Socket.io
+    console.log('⏳ Starting HTTP server...');
     httpServer.listen(PORT, () => {
       logger.info('🚀 Server started successfully', {
         port: PORT,
@@ -43,7 +68,8 @@ const startServer = async () => {
     });
   } catch (error: any) {
     logger.error('Failed to start server', { error: error.message, stack: error.stack });
-    console.error('Failed to start server:', error);
+    console.error('❌ Failed to start server:', error.message);
+    console.error('Stack:', error.stack);
     process.exit(1);
   }
 };
@@ -74,9 +100,11 @@ const gracefulShutdown = async (signal: string) => {
   
   try {
     // Close Socket.io connections
-    io.close(() => {
-      logger.info('Socket.io server closed');
-    });
+    if (io) {
+      io.close(() => {
+        logger.info('Socket.io server closed');
+      });
+    }
     
     // Close HTTP server
     httpServer.close(() => {

@@ -56,7 +56,6 @@ const UserSchema = new Schema<IUser>(
       lowercase: true,
       trim: true,
       match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email'],
-      index: true,
     },
     password: {
       type: String,
@@ -91,7 +90,6 @@ const UserSchema = new Schema<IUser>(
       type: String,
       enum: ['customer', 'admin'],
       default: 'customer',
-      index: true,
     },
     addresses: {
       type: [AddressSchema],
@@ -126,8 +124,7 @@ const UserSchema = new Schema<IUser>(
 );
 
 // Indexes for performance
-// Note: email already has index from 'unique: true'
-UserSchema.index({ email: 1 }); // Explicit index for clarity
+// Note: email already has index from 'unique: true', so we don't need to add it again
 UserSchema.index({ role: 1 });
 UserSchema.index({ createdAt: -1 }); // For sorting users by creation date
 UserSchema.index({ isEmailVerified: 1 }); // For filtering verified users

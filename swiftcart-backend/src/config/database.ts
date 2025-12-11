@@ -10,18 +10,27 @@ export const connectDatabase = async (): Promise<void> => {
       throw new Error('MONGODB_URI is not defined in environment variables');
     }
 
+    console.log(`🔗 Attempting to connect to MongoDB...`);
+
     // Connection options for production-ready setup
     const options: mongoose.ConnectOptions = {
       maxPoolSize: 10, // Maintain up to 10 socket connections
       minPoolSize: 2, // Maintain at least 2 socket connections
-      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+      serverSelectionTimeoutMS: 10000, // Keep trying to send operations for 10 seconds
       socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+      connectTimeoutMS: 10000, // Give up initial connection after 10 seconds
       family: 4, // Use IPv4, skip trying IPv6
       retryWrites: true, // Retry writes on network errors
       retryReads: true, // Retry reads on network errors
     };
 
-    const conn = await mongoose.connect(mongoUri, options);
+    // Add timeout wrapper to prevent indefinite hanging
+    const connectionPromise = mongoose.connect(mongoUri, options);
+    const timeoutPromise = new Promise<never>((_, reject) => 
+      setTimeout(() => reject(new Error('MongoDB connection timeout after 15 seconds. Is MongoDB running?')), 15000)
+    );
+
+    const conn = await Promise.race([connectionPromise, timeoutPromise]);
 
     logger.info('MongoDB connected successfully', {
       host: conn.connection.host,

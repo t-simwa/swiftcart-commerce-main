@@ -7,6 +7,7 @@ export interface EnhancedProductTemplate {
   features: string[];
   priceRange: { min: number; max: number };
   imageKeywords: string;
+  imageUrl?: string; // URL to product image from Jumia or other sources
   ratingRange?: { min: number; max: number };
   reviewCountRange?: { min: number; max: number };
   hasVariants?: boolean;
@@ -30,6 +31,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'logitech mx master mouse',
       ratingRange: { min: 4.5, max: 5.0 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/39/9639713/1.jpg',
     },
     {
       brand: 'Logitech',
@@ -42,6 +44,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'logitech mx keys keyboard',
       ratingRange: { min: 4.4, max: 5.0 },
       reviewCountRange: { min: 3000, max: 30000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/53/1154523/1.jpg',
     },
     {
       brand: 'Anker',
@@ -54,6 +57,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'anker usb c hub',
       ratingRange: { min: 4.3, max: 4.9 },
       reviewCountRange: { min: 2000, max: 20000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/82/8318523/1.jpg',
     },
     {
       brand: 'Corsair',
@@ -66,6 +70,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'corsair k70 keyboard',
       ratingRange: { min: 4.5, max: 5.0 },
       reviewCountRange: { min: 5000, max: 40000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/31/3606792/1.jpg',
     },
     {
       brand: 'Razer',
@@ -78,6 +83,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'razer deathadder mouse',
       ratingRange: { min: 4.4, max: 4.9 },
       reviewCountRange: { min: 3000, max: 30000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/96/4227652/1.jpg',
     },
     {
       brand: 'Apple',
@@ -90,6 +96,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'apple magic trackpad',
       ratingRange: { min: 4.3, max: 4.8 },
       reviewCountRange: { min: 1000, max: 15000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/93/7732192/1.jpg',
     },
   ],
 
@@ -108,6 +115,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Storage', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/36/3907523/1.jpg',
     },
     {
       brand: 'Samsung',
@@ -122,6 +130,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 8000, max: 80000 },
       hasVariants: true,
       variantTypes: ['Storage', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/43/2937703/1.jpg',
     },
     {
       brand: 'Anker',
@@ -134,6 +143,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'anker powerbank',
       ratingRange: { min: 4.4, max: 4.9 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/05/8133623/1.jpg',
     },
     {
       brand: 'Spigen',
@@ -148,6 +158,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/23/0222803/1.jpg',
     },
     {
       brand: 'Belkin',
@@ -160,6 +171,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'belkin wireless charger',
       ratingRange: { min: 4.2, max: 4.7 },
       reviewCountRange: { min: 2000, max: 20000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/57/7048662/1.jpg',
     },
   ],
 
@@ -192,6 +204,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['RAM', 'Storage', 'GPU'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/85/1388023/1.jpg',
     },
     {
       brand: 'ASUS',
@@ -206,6 +219,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 2000, max: 20000 },
       hasVariants: true,
       variantTypes: ['RAM', 'Storage', 'GPU'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/89/8706523/1.jpg',
     },
     {
       brand: 'Lenovo',
@@ -218,6 +232,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'lenovo thinkpad x1',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 2000, max: 20000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/81/4712623/1.jpg',
     },
   ],
 
@@ -236,6 +251,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/38/8877523/1.jpg',
     },
     {
       brand: 'Bose',
@@ -250,6 +266,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 8000, max: 80000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/51/3519423/1.jpg',
     },
     {
       brand: 'Apple',
@@ -264,6 +281,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 50000, max: 500000 },
       hasVariants: true,
       variantTypes: ['Case'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/21/1352623/1.jpg',
     },
     {
       brand: 'JBL',
@@ -278,6 +296,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/69/0581082/1.jpg',
     },
   ],
 
@@ -296,6 +315,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Size'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/49/106093/1.jpg',
     },
     {
       brand: 'LG',
@@ -310,6 +330,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Size'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/17/6167523/1.jpg',
     },
     {
       brand: 'Sony',
@@ -322,6 +343,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'sony soundbar',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 2000, max: 20000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/69/466239/1.jpg',
     },
   ],
 
@@ -372,6 +394,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 500, max: 5000 },
       hasVariants: true,
       variantTypes: ['Size', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/17/4673523/1.jpg',
     },
     {
       brand: 'Levi\'s',
@@ -404,6 +427,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 2000, max: 20000 },
       hasVariants: true,
       variantTypes: ['Size', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/17/9737523/1.jpg',
     },
   ],
   'mens-shoes': [
@@ -420,6 +444,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Size', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/86/3090623/1.jpg',
     },
   ],
 
@@ -436,6 +461,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'instant pot pressure cooker',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/99/3622813/1.jpg',
     },
     {
       brand: 'KitchenAid',
@@ -450,6 +476,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/92/7603523/1.jpg',
     },
   ],
 
@@ -466,6 +493,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'canon eos camera',
       ratingRange: { min: 4.6, max: 5.0 },
       reviewCountRange: { min: 500, max: 5000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/29/2499072/1.jpg',
     },
     {
       brand: 'Sony',
@@ -478,6 +506,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'sony alpha camera',
       ratingRange: { min: 4.7, max: 5.0 },
       reviewCountRange: { min: 1000, max: 10000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/46/9834682/1.jpg',
     },
   ],
 
@@ -494,6 +523,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'playstation 5 console',
       ratingRange: { min: 4.7, max: 5.0 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/20/9702861/1.jpg',
     },
     {
       brand: 'Xbox',
@@ -506,6 +536,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'xbox series x console',
       ratingRange: { min: 4.6, max: 5.0 },
       reviewCountRange: { min: 8000, max: 80000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/04/8305431/1.jpg',
     },
   ],
 
@@ -524,6 +555,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Size', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/49/3948523/1.jpg',
     },
     {
       brand: 'Fitbit',
@@ -538,6 +570,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/34/7811212/1.jpg',
     },
   ],
 
@@ -556,6 +589,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 50000, max: 500000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/57/5619523/1.jpg',
     },
     {
       brand: 'Philips Hue',
@@ -568,6 +602,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'philips hue bulb',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/19/5608523/1.jpg',
     },
   ],
 
@@ -586,6 +621,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Size'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/19/1704992/1.jpg',
     },
     {
       brand: 'Amazon',
@@ -598,6 +634,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'amazon fire tv stick',
       ratingRange: { min: 4.6, max: 5.0 },
       reviewCountRange: { min: 50000, max: 500000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/42/3003913/1.jpg',
     },
     {
       brand: 'Amazon',
@@ -612,6 +649,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/57/5619523/1.jpg',
     },
     {
       brand: 'Amazon',
@@ -626,6 +664,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 50000, max: 500000 },
       hasVariants: true,
       variantTypes: ['Storage'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/55/1223603/1.jpg',
     },
     {
       brand: 'Amazon',
@@ -638,6 +677,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'ring video doorbell',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 20000, max: 200000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/69/6699603/1.jpg',
     },
   ],
 
@@ -654,6 +694,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'philips hue color bulb',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/19/5608523/1.jpg',
     },
     {
       brand: 'LIFX',
@@ -666,6 +707,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'lifx smart bulb',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/88/3254523/1.jpg',
     },
     {
       brand: 'Nanoleaf',
@@ -680,6 +722,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 2000, max: 20000 },
       hasVariants: true,
       variantTypes: ['Panel Count'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/85/2568523/1.jpg',
     },
     {
       brand: 'Govee',
@@ -694,6 +737,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Length'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/94/2908523/1.jpg',
     },
     {
       brand: 'Wyze',
@@ -706,6 +750,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'wyze smart bulb',
       ratingRange: { min: 4.3, max: 4.7 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/19/5608523/1.jpg',
     },
   ],
 
@@ -722,6 +767,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'ring floodlight camera',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/28/4888211/1.jpg',
     },
     {
       brand: 'Arlo',
@@ -736,6 +782,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Camera Count'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/35/1200803/1.jpg',
     },
     {
       brand: 'Google Nest',
@@ -748,6 +795,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'google nest camera',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/81/0263523/1.jpg',
     },
     {
       brand: 'Eufy',
@@ -762,6 +810,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Camera Count'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/78/6361623/1.jpg',
     },
     {
       brand: 'Wyze',
@@ -774,6 +823,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'wyze security camera',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 50000, max: 500000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/81/0263523/1.jpg',
     },
   ],
 
@@ -792,6 +842,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 50000, max: 500000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/57/5619523/1.jpg',
     },
     {
       brand: 'Google',
@@ -806,6 +857,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 20000, max: 200000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/89/4888211/1.jpg',
     },
     {
       brand: 'Apple',
@@ -820,6 +872,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/89/0492623/1.jpg',
     },
     {
       brand: 'Sonos',
@@ -834,6 +887,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/70/7729123/1.jpg',
     },
     {
       brand: 'Bose',
@@ -848,6 +902,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 2000, max: 20000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/45/2052592/1.jpg',
     },
   ],
 
@@ -866,6 +921,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/92/14892/1.jpg',
     },
   ],
   'skin-care': [
@@ -880,6 +936,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'cerave moisturizer',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/57/4996523/1.jpg',
     },
   ],
 
@@ -896,6 +953,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'nike dumbbells',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 1000, max: 10000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/95/9969523/1.jpg',
     },
     {
       brand: 'Lululemon',
@@ -910,6 +968,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 2000, max: 20000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/26/6462223/1.jpg',
     },
   ],
 
@@ -926,6 +985,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'hp desktop computer',
       ratingRange: { min: 4.3, max: 4.8 },
       reviewCountRange: { min: 500, max: 5000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/27/7991623/1.jpg',
     },
     {
       brand: 'Dell',
@@ -938,6 +998,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'dell optiplex desktop',
       ratingRange: { min: 4.4, max: 4.9 },
       reviewCountRange: { min: 300, max: 3000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/53/5757523/1.jpg',
     },
   ],
   'tablets': [
@@ -954,6 +1015,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Storage', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/59/9423113/1.jpg',
     },
     {
       brand: 'Samsung',
@@ -968,6 +1030,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 2000, max: 20000 },
       hasVariants: true,
       variantTypes: ['Storage', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/00/6694662/1.jpg',
     },
   ],
   'monitors': [
@@ -1010,6 +1073,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Storage'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/26/271339/1.jpg',
     },
     {
       brand: 'Western Digital',
@@ -1024,6 +1088,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Storage', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/69/0921201/1.jpg',
     },
   ],
   'networking': [
@@ -1038,6 +1103,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'tp-link wifi router',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/11/2598381/1.jpg',
     },
   ],
 
@@ -1054,6 +1120,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'garmin gps navigator',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 2000, max: 20000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/54/1037523/1.jpg',
     },
     {
       brand: 'Anker',
@@ -1066,6 +1133,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'anker dashcam',
       ratingRange: { min: 4.3, max: 4.8 },
       reviewCountRange: { min: 3000, max: 30000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/91/4619603/1.jpg',
     },
   ],
 
@@ -1082,6 +1150,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'crayola colored pencils',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/76/268157/1.jpg',
     },
     {
       brand: 'Winsor & Newton',
@@ -1094,6 +1163,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'winsor newton watercolor',
       ratingRange: { min: 4.6, max: 5.0 },
       reviewCountRange: { min: 1000, max: 10000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/48/5532523/1.jpg',
     },
   ],
 
@@ -1126,6 +1196,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'fisher price baby toy',
       ratingRange: { min: 4.4, max: 4.9 },
       reviewCountRange: { min: 3000, max: 30000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/22/159581/1.jpg',
     },
   ],
   'diapering': [
@@ -1142,6 +1213,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Size'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/89/7091623/1.jpg',
     },
   ],
 
@@ -1158,6 +1230,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'olaplex hair treatment',
       ratingRange: { min: 4.6, max: 5.0 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/30/494849/1.jpg',
     },
   ],
   'fragrance': [
@@ -1172,6 +1245,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'calvin klein ck one',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/56/939562/1.jpg',
     },
   ],
 
@@ -1188,6 +1262,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'pandora bracelet',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/59/2274523/1.jpg',
     },
   ],
   'womens-handbags': [
@@ -1204,6 +1279,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/15/0670252/1.jpg',
     },
   ],
 
@@ -1222,6 +1298,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 1000, max: 10000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/65/5800771/1.jpg',
     },
   ],
   'bedding': [
@@ -1238,6 +1315,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Size', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/16/7523523/1.jpg',
     },
   ],
 
@@ -1254,6 +1332,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'purina dog food',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/51/527585/1.jpg',
     },
   ],
   'cats': [
@@ -1268,6 +1347,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'royal canin cat food',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/15/0285523/1.jpg',
     },
   ],
 
@@ -1284,6 +1364,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'dewalt cordless drill',
       ratingRange: { min: 4.6, max: 5.0 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/70/5956523/1.jpg',
     },
   ],
 
@@ -1300,6 +1381,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'lego building blocks',
       ratingRange: { min: 4.7, max: 5.0 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/40/528778/1.jpg',
     },
   ],
   'games-puzzles': [
@@ -1314,6 +1396,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'ravensburger puzzle',
       ratingRange: { min: 4.6, max: 5.0 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/69/5852712/1.jpg',
     },
   ],
 
@@ -1330,6 +1413,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'god of war ps5 game',
       ratingRange: { min: 4.7, max: 5.0 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/80/3627523/1.jpg',
     },
   ],
   'nintendo-switch': [
@@ -1344,6 +1428,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'zelda switch game',
       ratingRange: { min: 4.8, max: 5.0 },
       reviewCountRange: { min: 10000, max: 100000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/19/490264/1.jpg',
     },
   ],
 
@@ -1360,6 +1445,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'logitech mx master mouse',
       ratingRange: { min: 4.5, max: 5.0 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/39/9639713/1.jpg',
     },
   ],
   'outdoor-recreation': [
@@ -1374,6 +1460,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'coleman camping tent',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/62/6487761/1.jpg',
     },
   ],
   'home-decor': [
@@ -1390,6 +1477,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 500, max: 5000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/26/0984523/1.jpg',
     },
   ],
   'lighting': [
@@ -1404,6 +1492,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'philips smart bulb',
       ratingRange: { min: 4.4, max: 4.9 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/59/4297021/1.jpg',
     },
   ],
   'vacuums': [
@@ -1418,6 +1507,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'dyson cordless vacuum',
       ratingRange: { min: 4.6, max: 5.0 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/82/4392992/1.jpg',
     },
   ],
   'luggage': [
@@ -1434,6 +1524,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/06/8765491/1.jpg',
     },
   ],
   'backpacks': [
@@ -1450,6 +1541,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 2000, max: 20000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/70/9038091/1.jpg',
     },
   ],
   'pc-games': [
@@ -1482,6 +1574,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Generation'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/29/6314523/1.jpg',
     },
     {
       brand: 'Ecobee',
@@ -1496,6 +1589,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Sensor Count'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/29/6314523/1.jpg',
     },
     {
       brand: 'Honeywell',
@@ -1508,6 +1602,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'honeywell smart thermostat',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 3000, max: 30000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/29/6314523/1.jpg',
     },
     {
       brand: 'Emerson',
@@ -1520,6 +1615,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'emerson sensi thermostat',
       ratingRange: { min: 4.3, max: 4.7 },
       reviewCountRange: { min: 2000, max: 20000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/29/6314523/1.jpg',
     },
     {
       brand: 'Wyze',
@@ -1532,6 +1628,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'wyze smart thermostat',
       ratingRange: { min: 4.2, max: 4.6 },
       reviewCountRange: { min: 1000, max: 10000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/29/6314523/1.jpg',
     },
   ],
 
@@ -1550,6 +1647,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 1000, max: 10000 },
       hasVariants: true,
       variantTypes: ['Gauge', 'Length'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/77/4827523/1.jpg',
     },
     {
       brand: 'Gorilla',
@@ -1562,6 +1660,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'gorilla super glue',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/39/5322881/1.jpg',
     },
     {
       brand: 'Darice',
@@ -1574,6 +1673,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'darice jewelry pliers',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 2000, max: 20000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/30/7616523/1.jpg',
     },
     {
       brand: 'Swarovski',
@@ -1588,6 +1688,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 500, max: 5000 },
       hasVariants: true,
       variantTypes: ['Size', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/63/3827861/1.jpg',
     },
     {
       brand: 'Fire Mountain Gems',
@@ -1602,6 +1703,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 1000, max: 10000 },
       hasVariants: true,
       variantTypes: ['Style'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/46/6713223/1.jpg',
     },
   ],
 
@@ -1634,6 +1736,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 8000, max: 80000 },
       hasVariants: true,
       variantTypes: ['Size', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/01/3740803/1.jpg',
     },
     {
       brand: 'Comotomo',
@@ -1648,6 +1751,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Size', 'Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/57/4933103/1.jpg',
     },
     {
       brand: 'Graco',
@@ -1662,6 +1766,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/54/3816703/1.jpg',
     },
     {
       brand: 'OXO Tot',
@@ -1676,6 +1781,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/54/3816703/1.jpg',
     },
   ],
 
@@ -1694,6 +1800,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color', 'Strap Material'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/15/3458262/1.jpg',
     },
     {
       brand: 'Michael Kors',
@@ -1708,6 +1815,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Color', 'Size'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/36/7842623/1.jpg',
     },
     {
       brand: 'Apple',
@@ -1722,6 +1830,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Size', 'Color', 'Band'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/67/9006523/1.jpg',
     },
     {
       brand: 'Citizen',
@@ -1736,6 +1845,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Color', 'Size'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/86/1924603/1.jpg',
     },
     {
       brand: 'Timex',
@@ -1750,6 +1860,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color', 'Strap'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/26/8263123/1.jpg',
     },
   ],
 
@@ -1768,6 +1879,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/73/6955523/1.jpg',
     },
     {
       brand: 'Sizzix',
@@ -1780,6 +1892,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'sizzix die cutting machine',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/73/6955523/1.jpg',
     },
     {
       brand: 'Mod Podge',
@@ -1820,6 +1933,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Size'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/00/2456772/1.jpg',
     },
   ],
 
@@ -1838,6 +1952,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Color', 'Model'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/03/0123623/1.jpg',
     },
     {
       brand: 'Seiko',
@@ -1852,6 +1967,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color', 'Strap'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/45/3264523/1.jpg',
     },
     {
       brand: 'Fossil',
@@ -1866,6 +1982,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color', 'Strap Material'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/26/9155903/1.jpg',
     },
     {
       brand: 'Timex',
@@ -1880,6 +1997,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color', 'Strap'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/98/5240692/1.jpg',
     },
     {
       brand: 'Apple',
@@ -1894,6 +2012,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Band'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/45/9242613/1.jpg',
     },
   ],
 
@@ -1912,6 +2031,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/54/0525523/1.jpg',
     },
     {
       brand: 'Chicco',
@@ -1926,6 +2046,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/90/8730623/1.jpg',
     },
     {
       brand: 'BabyBjörn',
@@ -1940,6 +2061,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/49/0993682/1.jpg',
     },
     {
       brand: 'Fisher-Price',
@@ -1954,6 +2076,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/20/0511623/1.jpg',
     },
     {
       brand: '4moms',
@@ -1968,6 +2091,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/82/2907523/1.jpg',
     },
   ],
 
@@ -1986,6 +2110,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/77/118617/1.jpg',
     },
     {
       brand: 'Essie',
@@ -2000,6 +2125,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/15/9244523/1.jpg',
     },
     {
       brand: 'Sally Hansen',
@@ -2014,6 +2140,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/81/9157691/1.jpg',
     },
     {
       brand: 'Gelish',
@@ -2028,6 +2155,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/79/2798613/1.jpg',
     },
     {
       brand: 'CND',
@@ -2042,6 +2170,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/93/6535523/1.jpg',
     },
   ],
 
@@ -2060,6 +2189,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 1000, max: 10000 },
       hasVariants: true,
       variantTypes: ['Color', 'Pattern'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/14/2299613/1.jpg',
     },
     {
       brand: 'Riley Blake',
@@ -2074,6 +2204,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 500, max: 5000 },
       hasVariants: true,
       variantTypes: ['Color', 'Pattern'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/06/9511803/1.jpg',
     },
     {
       brand: 'Michael Miller',
@@ -2088,6 +2219,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 500, max: 5000 },
       hasVariants: true,
       variantTypes: ['Color', 'Pattern'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/06/9511803/1.jpg',
     },
     {
       brand: 'Moda',
@@ -2102,6 +2234,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 1000, max: 10000 },
       hasVariants: true,
       variantTypes: ['Color', 'Pattern'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/68/8008852/1.jpg',
     },
     {
       brand: 'Kona',
@@ -2116,6 +2249,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 2000, max: 20000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/48/2913472/1.jpg',
     },
   ],
 
@@ -2134,6 +2268,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/59/9472303/1.jpg',
     },
     {
       brand: 'Lion Brand',
@@ -2148,6 +2283,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/53/7305523/1.jpg',
     },
     {
       brand: 'Caron',
@@ -2162,6 +2298,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/87/5340523/1.jpg',
     },
     {
       brand: 'Bernat',
@@ -2176,6 +2313,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 3000, max: 30000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/59/9472303/1.jpg',
     },
     {
       brand: 'Clover',
@@ -2208,6 +2346,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 2000, max: 20000 },
       hasVariants: true,
       variantTypes: ['Color', 'Pattern'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/56/7527423/1.jpg',
     },
     {
       brand: 'We R Memory Keepers',
@@ -2222,6 +2361,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 1000, max: 10000 },
       hasVariants: true,
       variantTypes: ['Color', 'Size'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/56/8463623/1.jpg',
     },
     {
       brand: 'Tim Holtz',
@@ -2236,6 +2376,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 2000, max: 20000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/90/7860623/1.jpg',
     },
     {
       brand: 'Cricut',
@@ -2250,6 +2391,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Size'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/86/394906/1.jpg',
     },
     {
       brand: 'EK Success',
@@ -2262,6 +2404,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'corner rounder punch',
       ratingRange: { min: 4.3, max: 4.7 },
       reviewCountRange: { min: 1000, max: 10000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/97/9599852/1.jpg',
     },
   ],
 
@@ -2278,6 +2421,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'brother sewing machine',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 5000, max: 50000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/90/1629982/1.jpg',
     },
     {
       brand: 'Singer',
@@ -2290,6 +2434,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'singer heavy duty sewing machine',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 3000, max: 30000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/75/7976523/1.jpg',
     },
     {
       brand: 'Gutermann',
@@ -2304,6 +2449,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/87/3795972/1.jpg',
     },
     {
       brand: 'Dritz',
@@ -2316,6 +2462,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'seam ripper tool',
       ratingRange: { min: 4.4, max: 4.8 },
       reviewCountRange: { min: 2000, max: 20000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/55/6738613/1.jpg',
     },
     {
       brand: 'Fiskars',
@@ -2328,6 +2475,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       imageKeywords: 'fiskars fabric shears',
       ratingRange: { min: 4.5, max: 4.9 },
       reviewCountRange: { min: 3000, max: 30000 },
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/91/6695772/1.jpg',
     },
   ],
 
@@ -2346,6 +2494,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/79/5021151/1.jpg',
     },
     {
       brand: 'Philips',
@@ -2360,6 +2509,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 15000, max: 150000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/67/5073321/1.jpg',
     },
     {
       brand: 'Crest',
@@ -2374,6 +2524,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 10000, max: 100000 },
       hasVariants: true,
       variantTypes: ['Size', 'Flavor'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/97/4719523/1.jpg',
     },
     {
       brand: 'Listerine',
@@ -2388,6 +2539,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Size', 'Flavor'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/93/1433203/1.jpg',
     },
     {
       brand: 'Waterpik',
@@ -2402,6 +2554,7 @@ export const enhancedProductTemplates: Record<string, EnhancedProductTemplate[]>
       reviewCountRange: { min: 5000, max: 50000 },
       hasVariants: true,
       variantTypes: ['Color'],
+      imageUrl: 'https://ke.jumia.is/unsafe/fit-in/1500x1500/filters:fill(white)/product/22/2080872/1.jpg',
     },
   ],
 };
