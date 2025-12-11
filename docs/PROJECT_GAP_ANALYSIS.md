@@ -422,16 +422,19 @@ __tests__/
 
 ### 10. DevOps & Deployment (0% Complete) 🟡 **MEDIUM PRIORITY**
 
+> 📖 **New to DevOps?** See `docs/DEVOPS_GUIDE.md` for detailed explanations of each item, what they do, and how they're used in your SwiftCart project.
+
 **Missing:**
-- ❌ Docker configuration (Dockerfile, docker-compose.yml)
-- ❌ GitHub Actions CI/CD pipeline
-- ❌ AWS EC2 setup scripts
-- ❌ S3 bucket configuration
-- ❌ CloudFront CDN setup
-- ❌ Environment variable management
-- ❌ SSL certificate configuration
-- ❌ Deployment scripts
-- ❌ Monitoring setup (CloudWatch)
+- ❌ Hosting platform setup (Vercel for frontend + Railway/Render for backend, OR EC2 for full control)
+- ❌ Docker configuration (optional with Vercel/Railway, required for EC2)
+- ❌ GitHub Actions CI/CD pipeline (optional - platforms have auto-deploy)
+- ❌ AWS EC2 setup scripts (only if using EC2)
+- ❌ S3 bucket configuration (or Vercel Blob Storage alternative)
+- ❌ CloudFront CDN setup (included with Vercel, optional for EC2)
+- ❌ Environment variable management (built into platforms, or AWS Systems Manager)
+- ❌ SSL certificate configuration (automatic with Vercel/Railway, manual for EC2)
+- ❌ Deployment scripts (optional - platforms auto-deploy)
+- ❌ Monitoring setup (built into platforms, or CloudWatch for EC2)
 - ❌ Error tracking (Sentry or similar)
 
 **Required Files:**

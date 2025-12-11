@@ -20,34 +20,66 @@ swiftcart-commerce-main/
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### Option 1: Docker (Recommended for Easy Setup)
 
+**Prerequisites:**
+- Docker Desktop installed and running
+
+**Steps:**
+
+1. **Clone the repository** (if not already done)
+
+2. **Copy environment variables:**
+   ```bash
+   cp docker/env.example .env
+   # Edit .env with your configuration
+   ```
+
+3. **Start all services:**
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Seed the database:**
+   ```bash
+   docker-compose exec backend pnpm seed
+   ```
+
+5. **Access the application:**
+   - Frontend: http://localhost:8080
+   - Backend API: http://localhost:3000/api/v1
+   - Health Check: http://localhost:3000/api/health
+
+**See [docker/README.md](docker/README.md) for detailed Docker instructions.**
+
+---
+
+### Option 2: Local Development
+
+**Prerequisites:**
 - Node.js 18+
 - pnpm 8+ (install with `npm install -g pnpm`)
 - MongoDB (local or MongoDB Atlas)
+- Redis (optional, for caching)
+- Elasticsearch (optional, for search)
 
-### Setup
+**Steps:**
 
 1. **Clone the repository** (if not already done)
 
 2. **Install all dependencies:**
-
    ```bash
    pnpm install
    ```
 
-   This will install dependencies for all packages in the monorepo.
-
 3. **Configure backend:**
-
    ```bash
    cd swiftcart-backend
-   cp .env.example .env
-   # Edit .env with your MongoDB URI and JWT secrets
+   # Create .env file with your configuration
+   # See docker/env.example for reference
    ```
 
 4. **Configure frontend:**
-
    ```bash
    cd swiftcart-frontend
    # Create .env file
@@ -55,21 +87,17 @@ swiftcart-commerce-main/
    ```
 
 5. **Seed the database:**
-
    ```bash
    pnpm seed
    ```
 
-6. **Start both servers (recommended):**
-
+6. **Start both servers:**
    ```bash
    pnpm dev
    ```
-
    This starts both backend (port 3000) and frontend (port 8080) simultaneously.
 
    **Or start individually:**
-
    ```bash
    # Terminal 1 - Backend only
    pnpm dev:backend
@@ -85,9 +113,12 @@ swiftcart-commerce-main/
 
 ## 📚 Documentation
 
-- **Setup Instructions:** See `SETUP_INSTRUCTIONS.md`
-- **Quick Start:** See `QUICK_START.md`
-- **Gap Analysis:** See `PROJECT_GAP_ANALYSIS.md`
+- **Deployment Guide:** See `docs/DEPLOYMENT_GUIDE.md` 🚀 ⭐
+- **Docker Setup:** See `docker/README.md`
+- **DevOps Guide:** See `docs/DEVOPS_GUIDE.md`
+- **Setup Instructions:** See `docs/SETUP_INSTRUCTIONS.md`
+- **Quick Start:** See `docs/QUICK_START.md`
+- **Gap Analysis:** See `docs/PROJECT_GAP_ANALYSIS.md`
 - **Backend API:** See `swiftcart-backend/README.md`
 
 ## 🛠️ Development

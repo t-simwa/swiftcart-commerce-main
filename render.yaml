@@ -1,0 +1,23 @@
+# Render Blueprint for SwiftCart Backend
+# This file allows you to deploy with a single click
+# Go to Render Dashboard → New → Blueprint
+
+services:
+  - type: web
+    name: swiftcart-backend
+    env: node
+    region: oregon  # Change to your preferred region
+    plan: free  # Change to 'starter' for always-on ($7/month)
+    buildCommand: pnpm install && pnpm build
+    startCommand: pnpm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: API_VERSION
+        value: v1
+      # Add your other environment variables in Render dashboard
+      # MONGODB_URI, JWT_SECRET, etc.
+

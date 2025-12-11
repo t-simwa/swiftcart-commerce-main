@@ -1,0 +1,141 @@
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7
+    container_name: swiftcart-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: swiftcart
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - swiftcart-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: swiftcart-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - swiftcart-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    command: redis-server --appendonly yes
+
+  # Elasticsearch (optional - can be disabled if not needed)
+  # Commented out by default - uncomment if you need Elasticsearch
+  # If port 9200 is already in use, change the host port (e.g., "9201:9200")
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+  #   container_name: swiftcart-elasticsearch
+  #   restart: unless-stopped
+  #   environment:
+  #     - discovery.type=single-node
+  #     - xpack.security.enabled=false
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ports:
+  #     - "9201:9200"  # Changed to 9201 to avoid conflict
+  #     - "9300:9300"
+  #   volumes:
+  #     - elasticsearch_data:/usr/share/elasticsearch/data
+  #   networks:
+  #     - swiftcart-network
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./swiftcart-backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: swiftcart-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGODB_URI: mongodb://mongodb:27017/swiftcart
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      ELASTICSEARCH_NODE: http://localhost:9200
+      FRONTEND_URL: http://localhost:8080
+      # Add your other environment variables here or use .env file
+      # JWT_SECRET: ${JWT_SECRET}
+      # MPESA_CONSUMER_KEY: ${MPESA_CONSUMER_KEY}
+      # etc...
+    volumes:
+      - ./swiftcart-backend/public/uploads:/app/public/uploads
+      - ./swiftcart-backend/logs:/app/logs
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      # Elasticsearch is optional - commented out if port 9200 is already in use
+      # Uncomment elasticsearch service above if you need it
+    networks:
+      - swiftcart-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend (React App)
+  frontend:
+    build:
+      context: ./swiftcart-frontend
+      dockerfile: Dockerfile
+      target: production
+      args:
+        # Build-time environment variables (baked into the build)
+        VITE_API_URL: http://localhost:3000/api
+    container_name: swiftcart-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - swiftcart-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  mongodb_data:
+    driver: local
+  mongodb_config:
+    driver: local
+  redis_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+networks:
+  swiftcart-network:
+    driver: bridge
+
