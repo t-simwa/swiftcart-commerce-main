@@ -133,12 +133,14 @@ export function SearchSuggestions({
               }}
               className="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-sm cursor-pointer"
             >
-              <OptimizedImage
-                src={product.image}
-                alt={product.name}
-                className="w-12 h-12 object-contain rounded"
-                aspectRatio="square"
-              />
+              <div className="w-12 h-12 flex-shrink-0 rounded overflow-hidden">
+                <OptimizedImage
+                  src={product.image}
+                  alt={product.name}
+                  className="object-contain"
+                  aspectRatio="auto"
+                />
+              </div>
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-medium text-gray-900 truncate">{product.name}</div>
                 <div className="text-xs text-gray-500">{product.category}</div>
