@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { CategoryOfferCard } from "./CategoryOfferCard";
 import { cn } from "@/lib/utils";
 
@@ -61,28 +60,26 @@ export function CategoryOffersCarousel({
       <h3 className="text-lg font-medium text-foreground mb-4 ml-4">{title}</h3>
 
       {/* Carousel Container */}
-      <div className="relative">
-        {/* Previous Button */}
+      <div className="relative group">
+        {/* Gradient Overlays for Arrow Contrast */}
+        <div className="absolute left-0 top-0 w-[10%] h-full bg-gradient-to-r from-black/8 to-transparent z-[5] pointer-events-none hidden md:block" />
+        <div className="absolute right-0 top-0 w-[10%] h-full bg-gradient-to-l from-black/8 to-transparent z-[5] pointer-events-none hidden md:block" />
+
+        {/* Previous Arrow - Ultra-Minimalist (Desktop only) */}
         {canScrollLeft && (
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-r-md rounded-l-none bg-background/95 hover:bg-background shadow-md border-l-0"
+          <button
             onClick={() => scroll("left")}
+            className="absolute left-[10px] md:left-[20px] top-1/2 -translate-y-1/2 z-[10] w-[50px] h-[50px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:left-[8px] md:hover:left-[18px] hidden md:flex"
             aria-label="Previous page"
           >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
+            <ChevronLeft className="h-[32px] w-[32px] text-black stroke-[2px] group-hover:stroke-[3px] transition-all duration-200" />
+          </button>
         )}
 
         {/* Scrollable Content */}
         <div
           ref={scrollRef}
           className="flex gap-1 overflow-x-auto snap-x snap-mandatory px-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-          style={{
-            paddingLeft: canScrollLeft ? "50px" : "12px",
-            paddingRight: canScrollRight ? "50px" : "12px",
-          }}
         >
           {offers.map((offer) => (
             <div
@@ -94,17 +91,15 @@ export function CategoryOffersCarousel({
           ))}
         </div>
 
-        {/* Next Button */}
+        {/* Next Arrow - Ultra-Minimalist (Desktop only) */}
         {canScrollRight && (
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-l-md rounded-r-none bg-background/95 hover:bg-background shadow-md border-r-0"
+          <button
             onClick={() => scroll("right")}
+            className="absolute right-[10px] md:right-[20px] top-1/2 -translate-y-1/2 z-[10] w-[50px] h-[50px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:right-[8px] md:hover:right-[18px] hidden md:flex"
             aria-label="Next page"
           >
-            <ChevronRight className="h-5 w-5" />
-          </Button>
+            <ChevronRight className="h-[32px] w-[32px] text-black stroke-[2px] group-hover:stroke-[3px] transition-all duration-200" />
+          </button>
         )}
       </div>
     </div>

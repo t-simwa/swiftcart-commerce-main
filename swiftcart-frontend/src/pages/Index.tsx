@@ -271,7 +271,7 @@ const Index = () => {
           {
             id: "4",
             name: "Sports Deals",
-            image: "https://images.unsplash.com/photo-1461896836934-0fe2bd9d3089?w=400&h=300&fit=crop",
+            image: "/sports.avif",
             link: "/deals?category=sports",
           },
         ]}

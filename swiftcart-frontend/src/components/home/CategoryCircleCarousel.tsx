@@ -91,7 +91,11 @@ export function CategoryCircleCarousel({
           </h2>
         </div>
 
-        <div className="relative">
+        <div className="relative group">
+          {/* Gradient Overlays for Arrow Contrast */}
+          <div className="absolute left-0 top-0 w-[10%] h-full bg-gradient-to-r from-black/8 to-transparent z-[5] pointer-events-none hidden md:block" />
+          <div className="absolute right-0 top-0 w-[10%] h-full bg-gradient-to-l from-black/8 to-transparent z-[5] pointer-events-none hidden md:block" />
+
           {/* Category Scroll Container - 3 items visible on mobile, 5 on desktop */}
           <div
             ref={scrollRef}
@@ -127,26 +131,24 @@ export function CategoryCircleCarousel({
             </div>
           </div>
           
-          {/* Navigation Buttons - Aligned with center of circle cards */}
+          {/* Navigation Arrows - Ultra-Minimalist (Desktop only) - Aligned with center of circle cards */}
           {canScrollLeft && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute left-0 z-10 h-8 w-8 rounded-full bg-background shadow-md border border-border hover:bg-secondary top-[calc(2.5rem-1rem)] md:top-[calc(5rem-1rem)]"
+            <button
               onClick={() => scroll("left")}
+              className="absolute left-[10px] md:left-[20px] top-[calc(2.5rem-1rem)] md:top-[calc(5rem-1rem)] z-[10] w-[50px] h-[50px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:left-[8px] md:hover:left-[18px] hidden md:flex"
+              aria-label="Scroll left"
             >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
+              <ChevronLeft className="h-[32px] w-[32px] text-black stroke-[2px] group-hover:stroke-[3px] transition-all duration-200" />
+            </button>
           )}
           {canScrollRight && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-0 z-10 h-8 w-8 rounded-full bg-background shadow-md border border-border hover:bg-secondary top-[calc(2.5rem-1rem)] md:top-[calc(5rem-1rem)]"
+            <button
               onClick={() => scroll("right")}
+              className="absolute right-[10px] md:right-[20px] top-[calc(2.5rem-1rem)] md:top-[calc(5rem-1rem)] z-[10] w-[50px] h-[50px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:right-[8px] md:hover:right-[18px] hidden md:flex"
+              aria-label="Scroll right"
             >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
+              <ChevronRight className="h-[32px] w-[32px] text-black stroke-[2px] group-hover:stroke-[3px] transition-all duration-200" />
+            </button>
           )}
         </div>
       </div>

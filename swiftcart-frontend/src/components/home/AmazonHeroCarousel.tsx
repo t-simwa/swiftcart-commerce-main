@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 interface CarouselSlide {
   id: string;
@@ -68,7 +67,11 @@ export function AmazonHeroCarousel() {
 
   return (
     <section className="relative w-full bg-background mb-4">
-      <div className="relative h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
+      <div className="relative h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden group">
+        {/* Gradient Overlays for Arrow Contrast */}
+        <div className="absolute left-0 top-0 w-[10%] h-full bg-gradient-to-r from-black/8 to-transparent z-[5] pointer-events-none" />
+        <div className="absolute right-0 top-0 w-[10%] h-full bg-gradient-to-l from-black/8 to-transparent z-[5] pointer-events-none" />
+
         {/* Slides */}
         <div className="relative h-full">
           {slides.map((slide, index) => (
@@ -90,10 +93,10 @@ export function AmazonHeroCarousel() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="container-wide px-4 md:px-6 lg:px-8">
                     <div className="max-w-2xl mx-auto text-center">
-                      <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-background mb-8 drop-shadow-lg leading-tight">
+                      <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-background mb-4 md:mb-8 drop-shadow-lg leading-tight">
                         {slide.title}
                       </h2>
-                      <div className="flex flex-col items-center">
+                      <div className="flex flex-col items-center mb-12 md:mb-0">
                         <Link
                           to={slide.link}
                           className="inline-flex items-center px-6 py-3 bg-primary text-background text-sm md:text-base font-semibold rounded-md shadow-lg hover:bg-primary/90 transition-colors"
@@ -110,32 +113,30 @@ export function AmazonHeroCarousel() {
           ))}
         </div>
 
-        {/* Navigation Arrows */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute left-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-background/80 hover:bg-background shadow-md z-10"
+        {/* Navigation Arrows - Ultra-Minimalist (Desktop only, mobile uses swipe) */}
+        <button
           onClick={(e) => {
             e.preventDefault();
             goToPrevious();
           }}
+          className="absolute left-[10px] md:left-[20px] top-1/2 -translate-y-1/2 z-[10] w-[50px] h-[50px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:left-[8px] md:hover:left-[18px] hidden md:flex"
+          aria-label="Previous slide"
         >
-          <ChevronLeft className="h-5 w-5" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-background/80 hover:bg-background shadow-md z-10"
+          <ChevronLeft className="h-[32px] w-[32px] text-white stroke-[2px] group-hover:stroke-[3px] transition-all duration-200" style={{ filter: 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.7))' }} />
+        </button>
+        <button
           onClick={(e) => {
             e.preventDefault();
             goToNext();
           }}
+          className="absolute right-[10px] md:right-[20px] top-1/2 -translate-y-1/2 z-[10] w-[50px] h-[50px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:right-[8px] md:hover:right-[18px] hidden md:flex"
+          aria-label="Next slide"
         >
-          <ChevronRight className="h-5 w-5" />
-        </Button>
+          <ChevronRight className="h-[32px] w-[32px] text-white stroke-[2px] group-hover:stroke-[3px] transition-all duration-200" style={{ filter: 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.7))' }} />
+        </button>
 
-        {/* Dots Indicator */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+        {/* Thin Line/Pill Dots Indicator */}
+        <div className="absolute bottom-[40px] md:bottom-[30px] left-1/2 -translate-x-1/2 flex gap-[6px] z-[10] items-center">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -143,13 +144,24 @@ export function AmazonHeroCarousel() {
                 e.preventDefault();
                 goToSlide(index);
               }}
-              className={`h-2 rounded-full transition-all ${
-                index === currentIndex
-                  ? "w-8 bg-primary"
-                  : "w-2 bg-background/60 hover:bg-background/80"
-              }`}
+              className="relative flex items-center justify-center"
+              style={{ 
+                minWidth: '44px', 
+                minHeight: '44px',
+                width: 'auto',
+                height: 'auto'
+              }}
               aria-label={`Go to slide ${index + 1}`}
-            />
+            >
+              <span
+                className={`block h-[2px] md:h-[3px] rounded-full transition-all duration-300 ease-in-out flex-shrink-0 ${
+                  index === currentIndex
+                    ? "w-[24px] md:w-[30px] bg-primary"
+                    : "w-[10px] bg-primary/30"
+                }`}
+              />
+              <span className="sr-only">Slide {index + 1}</span>
+            </button>
           ))}
         </div>
       </div>

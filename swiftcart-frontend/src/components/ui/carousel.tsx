@@ -3,7 +3,6 @@ import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-reac
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -118,11 +117,14 @@ const Carousel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
         <div
           ref={ref}
           onKeyDownCapture={handleKeyDown}
-          className={cn("relative", className)}
+          className={cn("relative group", className)}
           role="region"
           aria-roledescription="carousel"
           {...props}
         >
+          {/* Gradient Overlays for Arrow Contrast */}
+          <div className="absolute left-0 top-0 w-[10%] h-full bg-gradient-to-r from-black/8 to-transparent z-[5] pointer-events-none hidden md:block" />
+          <div className="absolute right-0 top-0 w-[10%] h-full bg-gradient-to-l from-black/8 to-transparent z-[5] pointer-events-none hidden md:block" />
           {children}
         </div>
       </CarouselContext.Provider>
@@ -169,25 +171,25 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
   ({ className, variant = "outline", size = "icon", ...props }, ref) => {
     const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
+    if (!canScrollPrev) return null;
+
     return (
-      <Button
+      <button
         ref={ref}
-        variant={variant}
-        size={size}
         className={cn(
-          "absolute h-8 w-8 rounded-full",
+          "absolute z-[10] w-[50px] h-[50px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200",
           orientation === "horizontal"
-            ? "-left-12 top-1/2 -translate-y-1/2"
+            ? "left-[10px] md:left-[20px] top-1/2 -translate-y-1/2 hover:left-[8px] md:hover:left-[18px]"
             : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
           className,
         )}
-        disabled={!canScrollPrev}
         onClick={scrollPrev}
+        aria-label="Previous slide"
         {...props}
       >
-        <ArrowLeft className="h-4 w-4" />
+        <ArrowLeft className="h-[32px] w-[32px] text-black stroke-[2px] group-hover:stroke-[3px] transition-all duration-200" />
         <span className="sr-only">Previous slide</span>
-      </Button>
+      </button>
     );
   },
 );
@@ -197,25 +199,25 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
   ({ className, variant = "outline", size = "icon", ...props }, ref) => {
     const { orientation, scrollNext, canScrollNext } = useCarousel();
 
+    if (!canScrollNext) return null;
+
     return (
-      <Button
+      <button
         ref={ref}
-        variant={variant}
-        size={size}
         className={cn(
-          "absolute h-8 w-8 rounded-full",
+          "absolute z-[10] w-[50px] h-[50px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200",
           orientation === "horizontal"
-            ? "-right-12 top-1/2 -translate-y-1/2"
+            ? "right-[10px] md:right-[20px] top-1/2 -translate-y-1/2 hover:right-[8px] md:hover:right-[18px]"
             : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
           className,
         )}
-        disabled={!canScrollNext}
         onClick={scrollNext}
+        aria-label="Next slide"
         {...props}
       >
-        <ArrowRight className="h-4 w-4" />
+        <ArrowRight className="h-[32px] w-[32px] text-black stroke-[2px] group-hover:stroke-[3px] transition-all duration-200" />
         <span className="sr-only">Next slide</span>
-      </Button>
+      </button>
     );
   },
 );
