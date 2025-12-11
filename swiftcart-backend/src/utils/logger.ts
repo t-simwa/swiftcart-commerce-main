@@ -126,7 +126,7 @@ try {
 }
 
 // Stream for Morgan HTTP logger (if needed in future)
-logger.stream = {
+(logger as any).stream = {
   write: (message: string) => {
     try {
       logger.info(message.trim());

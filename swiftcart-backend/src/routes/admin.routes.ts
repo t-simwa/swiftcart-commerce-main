@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import type { Router as RouterType } from 'express';
 import { z } from 'zod';
 import { validate, commonSchemas } from '../middleware/validation';
 import { protect, authorize } from '../middleware/auth';
@@ -16,7 +17,7 @@ import {
   getInventory,
 } from '../controllers/admin.controller';
 
-const router = Router();
+const router: RouterType = Router();
 
 // All admin routes require authentication and admin role
 router.use(protect);

@@ -52,7 +52,7 @@ export const search = async (
       category,
       minPrice,
       maxPrice,
-      featured: featured === true || featured === 'true',
+      featured: featured === true || (typeof featured === 'string' && featured === 'true'),
       brands: brands ? brands.split(',').map((b) => b.trim()).filter(Boolean) : undefined,
       page,
       limit,
@@ -100,7 +100,7 @@ export const getSearchSuggestions = async (
     const { q, limit = 5, category } = req.query;
 
     if (!q || q.trim().length < 2) {
-      return res.status(200).json({
+      res.status(200).json({
         success: true,
         status: 200,
         data: {
@@ -108,6 +108,7 @@ export const getSearchSuggestions = async (
           products: [],
         },
       });
+      return;
     }
 
     const query = q.trim();

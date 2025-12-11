@@ -1,11 +1,11 @@
-import { Server as SocketServer } from 'socket.io';
+import { Server as SocketServer, Socket } from 'socket.io';
 import { Server as HTTPServer } from 'http';
 import { verifyAccessToken, JWTPayload } from '../utils/jwt';
 import { User } from '../models/User';
 import logger from '../utils/logger';
 import { env } from './env';
 
-export interface AuthenticatedSocket extends SocketServer.Socket {
+export interface AuthenticatedSocket extends Socket {
   user?: JWTPayload & { userDoc?: any };
 }
 
@@ -60,42 +60,45 @@ export const initializeSocket = (httpServer: HTTPServer): SocketServer => {
   });
 
   // Authentication middleware
-  io.use(socketAuth);
+  io.use((socket, next) => {
+    socketAuth(socket as AuthenticatedSocket, next);
+  });
 
   // Connection handler
-  io.on('connection', (socket: AuthenticatedSocket) => {
-    const userId = socket.user?.userId || 'anonymous';
+  io.on('connection', (socket) => {
+    const authSocket = socket as AuthenticatedSocket;
+    const userId = authSocket.user?.userId || 'anonymous';
     logger.info('Socket client connected', { 
-      socketId: socket.id, 
+      socketId: authSocket.id, 
       userId,
-      authenticated: !!socket.user 
+      authenticated: !!authSocket.user 
     });
 
     // Join user-specific room for private notifications
-    if (socket.user?.userId) {
-      socket.join(`user:${socket.user.userId}`);
-      logger.debug('User joined private room', { userId: socket.user.userId });
+    if (authSocket.user?.userId) {
+      authSocket.join(`user:${authSocket.user.userId}`);
+      logger.debug('User joined private room', { userId: authSocket.user.userId });
     }
 
     // Join admin room if user is admin
-    if (socket.user?.role === 'admin') {
-      socket.join('admin');
-      logger.debug('Admin joined admin room', { userId: socket.user.userId });
+    if (authSocket.user?.role === 'admin') {
+      authSocket.join('admin');
+      logger.debug('Admin joined admin room', { userId: authSocket.user.userId });
     }
 
     // Handle disconnection
-    socket.on('disconnect', (reason) => {
+    authSocket.on('disconnect', (reason) => {
       logger.info('Socket client disconnected', { 
-        socketId: socket.id, 
+        socketId: authSocket.id, 
         userId,
         reason 
       });
     });
 
     // Handle errors
-    socket.on('error', (error) => {
+    authSocket.on('error', (error) => {
       logger.error('Socket error', { 
-        socketId: socket.id, 
+        socketId: authSocket.id, 
         userId,
         error: error.message 
       });

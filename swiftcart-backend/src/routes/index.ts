@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import type { Router as RouterType } from 'express';
 import productRoutes from './products.routes';
 import authRoutes from './auth.routes';
 import orderRoutes from './orders.routes';
@@ -8,7 +9,7 @@ import dealsRoutes from './deals.routes';
 import searchRoutes from './search.routes';
 import { env } from '../config/env';
 
-const router = Router();
+const router: RouterType = Router();
 const apiVersion = env.API_VERSION;
 
 // Health check endpoint

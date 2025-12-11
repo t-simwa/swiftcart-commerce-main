@@ -272,7 +272,7 @@ class PaymentService {
       throw createError('Transaction not found', 404, 'TRANSACTION_NOT_FOUND');
     }
 
-    return transaction as ITransaction;
+    return transaction as unknown as ITransaction;
   }
 
   /**

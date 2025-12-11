@@ -21,6 +21,9 @@ RUN pnpm install --no-frozen-lockfile
 # Copy source code
 COPY . .
 
+# Ensure public directory exists (for uploads)
+RUN mkdir -p public/uploads/products
+
 # Build TypeScript
 # Using production tsconfig that's less strict (allows build despite some type errors)
 # Note: For production, you should fix TypeScript errors, but this allows Docker to build
@@ -46,7 +49,7 @@ RUN pnpm install --prod --no-frozen-lockfile
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
 
-# Copy public folder (for uploads)
+# Copy public folder (for uploads) - directory is ensured to exist in builder stage
 COPY --from=builder /app/public ./public
 
 # Create logs directory

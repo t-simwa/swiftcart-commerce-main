@@ -284,7 +284,7 @@ const searchWithMongoDB = async (params: SearchParams): Promise<SearchResult> =>
   });
 
   return {
-    products: products as IProduct[],
+    products: products as unknown as IProduct[],
     total,
     page,
     limit,

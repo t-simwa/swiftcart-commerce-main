@@ -1,9 +1,10 @@
 import { Router } from 'express';
+import type { Router as RouterType } from 'express';
 import { getProducts, getProductBySlug } from '../controllers/products.controller';
 import { validate } from '../middleware/validation';
 import { z } from 'zod';
 
-const router = Router();
+const router: RouterType = Router();
 
 /**
  * @route   GET /api/v1/products

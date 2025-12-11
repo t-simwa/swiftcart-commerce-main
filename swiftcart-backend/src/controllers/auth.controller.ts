@@ -355,11 +355,12 @@ export const forgotPassword = async (
     if (!user) {
       logger.warn('Password reset: email not found', { email });
       // Return success anyway to prevent email enumeration
-      return res.status(200).json({
+      res.status(200).json({
         success: true,
         status: 200,
         message: 'If the email exists, a password reset link has been sent.',
       });
+      return;
     }
 
     // Generate reset token
@@ -510,20 +511,22 @@ export const resendVerification = async (
 
     if (!user) {
       // Don't reveal if email exists
-      return res.status(200).json({
+      res.status(200).json({
         success: true,
         status: 200,
         message: 'If the email exists and is not verified, a verification link has been sent.',
       });
+      return;
     }
 
     if (user.isEmailVerified) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         status: 400,
         code: 'ALREADY_VERIFIED',
         message: 'Email is already verified',
       });
+      return;
     }
 
     // Generate new verification token

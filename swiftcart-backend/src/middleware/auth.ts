@@ -5,6 +5,7 @@ import { createError } from '../middleware/errorHandler';
 import logger from '../utils/logger';
 
 // Extend Express Request to include user
+// Note: This overrides Passport's user type declaration
 declare global {
   namespace Express {
     interface Request {

@@ -91,64 +91,62 @@ const ensureIndexExists = async (): Promise<void> => {
     if (!exists) {
       await elasticsearchClient.indices.create({
         index: INDEX_NAME,
-        body: {
-          mappings: {
-            properties: {
-              name: {
-                type: 'text',
-                analyzer: 'standard',
-                fields: {
-                  keyword: {
-                    type: 'keyword',
-                  },
+        mappings: {
+          properties: {
+            name: {
+              type: 'text',
+              analyzer: 'standard',
+              fields: {
+                keyword: {
+                  type: 'keyword',
                 },
-              },
-              description: {
-                type: 'text',
-                analyzer: 'standard',
-              },
-              category: {
-                type: 'keyword',
-              },
-              slug: {
-                type: 'keyword',
-              },
-              sku: {
-                type: 'keyword',
-              },
-              price: {
-                type: 'float',
-              },
-              originalPrice: {
-                type: 'float',
-              },
-              rating: {
-                type: 'float',
-              },
-              reviewCount: {
-                type: 'integer',
-              },
-              stock: {
-                type: 'integer',
-              },
-              featured: {
-                type: 'boolean',
-              },
-              createdAt: {
-                type: 'date',
-              },
-              updatedAt: {
-                type: 'date',
               },
             },
+            description: {
+              type: 'text',
+              analyzer: 'standard',
+            },
+            category: {
+              type: 'keyword',
+            },
+            slug: {
+              type: 'keyword',
+            },
+            sku: {
+              type: 'keyword',
+            },
+            price: {
+              type: 'float',
+            },
+            originalPrice: {
+              type: 'float',
+            },
+            rating: {
+              type: 'float',
+            },
+            reviewCount: {
+              type: 'integer',
+            },
+            stock: {
+              type: 'integer',
+            },
+            featured: {
+              type: 'boolean',
+            },
+            createdAt: {
+              type: 'date',
+            },
+            updatedAt: {
+              type: 'date',
+            },
           },
-          settings: {
-            analysis: {
-              analyzer: {
-                product_analyzer: {
-                  type: 'standard',
-                  stopwords: '_english_',
-                },
+        },
+        settings: {
+          analysis: {
+            analyzer: {
+              product_analyzer: {
+                type: 'standard',
+                stopwords: '_english_',
               },
             },
           },

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import type { Router as RouterType } from 'express';
 import { z } from 'zod';
 import { validate, commonSchemas } from '../middleware/validation';
 import { protect } from '../middleware/auth';
@@ -10,7 +11,7 @@ import {
   cancelOrder,
 } from '../controllers/orders.controller';
 
-const router = Router();
+const router: RouterType = Router();
 
 // Validation schemas
 const createOrderSchema = {

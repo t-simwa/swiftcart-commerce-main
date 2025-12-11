@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import type { Router as RouterType } from 'express';
 import {
   register,
   login,
@@ -32,7 +33,7 @@ import {
 } from '../middleware/authValidation';
 import { authLimiter } from '../middleware/rateLimiter';
 
-const router = Router();
+const router: RouterType = Router();
 
 /**
  * @route   POST /api/v1/auth/register

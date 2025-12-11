@@ -51,7 +51,8 @@ export const getProducts = async (
     const cached = await getCache<any>(cacheKey);
     if (cached) {
       logger.debug('Products cache hit', { cacheKey });
-      return res.status(200).json(cached);
+      res.status(200).json(cached);
+      return;
     }
 
     const skip = (page - 1) * limit;
@@ -192,7 +193,8 @@ export const getProductBySlug = async (
     const cached = await getCache<any>(cacheKey);
     if (cached) {
       logger.debug('Product cache hit', { slug });
-      return res.status(200).json(cached);
+      res.status(200).json(cached);
+      return;
     }
 
     const product = await Product.findOne({ slug }).lean();

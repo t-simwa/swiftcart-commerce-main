@@ -24,7 +24,7 @@ export const generateAccessToken = (user: IUser): string => {
   };
 
   return jwt.sign(payload, env.JWT_SECRET, {
-    expiresIn: env.JWT_EXPIRE,
+    expiresIn: env.JWT_EXPIRE as string,
   });
 };
 
@@ -39,7 +39,7 @@ export const generateRefreshToken = (user: IUser): string => {
   };
 
   return jwt.sign(payload, env.JWT_REFRESH_SECRET, {
-    expiresIn: env.JWT_REFRESH_EXPIRE,
+    expiresIn: env.JWT_REFRESH_EXPIRE as string,
   });
 };
 
