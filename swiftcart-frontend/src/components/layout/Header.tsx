@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { Search, ShoppingCart, User, Menu, X, Heart, MapPin, ChevronDown, LogOut, Globe, Package, CreditCard, HelpCircle, Gift, Star, Settings, FileText, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,10 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { cn } from "@/lib/utils";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useSearchSuggestions } from "@/hooks/useSearchSuggestions";
+import { SearchSuggestions } from "@/components/search/SearchSuggestions";
+import { addToSearchHistory } from "@/utils/searchHistory";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -69,6 +73,7 @@ export function Header() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showAllDepartments, setShowAllDepartments] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState("all");
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [selectedCountry, setSelectedCountry] = useState("KE");
@@ -78,18 +83,79 @@ export function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
+  // Debounce search query for real-time suggestions
+  const debouncedQuery = useDebounce(searchQuery, 300);
+
+  // Fetch search suggestions
+  const { suggestions, products, isLoading: isLoadingSuggestions } = useSearchSuggestions(
+    debouncedQuery,
+    showSuggestions && debouncedQuery.length >= 2
+  );
+
+  // Handle search submission
+  const handleSearch = (e?: React.FormEvent, query?: string) => {
+    if (e) e.preventDefault();
+    const searchTerm = query || searchQuery.trim();
+    if (searchTerm) {
+      // Add to search history
+      addToSearchHistory(searchTerm, selectedDepartment !== "all" ? selectedDepartment : undefined);
+      
       const params = new URLSearchParams();
-      params.set("search", searchQuery);
+      params.set("q", searchTerm);
       if (selectedDepartment !== "all") {
         params.set("category", selectedDepartment);
       }
+      // Use search endpoint for better results
       navigate(`/products?${params.toString()}`);
+      setShowSuggestions(false);
     }
   };
+
+  // Handle suggestion selection
+  const handleSuggestionSelect = (query: string) => {
+    setSearchQuery(query);
+    handleSearch(undefined, query);
+  };
+
+  // Handle input focus
+  const handleInputFocus = () => {
+    if (searchQuery.length >= 2 || searchQuery.length === 0) {
+      setShowSuggestions(true);
+    }
+  };
+
+  // Handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    if (value.length >= 2) {
+      setShowSuggestions(true);
+    } else if (value.length === 0) {
+      setShowSuggestions(true); // Show history when empty
+    }
+  };
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+
+    if (showSuggestions) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [showSuggestions]);
 
   const handleLocationSave = () => {
     setIsLocationDialogOpen(false);
@@ -208,13 +274,33 @@ export function Header() {
                 </DropdownMenu>
                 
                 {/* Search Input */}
-                <div className="flex-1 relative">
+                <div className="flex-1 relative" ref={searchContainerRef}>
                   <Input
+                    ref={searchInputRef}
                     type="search"
                     placeholder="Search SwiftCart"
                     className="w-full h-10 pl-3 pr-10 rounded-none border-0 bg-background text-foreground placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearch(e);
+                      } else if (e.key === 'Escape') {
+                        setShowSuggestions(false);
+                      }
+                    }}
+                  />
+                  {/* Search Suggestions Dropdown */}
+                  <SearchSuggestions
+                    query={debouncedQuery}
+                    suggestions={suggestions}
+                    products={products}
+                    isLoading={isLoadingSuggestions}
+                    isOpen={showSuggestions}
+                    onClose={() => setShowSuggestions(false)}
+                    onSelect={handleSuggestionSelect}
+                    selectedDepartment={selectedDepartment !== "all" ? selectedDepartment : undefined}
                   />
                 </div>
                 
@@ -883,13 +969,36 @@ export function Header() {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <Input
-              type="search"
-              placeholder="Search SwiftCart"
-              className="flex-1 h-9 pl-3 pr-10 rounded-none border-0 bg-background text-foreground placeholder:text-muted-foreground text-sm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            <div className="flex-1 relative">
+              <Input
+                type="search"
+                placeholder="Search SwiftCart"
+                className="flex-1 h-9 pl-3 pr-10 rounded-none border-0 bg-background text-foreground placeholder:text-muted-foreground text-sm"
+                value={searchQuery}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch(e);
+                  } else if (e.key === 'Escape') {
+                    setShowSuggestions(false);
+                  }
+                }}
+              />
+              {/* Mobile Search Suggestions */}
+              {showSuggestions && (
+                <SearchSuggestions
+                  query={debouncedQuery}
+                  suggestions={suggestions}
+                  products={products}
+                  isLoading={isLoadingSuggestions}
+                  isOpen={showSuggestions}
+                  onClose={() => setShowSuggestions(false)}
+                  onSelect={handleSuggestionSelect}
+                  selectedDepartment={selectedDepartment !== "all" ? selectedDepartment : undefined}
+                />
+              )}
+            </div>
             <Button 
               type="submit" 
               size="icon" 

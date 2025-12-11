@@ -265,6 +265,16 @@ export const createProduct = async (
     const product = new Product(productData);
     await product.save();
 
+    // Index product in Elasticsearch (non-blocking)
+    import('../services/searchIndexingService').then(({ indexProduct }) => {
+      indexProduct(product).catch((err) => {
+        logger.warn('Failed to index product in Elasticsearch', {
+          productId: product._id,
+          error: err.message,
+        });
+      });
+    });
+
     logger.info('Admin created product', {
       productId: product._id,
       adminId: req.user?.userId,
@@ -312,6 +322,16 @@ export const updateProduct = async (
     Object.assign(product, updateData);
     await product.save();
 
+    // Update product index in Elasticsearch (non-blocking)
+    import('../services/searchIndexingService').then(({ updateProductIndex }) => {
+      updateProductIndex(product).catch((err) => {
+        logger.warn('Failed to update product index in Elasticsearch', {
+          productId: product._id,
+          error: err.message,
+        });
+      });
+    });
+
     logger.info('Admin updated product', {
       productId: product._id,
       adminId: req.user?.userId,
@@ -352,7 +372,18 @@ export const deleteProduct = async (
       throw createError('Product not found', 404, 'PRODUCT_NOT_FOUND');
     }
 
+    const productIdStr = product._id.toString();
     await product.deleteOne();
+
+    // Remove product from Elasticsearch index (non-blocking)
+    import('../services/searchIndexingService').then(({ removeProductFromIndex }) => {
+      removeProductFromIndex(productIdStr).catch((err) => {
+        logger.warn('Failed to remove product from Elasticsearch index', {
+          productId: productIdStr,
+          error: err.message,
+        });
+      });
+    });
 
     logger.info('Admin deleted product', {
       productId,

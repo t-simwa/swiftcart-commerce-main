@@ -5,6 +5,7 @@ import { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { cn } from "@/lib/utils";
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 
 interface ProductCardProps {
   product: Product;
@@ -47,11 +48,11 @@ export function ProductCard({ product, className, style }: ProductCardProps) {
     >
       {/* Image Container */}
       <Link to={`/products/${product.slug}`} className="relative aspect-square overflow-hidden bg-white block">
-        <img
+        <OptimizedImage
           src={product.image}
           alt={product.name}
           className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
+          aspectRatio="square"
         />
         
         {/* Cyber Deal Badge - Top Left */}

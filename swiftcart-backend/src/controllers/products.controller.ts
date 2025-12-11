@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Product } from '../models/Product';
 import { createError } from '../middleware/errorHandler';
 import logger from '../utils/logger';
+import { getCache, setCache, cacheKeys } from '../utils/cache';
 
 interface QueryParams {
   page?: number;
@@ -40,6 +41,18 @@ export const getProducts = async (
     } = req.query;
 
     logger.info('Fetching products', { page, limit, category, search, sort });
+
+    // Generate cache key
+    const cacheKey = cacheKeys.products(
+      JSON.stringify({ page, limit, category, search, sort, minPrice, maxPrice, featured, brands })
+    );
+
+    // Try to get from cache
+    const cached = await getCache<any>(cacheKey);
+    if (cached) {
+      logger.debug('Products cache hit', { cacheKey });
+      return res.status(200).json(cached);
+    }
 
     const skip = (page - 1) * limit;
 
@@ -132,7 +145,7 @@ export const getProducts = async (
 
     logger.info('Products fetched successfully', { count: products.length, total });
 
-    res.status(200).json({
+    const response = {
       success: true,
       status: 200,
       data: {
@@ -146,7 +159,12 @@ export const getProducts = async (
           hasPrev: page > 1,
         },
       },
-    });
+    };
+
+    // Cache the response (5 minutes TTL for product lists)
+    await setCache(cacheKey, response, { ttl: 300, prefix: 'products' });
+
+    res.status(200).json(response);
   } catch (error: any) {
     logger.error('Error fetching products', { error: error.message, stack: error.stack });
     next(createError(error.message, 500, 'SERVER_ERROR'));
@@ -169,6 +187,14 @@ export const getProductBySlug = async (
 
     logger.info('Fetching product by slug', { slug });
 
+    // Try to get from cache
+    const cacheKey = cacheKeys.product(slug);
+    const cached = await getCache<any>(cacheKey);
+    if (cached) {
+      logger.debug('Product cache hit', { slug });
+      return res.status(200).json(cached);
+    }
+
     const product = await Product.findOne({ slug }).lean();
 
     if (!product) {
@@ -178,13 +204,18 @@ export const getProductBySlug = async (
 
     logger.info('Product fetched successfully', { slug, productId: product._id });
 
-    res.status(200).json({
+    const response = {
       success: true,
       status: 200,
       data: {
         product,
       },
-    });
+    };
+
+    // Cache the response (1 hour TTL for individual products)
+    await setCache(cacheKey, response, { ttl: 3600, prefix: 'product' });
+
+    res.status(200).json(response);
   } catch (error: any) {
     logger.error('Error fetching product by slug', { error: error.message, stack: error.stack });
     next(createError(error.message, 500, 'SERVER_ERROR'));

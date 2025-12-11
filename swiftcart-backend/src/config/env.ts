@@ -45,6 +45,11 @@ export const env = {
   // OAuth - Facebook
   FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID || '',
   FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET || '',
+  
+  // Elasticsearch (optional)
+  ELASTICSEARCH_NODE: process.env.ELASTICSEARCH_NODE || 'http://localhost:9200',
+  ELASTICSEARCH_USERNAME: process.env.ELASTICSEARCH_USERNAME || '',
+  ELASTICSEARCH_PASSWORD: process.env.ELASTICSEARCH_PASSWORD || '',
 };
 
 // Validate required environment variables

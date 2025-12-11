@@ -2,6 +2,7 @@ import { createServer } from 'http';
 import app from './app';
 import { connectDatabase } from './config/database';
 import { connectRedis, disconnectRedis } from './config/redis';
+import { connectElasticsearch, disconnectElasticsearch } from './config/elasticsearch';
 import { env } from './config/env';
 import logger from './utils/logger';
 import { initializeSocket, setSocketInstance } from './config/socket';
@@ -23,6 +24,9 @@ const startServer = async () => {
     
     // Connect to Redis (non-blocking - app continues if Redis fails)
     await connectRedis();
+    
+    // Connect to Elasticsearch (non-blocking - app continues if Elasticsearch fails)
+    await connectElasticsearch();
     
     // Start server with Socket.io
     httpServer.listen(PORT, () => {
@@ -58,8 +62,9 @@ process.on('unhandledRejection', (err: Error) => {
 process.on('uncaughtException', async (err: Error) => {
   logger.error('Uncaught Exception', { error: err.message, stack: err.stack });
   console.error('Uncaught Exception:', err);
-  await disconnectRedis();
-  process.exit(1);
+    await disconnectRedis();
+    await disconnectElasticsearch();
+    process.exit(1);
 });
 
 // Graceful shutdown
@@ -79,6 +84,7 @@ const gracefulShutdown = async (signal: string) => {
     });
     
     await disconnectRedis();
+    await disconnectElasticsearch();
     process.exit(0);
   } catch (error: any) {
     logger.error('Error during shutdown', { error: error.message });

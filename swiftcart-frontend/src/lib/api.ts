@@ -216,6 +216,55 @@ class ApiClient {
   async getCategoryOffers(): Promise<ApiResponse<{ offers: any[] }>> {
     return this.request<{ offers: any[] }>('/v1/deals/category-offers');
   }
+
+  // Search
+  async search(params?: {
+    q?: string;
+    category?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    featured?: boolean;
+    brands?: string;
+    page?: number;
+    limit?: number;
+    sort?: 'newest' | 'price-asc' | 'price-desc' | 'popular' | 'relevance';
+  }): Promise<ApiResponse<PaginatedResponse<any> & { query?: string }>> {
+    const queryParams = new URLSearchParams();
+    
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          queryParams.append(key, value.toString());
+        }
+      });
+    }
+
+    const queryString = queryParams.toString();
+    return this.request<PaginatedResponse<any> & { query?: string }>(
+      `/v1/search${queryString ? `?${queryString}` : ''}`
+    );
+  }
+
+  // Search Suggestions
+  async getSearchSuggestions(params?: {
+    q?: string;
+    limit?: number;
+  }): Promise<ApiResponse<{ suggestions: string[]; products: Array<{ name: string; slug: string; image: string; price: number; category: string }> }>> {
+    const queryParams = new URLSearchParams();
+    
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          queryParams.append(key, value.toString());
+        }
+      });
+    }
+
+    const queryString = queryParams.toString();
+    return this.request<{ suggestions: string[]; products: Array<{ name: string; slug: string; image: string; price: number; category: string }> }>(
+      `/v1/search/suggestions${queryString ? `?${queryString}` : ''}`
+    );
+  }
 }
 
 export const apiClient = new ApiClient(API_BASE_URL);

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Heart, Star } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 
 interface DealCardProps {
   product: Product;
@@ -84,11 +85,11 @@ export function DealCard({ product, className, style }: DealCardProps) {
     >
       {/* Image Container */}
       <Link to={`/products/${product.slug}`} className="relative aspect-square overflow-hidden bg-white block">
-        <img
+        <OptimizedImage
           src={product.image}
           alt={product.name}
           className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
+          aspectRatio="square"
         />
         
         {/* Cyber Deal Badge - Top Left */}
