@@ -1,7 +1,7 @@
 {
-  "buildCommand": "cd swiftcart-frontend && pnpm install && pnpm build",
-  "outputDirectory": "swiftcart-frontend/dist",
-  "installCommand": "cd swiftcart-frontend && pnpm install",
+  "buildCommand": "pnpm install && pnpm build",
+  "outputDirectory": "dist",
+  "installCommand": "pnpm install",
   "framework": "vite",
   "rewrites": [
     {
