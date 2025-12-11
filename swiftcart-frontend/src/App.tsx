@@ -3,7 +3,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { store } from "@/store/store";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { NotificationProvider } from "@/context/NotificationContext";
@@ -62,17 +64,18 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => (
 );
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <BrowserRouter>
-      <ScrollToTop />
-      <AuthProvider>
-          <NotificationProvider>
-      <CartProvider>
-        <Toaster />
-        <Sonner />
-          <Suspense fallback={<PageLoader />}>
-          <Routes>
+  <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <BrowserRouter>
+        <ScrollToTop />
+        <AuthProvider>
+            <NotificationProvider>
+        <CartProvider>
+          <Toaster />
+          <Sonner />
+            <Suspense fallback={<PageLoader />}>
+            <Routes>
             {/* Admin Routes - No Header/Footer */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<ProtectedRoute requireRole="admin"><AdminDashboard /></ProtectedRoute>} />
@@ -112,6 +115,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  </Provider>
 );
 
 export default App;
