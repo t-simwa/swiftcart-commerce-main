@@ -57,7 +57,7 @@ export function WalmartDealCard({ product, className, style }: WalmartDealCardPr
         <img
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
 

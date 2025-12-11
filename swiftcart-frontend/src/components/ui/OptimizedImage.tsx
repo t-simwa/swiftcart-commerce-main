@@ -51,7 +51,7 @@ export function OptimizedImage({
   };
 
   return (
-    <div className={cn('relative overflow-hidden', aspectRatioClasses[aspectRatio], className)}>
+    <div className={cn('relative overflow-hidden w-full h-full', aspectRatioClasses[aspectRatio])}>
       {isLoading && (
         <div className="absolute inset-0 bg-gray-100 animate-pulse flex items-center justify-center">
           <svg
@@ -72,7 +72,7 @@ export function OptimizedImage({
         src={imageSrc}
         alt={alt}
         className={cn(
-          'transition-opacity duration-300',
+          'w-full h-full transition-opacity duration-300',
           isLoading ? 'opacity-0' : 'opacity-100',
           className
         )}

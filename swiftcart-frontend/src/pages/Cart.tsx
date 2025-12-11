@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, ChevronUp, Trash2, Truck, Car, ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { ProductCard } from "@/components/products/ProductCard";
 
 const Cart = () => {
   const { state, removeFromCart, updateQuantity, totalPrice } = useCart();
+  const navigate = useNavigate();
   const [deliveryOption, setDeliveryOption] = useState("pickup");
   const [zipCode, setZipCode] = useState("95829");
   const [isGift, setIsGift] = useState(false);
@@ -70,7 +71,7 @@ const Cart = () => {
     <div className="container-wide py-4 md:py-6">
       <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
         {/* Left Column - Cart Items */}
-        <div className="flex-1 min-w-0 w-full order-1 lg:order-1">
+        <div className="flex-1 min-w-0 w-full lg:w-2/3">
           {/* Cart Header */}
           <div className="mb-4">
             <h1 className="text-2xl font-medium text-gray-900">
@@ -298,18 +299,77 @@ const Cart = () => {
             })}
           </div>
 
+          {/* Add your essentials Section - Left column after cart items */}
+          {recommendedProducts && recommendedProducts.length > 0 && (
+            <div className="w-full mb-6 md:mb-0">
+              <h2 className="text-lg font-medium text-gray-900 mb-4">
+                Add your essentials
+              </h2>
+              <div className="relative">
+                {/* Left Navigation Button */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute left-0 md:left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 hidden md:flex"
+                  onClick={() => scrollEssentials("left")}
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft className="h-5 w-5 text-gray-700" />
+                </Button>
+
+                {/* Right Navigation Button */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-0 md:right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 hidden md:flex"
+                  onClick={() => scrollEssentials("right")}
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight className="h-5 w-5 text-gray-700" />
+                </Button>
+
+                {/* Product Scroll Container */}
+                <div
+                  ref={essentialsScrollRef}
+                  className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0"
+                  style={{
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none",
+                    WebkitOverflowScrolling: "touch",
+                  }}
+                >
+                  {/* Mobile: Add padding spacer for first card centering */}
+                  <div className="min-w-[calc((100vw-2rem)/2-100px)] md:hidden flex-shrink-0" />
+                  {recommendedProducts.slice(0, 4).map((product: Product) => (
+                    <div 
+                      key={product._id || product.id || product.slug} 
+                      className="min-w-[calc(100vw-2rem)] md:min-w-[220px] w-[calc(100vw-2rem)] md:w-[220px] snap-center md:snap-start flex-shrink-0 flex justify-center"
+                    >
+                      <ProductCard
+                        product={product}
+                        className="h-full w-full max-w-[200px] md:max-w-none"
+                        style={{ height: '420px' }}
+                      />
+                    </div>
+                  ))}
+                  {/* Mobile: Add padding spacer for last card centering */}
+                  <div className="min-w-[calc((100vw-2rem)/2-100px)] md:hidden flex-shrink-0" />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Column - Order Summary */}
-        <div className="w-full lg:w-80 flex-shrink-0 order-2 lg:order-2">
+        <div className="w-full lg:w-1/3 flex-shrink-0">
           <div className="lg:sticky lg:top-4">
             {/* Continue to Checkout Button - Desktop only (top) */}
             <Button
               size="lg"
-              className="hidden lg:block w-full bg-red-600 hover:bg-red-700 text-white font-medium text-base py-3 mb-4 rounded"
-              asChild
+              className="hidden lg:block w-full bg-[#DC2626] hover:bg-[#B91C1C] text-white font-medium text-base py-3 mb-4 rounded"
+              onClick={() => navigate("/checkout")}
             >
-              <Link to="/checkout">Continue to checkout</Link>
+              Continue to checkout
             </Button>
 
             {/* Alert Banner */}
@@ -425,73 +485,13 @@ const Cart = () => {
             {/* Continue to Checkout Button - Mobile only (bottom) */}
             <Button
               size="lg"
-              className="lg:hidden w-full bg-red-600 hover:bg-red-700 text-white font-medium text-base py-3 mt-4 rounded"
-              asChild
+              className="lg:hidden w-full bg-[#DC2626] hover:bg-[#B91C1C] text-white font-medium text-base py-3 mt-4 rounded"
+              onClick={() => navigate("/checkout")}
             >
-              <Link to="/checkout">Continue to checkout</Link>
+              Continue to checkout
             </Button>
           </div>
         </div>
-
-        {/* Add your essentials Section - After checkout button on mobile */}
-        {recommendedProducts && recommendedProducts.length > 0 && (
-          <div className="w-full order-3 lg:order-3 mb-6">
-            <h2 className="text-lg font-medium text-gray-900 mb-4 px-4 md:px-0">
-              Add your essentials
-            </h2>
-            <div className="relative px-4 md:px-0">
-              {/* Left Navigation Button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute left-0 md:left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 hidden md:flex"
-                onClick={() => scrollEssentials("left")}
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="h-5 w-5 text-gray-700" />
-              </Button>
-
-              {/* Right Navigation Button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-0 md:right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-white shadow-lg border border-gray-200 hover:bg-gray-50 hidden md:flex"
-                onClick={() => scrollEssentials("right")}
-                aria-label="Scroll right"
-              >
-                <ChevronRight className="h-5 w-5 text-gray-700" />
-              </Button>
-
-              {/* Product Scroll Container */}
-              <div
-                ref={essentialsScrollRef}
-                className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0"
-                style={{
-                  scrollbarWidth: "none",
-                  msOverflowStyle: "none",
-                  WebkitOverflowScrolling: "touch",
-                }}
-              >
-                {/* Mobile: Add padding spacer for first card centering */}
-                <div className="min-w-[calc((100vw-2rem)/2-100px)] md:hidden flex-shrink-0" />
-                {recommendedProducts.slice(0, 4).map((product: Product) => (
-                  <div 
-                    key={product._id || product.id || product.slug} 
-                    className="min-w-[calc(100vw-2rem)] md:min-w-[220px] w-[calc(100vw-2rem)] md:w-[220px] snap-center md:snap-start flex-shrink-0 flex justify-center"
-                  >
-                    <ProductCard
-                      product={product}
-                      className="h-full w-full max-w-[200px] md:max-w-none"
-                      style={{ height: '420px' }}
-                    />
-                  </div>
-                ))}
-                {/* Mobile: Add padding spacer for last card centering */}
-                <div className="min-w-[calc((100vw-2rem)/2-100px)] md:hidden flex-shrink-0" />
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

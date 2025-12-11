@@ -324,40 +324,27 @@ const ProductDetail = () => {
           {/* Left: Image Gallery with Vertical Thumbnails */}
           <div className="flex flex-col md:flex-row gap-4 flex-shrink-0 w-full md:w-auto">
             {/* Vertical Thumbnail Strip - Hidden on mobile, shown on desktop */}
-            {images.length > 1 && (
-              <div className="hidden md:flex flex-col gap-2 w-20 flex-shrink-0">
-                {images.slice(0, 6).map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={cn(
-                      "aspect-square w-full overflow-hidden rounded border-2 transition-all",
-                      selectedImage === index
-                        ? "border-red-600 ring-2 ring-red-600/20"
-                        : "border-gray-300 hover:border-gray-400"
-                    )}
-                  >
-                    <img
-                      src={image}
-                      alt={`${product.name} ${index + 1}`}
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
-                ))}
-                {images.length > 6 && (
-                  <button className="aspect-square w-full overflow-hidden rounded border-2 border-gray-300 hover:border-gray-400 relative">
-                    <img
-                      src={images[6]}
-                      alt={`${product.name} 7`}
-                      className="h-full w-full object-cover opacity-60"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                      <span className="text-white text-xs font-medium">+{images.length - 6}</span>
-                    </div>
-                  </button>
-                )}
-              </div>
-            )}
+            {/* Show 3 thumbnails all using the main product image */}
+            <div className="hidden md:flex flex-col gap-2 w-20 flex-shrink-0">
+              {[0, 1, 2].map((index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedImage(0)}
+                  className={cn(
+                    "aspect-square w-full overflow-hidden rounded border-2 transition-all",
+                    selectedImage === 0
+                      ? "border-red-600 ring-2 ring-red-600/20"
+                      : "border-gray-300 hover:border-gray-400"
+                  )}
+                >
+                  <img
+                    src={product.image}
+                    alt={`${product.name}`}
+                    className="h-full w-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
 
             {/* Horizontal Thumbnail Strip - Mobile only */}
             {images.length > 1 && (
